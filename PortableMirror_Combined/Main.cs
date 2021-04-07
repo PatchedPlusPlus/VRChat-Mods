@@ -11,7 +11,7 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-[assembly: MelonModInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.2.9", "M-oons,Nirvash")] //Name changed to break auto update
+[assembly: MelonModInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.3.0", "M-oons,Nirvash")] //Name changed to break auto update
 [assembly: MelonModGame("VRChat", "VRChat")]
 
 namespace PortableMirror
@@ -19,7 +19,7 @@ namespace PortableMirror
     public static class ModInfo
     {
         public const string NAME = "PortableMirror";
-        public const string VERSION = "1.2.9";
+        public const string VERSION = "1.3.0";
     }
 
     public class Main : MelonMod
