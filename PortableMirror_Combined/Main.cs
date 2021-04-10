@@ -11,77 +11,65 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-[assembly: MelonModInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.0", "M-oons,Nirvash")] //Name changed to break auto update
+[assembly: MelonModInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.0", "M-oons, Nirvash")] //Name changed to break auto update
 [assembly: MelonModGame("VRChat", "VRChat")]
 
 namespace PortableMirror
 {
-    public static class ModInfo
-    {
-        public const string NAME = "PortableMirror";
-        public const string VERSION = "1.4.0";
-    }
 
     public class Main : MelonMod
     {
         public override void OnApplicationStart()
         {
-
             loadAssets();
-
 
             ModPrefs.RegisterCategory("PortableMirror", "PortableMirror");
             ModPrefs.RegisterPrefFloat("PortableMirror", "MirrorScaleX", 5f, "Mirror Scale X");
             ModPrefs.RegisterPrefFloat("PortableMirror", "MirrorScaleY", 3f, "Mirror Scale Y");
             ModPrefs.RegisterPrefFloat("PortableMirror", "MirrorDistance", 0f, "Mirror Distance");
-            //ModPrefs.RegisterPrefBool("PortableMirror", "OptimizedMirror", false, "Optimized Mirror");
             ModPrefs.RegisterPrefString("PortableMirror", "MirrorState", "MirrorFull", "Mirror Type");
             ExpansionKitApi.RegisterSettingAsStringEnum("PortableMirror", "MirrorState", new[] { ("MirrorFull", "Full"), ("MirrorOpt", "Optimized"), ("MirrorCutout", "Cutout"), ("MirrorTransparent", "Transparent") });
             ModPrefs.RegisterPrefBool("PortableMirror", "CanPickupMirror", false, "Can Pickup Mirror");
-            ModPrefs.RegisterPrefString("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
             ModPrefs.RegisterPrefBool("PortableMirror", "enableBase", true, "Enable Portable Mirror QM Button");
+            ModPrefs.RegisterPrefString("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
             ModPrefs.RegisterPrefBool("PortableMirror", "QuickMenuOptions", true, "Quick Menu Settings Button");
-            ModPrefs.RegisterPrefFloat("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent");
+            ModPrefs.RegisterPrefFloat("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent - Global for all mirrors");
 
 
-            ModPrefs.RegisterCategory("PortableMirror45", "PortableMirror45");
+            ModPrefs.RegisterCategory("PortableMirror45", "PortableMirror 45");
             ModPrefs.RegisterPrefFloat("PortableMirror45", "MirrorScaleX", 5f, "Mirror Scale X");
             ModPrefs.RegisterPrefFloat("PortableMirror45", "MirrorScaleY", 3f, "Mirror Scale Y");
             ModPrefs.RegisterPrefFloat("PortableMirror45", "MirrorDistance", 0f, "Mirror Distance");
-            //ModPrefs.RegisterPrefBool("PortableMirror45", "OptimizedMirror45", false, "Optimized Mirror 45");
             ModPrefs.RegisterPrefString("PortableMirror45", "MirrorState", "MirrorFull", "Mirror Type");
             ExpansionKitApi.RegisterSettingAsStringEnum("PortableMirror45", "MirrorState", new[] { ("MirrorFull", "Full"), ("MirrorOpt", "Optimized"), ("MirrorCutout", "Cutout"), ("MirrorTransparent", "Transparent") });
             ModPrefs.RegisterPrefBool("PortableMirror45", "CanPickup45Mirror", false, "Can Pickup 45 Mirror");
             ModPrefs.RegisterPrefBool("PortableMirror45", "enable45", true, "Enable 45 Mirror QM Button");
             
-            ModPrefs.RegisterCategory("PortableMirrorCeiling", "PortableMirrorCeiling");
+            ModPrefs.RegisterCategory("PortableMirrorCeiling", "PortableMirror Ceiling");
             ModPrefs.RegisterPrefFloat("PortableMirrorCeiling", "MirrorScaleX", 5f, "Mirror Scale X");
             ModPrefs.RegisterPrefFloat("PortableMirrorCeiling", "MirrorScaleZ", 3f, "Mirror Scale Z");
             ModPrefs.RegisterPrefFloat("PortableMirrorCeiling", "MirrorDistance", 2, "Mirror Distance");
-            //ModPrefs.RegisterPrefBool("PortableMirrorCeiling", "OptimizedMirrorCeiling", false, "Optimized Mirror Ceiling");
             ModPrefs.RegisterPrefString("PortableMirrorCeiling", "MirrorState", "MirrorFull", "Mirror Type");
             ExpansionKitApi.RegisterSettingAsStringEnum("PortableMirrorCeiling", "MirrorState", new[] { ("MirrorFull", "Full"), ("MirrorOpt", "Optimized"), ("MirrorCutout", "Cutout"), ("MirrorTransparent", "Transparent") });
             ModPrefs.RegisterPrefBool("PortableMirrorCeiling", "CanPickupCeilingMirror", false, "Can Pickup Ceiling Mirror");
             ModPrefs.RegisterPrefBool("PortableMirrorCeiling", "enableCeiling", true, "Enable Ceiling Mirror QM Button");
 
-            ModPrefs.RegisterCategory("PortableMirrorMicro", "PortableMirrorMicro");
+            ModPrefs.RegisterCategory("PortableMirrorMicro", "PortableMirror Micro");
             ModPrefs.RegisterPrefFloat("PortableMirrorMicro", "MirrorScaleX", .05f, "Mirror Scale X");
             ModPrefs.RegisterPrefFloat("PortableMirrorMicro", "MirrorScaleY", .1f, "Mirror Scale Y");
             ModPrefs.RegisterPrefFloat("PortableMirrorMicro", "GrabRange", .1f, "GrabRange");
-            //ModPrefs.RegisterPrefBool("PortableMirrorMicro", "OptimizedMirrorMicro", false, "Optimized MirrorMicro");
             ModPrefs.RegisterPrefString("PortableMirrorMicro", "MirrorState", "MirrorFull", "Mirror Type");
             ExpansionKitApi.RegisterSettingAsStringEnum("PortableMirrorMicro", "MirrorState", new[] { ("MirrorFull", "Full"), ("MirrorOpt", "Optimized"), ("MirrorCutout", "Cutout"), ("MirrorTransparent", "Transparent") });
             ModPrefs.RegisterPrefBool("PortableMirrorMicro", "CanPickupMirrorMicro", false, "Can Pickup MirrorMicro");
             ModPrefs.RegisterPrefBool("PortableMirrorMicro", "enableMicro", true, "Enable Micro Mirror QM Button");
             
-            ModPrefs.RegisterCategory("PortableMirrorTrans", "PortableMirrorTransparent");
+            ModPrefs.RegisterCategory("PortableMirrorTrans", "PortableMirror Transparent");
             ModPrefs.RegisterPrefFloat("PortableMirrorTrans", "MirrorScaleX", 5f, "Mirror Scale X");
             ModPrefs.RegisterPrefFloat("PortableMirrorTrans", "MirrorScaleY", 3f, "Mirror Scale Y");
             ModPrefs.RegisterPrefFloat("PortableMirrorTrans", "MirrorDistance", 0f, "Mirror Distance");
-            // ModPrefs.RegisterPrefBool("PortableMirrorTrans", "OptimizedMirror", false, "Will other mirrors be turned Optimized");
-            ModPrefs.RegisterPrefString("PortableMirrorTrans", "MirrorState", "MirrorTransparent", "Mirror Type");
+            ModPrefs.RegisterPrefString("PortableMirrorTrans", "MirrorState", "MirrorTransparent", "Mirror Type - Resets to Transparent on load");
             ExpansionKitApi.RegisterSettingAsStringEnum("PortableMirrorTrans", "MirrorState", new[] { ("MirrorFull", "Full"), ("MirrorOpt", "Optimized"), ("MirrorCutout", "Cutout"), ("MirrorTransparent", "Transparent") });
-            ModPrefs.SetString("PortableMirrorTrans", "MirrorState", "MirrorTransparent");//For to Transparent every load
+            ModPrefs.SetString("PortableMirrorTrans", "MirrorState", "MirrorTransparent");//Force to Transparent every load
             ModPrefs.RegisterPrefBool("PortableMirrorTrans", "CanPickupMirror", false, "Can Pickup Mirror");
             ModPrefs.RegisterPrefBool("PortableMirrorTrans", "enableTrans", true, "Enable Transparent Mirror QM Button");
 
@@ -99,8 +87,6 @@ namespace PortableMirror
                     CreateQuickMenuButton()
                 });
             }
-
-
         }
 
         public override void VRChat_OnUiManagerInit()
@@ -113,7 +99,6 @@ namespace PortableMirror
             yield return new WaitForSeconds(5f);
             OnModSettingsApplied();
         }
-
 
 
         public override void OnModSettingsApplied()
@@ -139,16 +124,15 @@ namespace PortableMirror
 
             _MirrorTransValue = ModPrefs.GetFloat("PortableMirror", "TransMirrorTrans");
 
+
             _oldMirrorScaleYBase = _mirrorScaleYBase;
             _oldMirrorDistance = _MirrorDistance;
             _mirrorScaleXBase = ModPrefs.GetFloat("PortableMirror", "MirrorScaleX");
             _mirrorScaleYBase = ModPrefs.GetFloat("PortableMirror", "MirrorScaleY");
             _MirrorDistance = ModPrefs.GetFloat("PortableMirror", "MirrorDistance");
-            //_optimizedMirrorBase = ModPrefs.GetBool("PortableMirror", "OptimizedMirror");
             _canPickupMirrorBase = ModPrefs.GetBool("PortableMirror", "CanPickupMirror");
             _mirrorKeybindBase = Utils.GetMirrorKeybind();
             _mirrorStateBase = ModPrefs.GetString("PortableMirror", "MirrorState");
-
 
             if (_mirrorBase != null && Utils.GetVRCPlayer() != null)
             {
@@ -158,67 +142,47 @@ namespace PortableMirror
 
                 _mirrorBase.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
  
-                if (_mirrorStateBase == "MirrorCutout" || _mirrorStateBase == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
-                if (_mirrorStateBase == "MirrorTransparent")
-                { _mirrorBase.transform.Find(_mirrorStateBase).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateBase == "MirrorCutout" || _mirrorStateBase == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
+                if (_mirrorStateBase == "MirrorTransparent") _mirrorBase.transform.Find(_mirrorStateBase).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 for (int i = 0; i < _mirrorBase.transform.childCount; i++)
-                {
                     _mirrorBase.transform.GetChild(i).gameObject.active = false;
-                }
                 var childMirror = _mirrorBase.transform.Find(_mirrorStateBase);
                 childMirror.gameObject.active = true;
             }
 
-            //_oldMirrorScaleZ45 = _mirrorScaleZ45;
+
             _oldMirrorScaleY45 = _mirrorScaleY45;
             _oldMirrorDistance45 = _MirrorDistance45;
             _mirrorScaleX45 = ModPrefs.GetFloat("PortableMirror45", "MirrorScaleX");
             _mirrorScaleY45 = ModPrefs.GetFloat("PortableMirror45", "MirrorScaleY");
             _MirrorDistance45 = ModPrefs.GetFloat("PortableMirror45", "MirrorDistance");
-            //_optimizedMirror45 = ModPrefs.GetBool("PortableMirror45", "OptimizedMirror45");
             _CanPickup45Mirror = ModPrefs.GetBool("PortableMirror45", "CanPickup45Mirror");
             _mirrorState45 = ModPrefs.GetString("PortableMirror45", "MirrorState");
 
             if (_mirror45 != null && Utils.GetVRCPlayer() != null)
             {
-                //math here may or maynot be wrong, was using stuff from the ceiling mirror
                 _mirror45.transform.localScale = new Vector3(_mirrorScaleX45, _mirrorScaleY45, 1f);
                 _mirror45.transform.rotation = _mirror45.transform.rotation * Quaternion.AngleAxis(-45, Vector3.left);  
 
-                //_mirror45.transform.position = new Vector3(_mirror45.transform.position.x, _mirror45.transform.position.y + ((_mirrorScaleZ45 - _oldMirrorScaleZ45) / _mirrorScaleY45), _mirror45.transform.position.z);
                 _mirror45.transform.position = new Vector3(_mirror45.transform.position.x, _mirror45.transform.position.y + (_mirrorScaleY45 - _oldMirrorScaleY45), _mirror45.transform.position.z  );
                 _mirror45.transform.position += _mirror45.transform.forward * (_MirrorDistance45 - _oldMirrorDistance45);
                 _mirror45.transform.rotation = _mirror45.transform.rotation * Quaternion.AngleAxis(45, Vector3.left);
 
                 _mirror45.GetOrAddComponent<VRC_Pickup>().pickupable = _CanPickup45Mirror;
 
-                if (_mirrorState45 == "MirrorCutout" || _mirrorState45 == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
-                if (_mirrorState45 == "MirrorTransparent")
-                { _mirror45.transform.Find(_mirrorState45).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorState45 == "MirrorCutout" || _mirrorState45 == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
+                if (_mirrorState45 == "MirrorTransparent") _mirror45.transform.Find(_mirrorState45).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 for (int i = 0; i < _mirror45.transform.childCount; i++)
-                {
                     _mirror45.transform.GetChild(i).gameObject.active = false;
-                }
                 var childMirror = _mirror45.transform.Find(_mirrorState45);
                 childMirror.gameObject.active = true;
             }
 
-            _oldMirrorScaleZCeiling = _mirrorScaleZCeiling;
+
             _oldMirrorDistanceCeiling = _MirrorDistanceCeiling;
             _mirrorScaleXCeiling = ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleX");
             _mirrorScaleZCeiling = ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleZ");
             _MirrorDistanceCeiling = ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorDistance");
-            //_optimizedMirrorCeiling = ModPrefs.GetBool("PortableMirrorCeiling", "OptimizedMirrorCeiling");
             _canPickupCeilingMirror = ModPrefs.GetBool("PortableMirrorCeiling", "CanPickupCeilingMirror");
             _mirrorStateCeiling = ModPrefs.GetString("PortableMirrorCeiling", "MirrorState");
 
@@ -229,30 +193,21 @@ namespace PortableMirror
 
                 _mirrorCeiling.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
 
-                if (_mirrorStateCeiling == "MirrorCutout" || _mirrorStateCeiling == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
-                if (_mirrorStateCeiling == "MirrorTransparent")
-                { _mirrorCeiling.transform.Find(_mirrorStateCeiling).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateCeiling == "MirrorCutout" || _mirrorStateCeiling == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
+                if (_mirrorStateCeiling == "MirrorTransparent") _mirrorCeiling.transform.Find(_mirrorStateCeiling).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 for (int i = 0; i < _mirrorCeiling.transform.childCount; i++)
-                {
                     _mirrorCeiling.transform.GetChild(i).gameObject.active = false;
-                }
                 var childMirror = _mirrorCeiling.transform.Find(_mirrorStateCeiling);
                 childMirror.gameObject.active = true;
             }
+
 
             _oldMirrorScaleYMicro = _mirrorScaleMicro;
             _mirrorScaleXMicro = ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleX");
             _mirrorScaleMicro = ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleY");
             _grabRangeMicro = ModPrefs.GetFloat("PortableMirrorMicro", "GrabRange");
-            //_optimizedMirrorMicro = ModPrefs.GetBool("PortableMirrorMicro", "OptimizedMirrorMicro");
             _canPickupMirrorMicro = ModPrefs.GetBool("PortableMirrorMicro", "CanPickupMirrorMicro");
             _mirrorStateMicro = ModPrefs.GetString("PortableMirrorMicro", "MirrorState");
-
 
             if (_mirrorMicro != null && Utils.GetVRCPlayer() != null)
             {
@@ -262,22 +217,13 @@ namespace PortableMirror
                 _mirrorMicro.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
                 _mirrorMicro.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorMicro;
 
-                if (_mirrorStateMicro == "MirrorCutout" || _mirrorStateMicro == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
-                if (_mirrorStateMicro == "MirrorTransparent")
-                { _mirrorMicro.transform.Find(_mirrorStateMicro).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateMicro == "MirrorCutout" || _mirrorStateMicro == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
+                if (_mirrorStateMicro == "MirrorTransparent") _mirrorMicro.transform.Find(_mirrorStateMicro).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 for (int i = 0; i < _mirrorMicro.transform.childCount; i++)
-                {
                     _mirrorMicro.transform.GetChild(i).gameObject.active = false;
-                }
                 var childMirror = _mirrorMicro.transform.Find(_mirrorStateMicro);
                 childMirror.gameObject.active = true;
             }
-
 
 
             _oldMirrorScaleYTrans = _mirrorScaleYTrans;
@@ -285,7 +231,6 @@ namespace PortableMirror
             _mirrorScaleXTrans = ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleX");
             _mirrorScaleYTrans = ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleY");
             _MirrorDistanceTrans = ModPrefs.GetFloat("PortableMirrorTrans", "MirrorDistance");
-            //_optimizedMirrorTrans = ModPrefs.GetBool("PortableMirrorTrans", "OptimizedMirror");
             _canPickupMirrorTrans = ModPrefs.GetBool("PortableMirrorTrans", "CanPickupMirror");
             _mirrorStateTrans = ModPrefs.GetString("PortableMirrorTrans", "MirrorState");
 
@@ -296,18 +241,10 @@ namespace PortableMirror
 
                 _mirrorTrans.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorTrans;
 
-                if (_mirrorStateTrans == "MirrorCutout" || _mirrorStateTrans == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
-                if (_mirrorStateTrans == "MirrorTransparent")
-                { _mirrorTrans.transform.Find(_mirrorStateTrans).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateTrans == "MirrorCutout" || _mirrorStateTrans == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
+                if (_mirrorStateTrans == "MirrorTransparent") _mirrorTrans.transform.Find(_mirrorStateTrans).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 for (int i = 0; i < _mirrorTrans.transform.childCount; i++)
-                {
                     _mirrorTrans.transform.GetChild(i).gameObject.active = false;
-                }
                 var childMirror = _mirrorTrans.transform.Find(_mirrorStateTrans);
                 childMirror.gameObject.active = true;
             }
@@ -324,41 +261,33 @@ namespace PortableMirror
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirror();
             }, (button) => ButtonList["Base"] = button.transform);
-
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nPortable\nMirror 45", () =>
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirror45();
-            }, (button) => ButtonList["45"] = button.transform);
-            
-            
+            }, (button) => ButtonList["45"] = button.transform);                  
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nCeiling\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirrorCeiling();
             }, (button) => ButtonList["Ceiling"] = button.transform);
-
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nMicro\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirrorMicro();
             }, (button) => ButtonList["Micro"] = button.transform);
-
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nTransparent\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirrorTrans();
             }, (button) => ButtonList["Trans"] = button.transform);
-
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Portable\nMirror\nSettings", () =>
             {
                 QuickMenuOptions();
             }, (button) => ButtonList["Settings"] = button.transform);
-
-
         }
 
-        string StateText(string stateRaw)
+        private string StateText(string stateRaw)
         {
             switch (stateRaw)
             {
@@ -507,15 +436,8 @@ namespace PortableMirror
 
         private void QuickMenuOptions2()
         {
-            //Mirror - Wider - Narrower
-            //Taller - Shorter 
-            //45
-            //Ceiling
-
-            //Close - Page 1
-
-            //1
             var mirrorMenu = ExpansionKitApi.CreateCustomQuickMenuPage(LayoutDescriptionCustom.QuickMenu3Column);
+            //Row 1
             mirrorMenu.AddToggleButton("Portable Mirror", (action) =>
             {
                 if (Utils.GetVRCPlayer() == null) return;
@@ -672,7 +594,6 @@ namespace PortableMirror
                 QuickMenuOptions();
             });
 
-
             mirrorMenu.Show();
         }
 
@@ -686,21 +607,23 @@ namespace PortableMirror
             }
         }
 
-        private void ToggleMirror()
+        private void SetAllMirrorsToIgnoreShader()
+        {
+            foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
+                if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
+                    vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
+        }
+
+            private void ToggleMirror()
         {
             if (_mirrorBase != null)
             {
-                UnityEngine.Object.Destroy(_mirrorBase);
+                try{ UnityEngine.Object.Destroy(_mirrorBase); } catch (System.Exception ex) { MelonModLogger.Log(ConsoleColor.DarkRed, ex.ToString()); }
                 _mirrorBase = null;
             }
             else
             {
-
-                if (_mirrorStateBase == "MirrorCutout" || _mirrorStateBase == "MirrorTransparent") { 
-                foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                    if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                        vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                 }
+                if (_mirrorStateBase == "MirrorCutout" || _mirrorStateBase == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
                 Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * _MirrorDistance);
                 pos.y += .5f;
@@ -712,11 +635,9 @@ namespace PortableMirror
                 mirror.transform.localScale = new Vector3(_mirrorScaleXBase, _mirrorScaleYBase, 1f);
                 mirror.name = "PortableMirror";
 
-
                 var childMirror = mirror.transform.Find(_mirrorStateBase);
                 childMirror.gameObject.active = true;
-                if (_mirrorStateBase == "MirrorTransparent")
-                { childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateBase == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
@@ -729,17 +650,12 @@ namespace PortableMirror
         {
             if (_mirror45 != null)
             {
-                UnityEngine.Object.Destroy(_mirror45);
+                try{ UnityEngine.Object.Destroy(_mirror45); } catch (System.Exception ex) { MelonModLogger.Log(ConsoleColor.DarkRed, ex.ToString()); }
                 _mirror45 = null;
             }
             else
             {
-                if (_mirrorState45 == "MirrorCutout" || _mirrorState45 == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
+                if (_mirrorState45 == "MirrorCutout" || _mirrorState45 == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
                 Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * _MirrorDistance45);
                 pos.y += .5f;
@@ -753,8 +669,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorState45);
                 childMirror.gameObject.active = true;
-                if (_mirrorState45 == "MirrorTransparent")
-                { childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorState45 == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _CanPickup45Mirror;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
@@ -768,17 +683,12 @@ namespace PortableMirror
             
             if (_mirrorCeiling != null)
             {
-                UnityEngine.Object.Destroy(_mirrorCeiling);
+                try { UnityEngine.Object.Destroy(_mirrorCeiling); } catch (System.Exception ex) { MelonModLogger.Log(ConsoleColor.DarkRed, ex.ToString()); }
                 _mirrorCeiling = null;
             }
             else
             {
-                if (_mirrorStateCeiling == "MirrorCutout" || _mirrorStateCeiling == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
+                if (_mirrorStateCeiling == "MirrorCutout" || _mirrorStateCeiling == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
                 Vector3 pos = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position + (player.transform.up); // Bases mirror position off of hip, to allow for play space moving 
                 MelonModLogger.Log($"x:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.x}, y:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.y}, z:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.z}");
@@ -792,10 +702,9 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateCeiling);
                 childMirror.gameObject.active = true;
-                if (_mirrorStateCeiling == "MirrorTransparent")
-                { childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateCeiling == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); 
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
-                mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
+                mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
                 _mirrorCeiling = mirror;
 
@@ -806,17 +715,12 @@ namespace PortableMirror
         {
             if (_mirrorMicro != null)
             {
-                UnityEngine.Object.Destroy(_mirrorMicro);
+                try{ UnityEngine.Object.Destroy(_mirrorMicro); } catch (System.Exception ex) { MelonModLogger.Log(ConsoleColor.DarkRed, ex.ToString()); }
                 _mirrorMicro = null;
             }
             else
             {
-                if (_mirrorStateMicro == "MirrorCutout" || _mirrorStateMicro == "MirrorTransparent")
-                {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
+                if (_mirrorStateMicro == "MirrorCutout" || _mirrorStateMicro == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
                 Vector3 pos = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector").transform.position + (player.transform.forward * _mirrorScaleMicro); // Gets position of Head and moves mirror forward by the Y scale.
                 pos.y -= _mirrorScaleMicro / 4;///This will need turning
@@ -828,10 +732,9 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateMicro);
                 childMirror.gameObject.active = true;
-                if (_mirrorStateMicro == "MirrorTransparent")
-                { childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateMicro == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
-                mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
+                mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorMicro;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
                 _mirrorMicro = mirror;
             }
@@ -841,16 +744,12 @@ namespace PortableMirror
         {
             if (_mirrorTrans != null)
             {
-                UnityEngine.Object.Destroy(_mirrorTrans);
+                try{ UnityEngine.Object.Destroy(_mirrorTrans); } catch (System.Exception ex) { MelonModLogger.Log(ConsoleColor.DarkRed, ex.ToString()); }
                 _mirrorTrans = null;
             }
             else
             {
-                if(_mirrorStateTrans == "MirrorCutout" || _mirrorStateTrans == "MirrorTransparent") {
-                    foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                        if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                            vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
-                }
+                if(_mirrorStateTrans == "MirrorCutout" || _mirrorStateTrans == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
                 Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * _MirrorDistanceTrans);
                 pos.y += .5f;
@@ -863,25 +762,20 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateTrans);
                 childMirror.gameObject.active = true;
-                if (_mirrorStateTrans == "MirrorTransparent")
-                { childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
+                if (_mirrorStateTrans == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorTrans;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
 
-
                 _mirrorTrans = mirror;
             }
         }
-
-
 
         
         private void loadAssets()
         {//https://github.com/ddakebono/BTKSASelfPortrait/blob/master/BTKSASelfPortrait.cs
             using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableMirror_Combined.transmirror"))
             {//Load shaders first, without this doesn't seem to work. 
-                //Log("Loaded Embedded resource", true);
                 using (var tempStream = new MemoryStream((int)assetStream.Length))
                 {
                     assetStream.CopyTo(tempStream);
@@ -892,7 +786,6 @@ namespace PortableMirror
 
             using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableMirror_Combined.mirrorprefab"))
             {
-                //Log("Loaded Embedded resource", true);
                 using (var tempStream = new MemoryStream((int)assetStream.Length))
                 {
                     assetStream.CopyTo(tempStream);
@@ -905,17 +798,14 @@ namespace PortableMirror
             {
                 mirrorPrefab = assetBundle.LoadAsset_Internal("MirrorPrefab", Il2CppType.Of<GameObject>()).Cast<GameObject>();
                 mirrorPrefab.hideFlags |= HideFlags.DontUnloadUnusedAsset;
-                //MelonModLogger.Log(ConsoleColor.Red, $"{(mirrorPrefab is null ? "mirrorPrefab is null" : "mirrorPrefab is !null")}");
             }
-            else MelonModLogger.Log(ConsoleColor.Red, "Bundle was null");
-            //Log("Loaded Assets Successfully!", true);
-
+            else MelonModLogger.LogError("Bundle was null");
         }
 
         public Dictionary<string, Transform> ButtonList = new Dictionary<string, Transform>();
 
         private static int PlayerLayer = 1 << 9; // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-        private static int PlayerLocalLayer = 1 << 10;
+        private static int PlayerLocalLayer = 1 << 10; //Mainly just here as a refernce now
         private static int UiLayer = 1 << 5;
         private static int UiMenuLayer = 1 << 12;
         private static int MirrorReflectionLayer = 1 << 18;
@@ -923,33 +813,30 @@ namespace PortableMirror
 
         private int optMirrorMask = PlayerLayer | MirrorReflectionLayer;
         private int fullMirrorMask = -1 & ~UiLayer & ~UiMenuLayer & ~PlayerLocalLayer & ~reserved2;
-        private float _MirrorTransValue;
 
         private AssetBundle assetBundle;
         private AssetBundle assetBundle2;
         private GameObject mirrorPrefab;
+
         private GameObject _mirrorBase;
         private float _mirrorScaleXBase;
         private float _mirrorScaleYBase;
         private float _MirrorDistance;
         private float _oldMirrorDistance;
         private float _oldMirrorScaleYBase;
-        //private bool _optimizedMirrorBase;
         private bool _canPickupMirrorBase;
         private KeyCode _mirrorKeybindBase;
         private bool _quickMenuOptions;
+        private float _MirrorTransValue;
         private bool _enableBase;
         private string _mirrorStateBase;
 
         private GameObject _mirror45;
         private float _mirrorScaleX45;
-        //private float _mirrorScaleZ45;
         private float _mirrorScaleY45;
         private float _MirrorDistance45;
         private float _oldMirrorDistance45;
-        //private float _oldMirrorScaleZ45;
         private float _oldMirrorScaleY45;
-        //private bool _optimizedMirror45;
         private bool _CanPickup45Mirror;
         private bool _enable45;
         private string _mirrorState45;
@@ -959,8 +846,6 @@ namespace PortableMirror
         private float _mirrorScaleZCeiling;
         private float _MirrorDistanceCeiling;
         private float _oldMirrorDistanceCeiling;
-        private float _oldMirrorScaleZCeiling;
-        //private bool _optimizedMirrorCeiling;
         private bool _canPickupCeilingMirror;
         private bool _enableCeiling;
         private string _mirrorStateCeiling;
@@ -970,11 +855,9 @@ namespace PortableMirror
         private float _mirrorScaleMicro;
         private float _grabRangeMicro;
         private float _oldMirrorScaleYMicro;
-        //private bool _optimizedMirrorMicro;
         private bool _canPickupMirrorMicro;
         private bool _enableMicro;
         private string _mirrorStateMicro;
-
 
         private GameObject _mirrorTrans;
         private float _mirrorScaleXTrans;
@@ -982,7 +865,6 @@ namespace PortableMirror
         private float _MirrorDistanceTrans;
         private float _oldMirrorDistanceTrans;
         private float _oldMirrorScaleYTrans;
-        //private bool _optimizedMirrorTrans;
         private bool _canPickupMirrorTrans;
         private bool _enableTrans;
         private string _mirrorStateTrans;
