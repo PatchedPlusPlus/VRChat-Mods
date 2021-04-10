@@ -11,7 +11,7 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-[assembly: MelonModInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.3.0", "M-oons,Nirvash")] //Name changed to break auto update
+[assembly: MelonModInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.0", "M-oons,Nirvash")] //Name changed to break auto update
 [assembly: MelonModGame("VRChat", "VRChat")]
 
 namespace PortableMirror
@@ -19,7 +19,7 @@ namespace PortableMirror
     public static class ModInfo
     {
         public const string NAME = "PortableMirror";
-        public const string VERSION = "1.3.0";
+        public const string VERSION = "1.4.0";
     }
 
     public class Main : MelonMod
@@ -41,7 +41,7 @@ namespace PortableMirror
             ModPrefs.RegisterPrefString("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
             ModPrefs.RegisterPrefBool("PortableMirror", "enableBase", true, "Enable Portable Mirror QM Button");
             ModPrefs.RegisterPrefBool("PortableMirror", "QuickMenuOptions", true, "Quick Menu Settings Button");
-            ModPrefs.RegisterPrefFloat("PortableMirror", "TransMirrorTrans", .3f, "Transparent Mirror transparency - Higher is more transparent");
+            ModPrefs.RegisterPrefFloat("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent");
 
 
             ModPrefs.RegisterCategory("PortableMirror45", "PortableMirror45");
@@ -85,58 +85,9 @@ namespace PortableMirror
             ModPrefs.RegisterPrefBool("PortableMirrorTrans", "CanPickupMirror", false, "Can Pickup Mirror");
             ModPrefs.RegisterPrefBool("PortableMirrorTrans", "enableTrans", true, "Enable Transparent Mirror QM Button");
 
+            OnModSettingsApplied();
 
-            _MirrorTransValue = ModPrefs.GetFloat("PortableMirror", "TransMirrorTrans");
-
-            _mirrorScaleXBase = ModPrefs.GetFloat("PortableMirror", "MirrorScaleX");
-            _mirrorScaleYBase = ModPrefs.GetFloat("PortableMirror", "MirrorScaleY");
-            _MirrorDistance = ModPrefs.GetFloat("PortableMirror", "MirrorDistance");
-            //_optimizedMirrorBase = ModPrefs.GetBool("PortableMirror", "OptimizedMirror");
-            _canPickupMirrorBase = ModPrefs.GetBool("PortableMirror", "CanPickupMirror");
-            _mirrorKeybindBase = Utils.GetMirrorKeybind();
-            _quickMenuOptions = ModPrefs.GetBool("PortableMirror", "QuickMenuOptions");
-            _enableBase = ModPrefs.GetBool("PortableMirror", "enableBase");
-            _mirrorStateBase = ModPrefs.GetString("PortableMirror", "MirrorState"); 
-
-
-
-            _mirrorScaleX45 = ModPrefs.GetFloat("PortableMirror45", "MirrorScaleX");
-            _mirrorScaleY45 = ModPrefs.GetFloat("PortableMirror45", "MirrorScaleY");
-            _MirrorDistance45 = ModPrefs.GetFloat("PortableMirror45", "MirrorDistance");
-            //_optimizedMirror45 = ModPrefs.GetBool("PortableMirror45", "OptimizedMirror45");
-            _CanPickup45Mirror = ModPrefs.GetBool("PortableMirror45", "CanPickup45Mirror");
-            _enable45 = ModPrefs.GetBool("PortableMirror45", "enable45");
-            _mirrorState45 = ModPrefs.GetString("PortableMirror45", "MirrorState");
-
-
-            _mirrorScaleXCeiling = ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleX");
-            _mirrorScaleZCeiling = ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleZ");
-            _MirrorDistanceCeiling = ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorDistance");
-            //_optimizedMirrorCeiling = ModPrefs.GetBool("PortableMirrorCeiling", "OptimizedMirrorCeiling");
-            _canPickupCeilingMirror = ModPrefs.GetBool("PortableMirrorCeiling", "CanPickupCeilingMirror");
-            _enableCeiling = ModPrefs.GetBool("PortableMirrorCeiling", "enableCeiling");
-            _mirrorStateCeiling = ModPrefs.GetString("PortableMirrorCeiling", "MirrorState");
-
-
-            _mirrorScaleXMicro = ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleX");
-            _mirrorScaleMicro = ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleY");
-            _grabRangeMicro = ModPrefs.GetFloat("PortableMirrorMicro", "GrabRange"); 
-            //_optimizedMirrorMicro = ModPrefs.GetBool("PortableMirrorMicro", "OptimizedMirrorMicro");
-            _canPickupMirrorMicro = ModPrefs.GetBool("PortableMirrorMicro", "CanPickupMirrorMicro");
-            _enableMicro = ModPrefs.GetBool("PortableMirrorMicro", "enableMicro");
-            _mirrorStateMicro = ModPrefs.GetString("PortableMirrorMicro", "MirrorState");
-
-
-            _mirrorScaleXTrans = ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleX");
-            _mirrorScaleYTrans = ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleY");
-            _MirrorDistanceTrans = ModPrefs.GetFloat("PortableMirrorTrans", "MirrorDistance");
-            _canPickupMirrorTrans = ModPrefs.GetBool("PortableMirrorTrans", "CanPickupMirror");
-            //_optimizedMirrorTrans = ModPrefs.GetBool("PortableMirrorTrans", "OptimizedMirror");
-            _mirrorStateTrans = ModPrefs.GetString("PortableMirrorTrans", "MirrorState");
-
-
-
-            MelonModLogger.Log("Base mod made by M-oons, modifcations by Nirvash");
+            MelonModLogger.Log("Base mod made by M-oons, modifications by Nirvash");
             MelonModLogger.Log("Settings can be configured in UserData\\modprefs.ini");
             MelonModLogger.Log($"[{_mirrorKeybindBase}] -> Toggle portable mirror");
 
@@ -167,24 +118,24 @@ namespace PortableMirror
 
         public override void OnModSettingsApplied()
         {
+            _enableBase = ModPrefs.GetBool("PortableMirror", "enableBase");
             _enable45 = ModPrefs.GetBool("PortableMirror45", "enable45");
             _enableCeiling = ModPrefs.GetBool("PortableMirrorCeiling", "enableCeiling");
             _enableMicro = ModPrefs.GetBool("PortableMirrorMicro", "enableMicro");
             _enableTrans = ModPrefs.GetBool("PortableMirrorTrans", "enableTrans");
             _quickMenuOptions = ModPrefs.GetBool("PortableMirror", "QuickMenuOptions");
-            _enableBase = ModPrefs.GetBool("PortableMirror", "enableBase");
-            if (_enableBase && ButtonList["Base"] != null) ButtonList["Base"].gameObject.active = true;
-            else ButtonList["Base"].gameObject.active = false;
-            if (_enable45 && ButtonList["45"] != null) ButtonList["45"].gameObject.active = true;
-            else ButtonList["45"].gameObject.active = false;
-            if (_enableCeiling && ButtonList["Ceiling"] != null) ButtonList["Ceiling"].gameObject.active = true;
-            else ButtonList["Ceiling"].gameObject.active = false;
-            if (_enableMicro && ButtonList["Micro"] != null) ButtonList["Micro"].gameObject.active = true;
-            else ButtonList["Micro"].gameObject.active = false;
-            if (_enableTrans && ButtonList["Trans"] != null) ButtonList["Trans"].gameObject.active = true;
-            else ButtonList["Trans"].gameObject.active = false;
-            if (_quickMenuOptions && ButtonList["Settings"] != null) ButtonList["Settings"].gameObject.active = true;
-            else ButtonList["Settings"].gameObject.active = false;
+            if (_enableBase && ButtonList.ContainsKey("Base") && ButtonList["Base"] != null) ButtonList["Base"].gameObject.active = true;
+            else if (ButtonList.ContainsKey("Base")) ButtonList["Base"].gameObject.active = false;
+            if (_enable45 && ButtonList.ContainsKey("45") && ButtonList["45"] != null) ButtonList["45"].gameObject.active = true;
+            else if (ButtonList.ContainsKey("45")) ButtonList["45"].gameObject.active = false;
+            if (_enableCeiling && ButtonList.ContainsKey("Ceiling") && ButtonList["Ceiling"] != null) ButtonList["Ceiling"].gameObject.active = true;
+            else if (ButtonList.ContainsKey("Ceiling")) ButtonList["Ceiling"].gameObject.active = false;
+            if (_enableMicro && ButtonList.ContainsKey("Micro") && ButtonList["Micro"] != null) ButtonList["Micro"].gameObject.active = true;
+            else if (ButtonList.ContainsKey("Micro")) ButtonList["Micro"].gameObject.active = false;
+            if (_enableTrans && ButtonList.ContainsKey("Trans") && ButtonList["Trans"] != null) ButtonList["Trans"].gameObject.active = true;
+            else if (ButtonList.ContainsKey("Trans")) ButtonList["Trans"].gameObject.active = false;
+            if (_quickMenuOptions && ButtonList.ContainsKey("Settings") && ButtonList["Settings"] != null) ButtonList["Settings"].gameObject.active = true;
+            else if(ButtonList.ContainsKey("Settings")) ButtonList["Settings"].gameObject.active = false;
 
             _MirrorTransValue = ModPrefs.GetFloat("PortableMirror", "TransMirrorTrans");
 
@@ -204,12 +155,9 @@ namespace PortableMirror
                 _mirrorBase.transform.localScale = new Vector3(_mirrorScaleXBase, _mirrorScaleYBase, 1f);
                 _mirrorBase.transform.position = new Vector3(_mirrorBase.transform.position.x, _mirrorBase.transform.position.y + ((_mirrorScaleYBase - _oldMirrorScaleYBase) / 2), _mirrorBase.transform.position.z  );
                 _mirrorBase.transform.position += _mirrorBase.transform.forward * (_MirrorDistance - _oldMirrorDistance);
-                //_mirrorBase.GetOrAddComponent<VRC_MirrorReflection>().m_ReflectLayers = new LayerMask
-                //{
-                //    value = _optimizedMirrorBase ? optMirrorMask : fullMirrorMask
-                //};
+
                 _mirrorBase.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
-                //_mirrorBase.layer = _canPickupMirrorBase ? 0 : 10;
+ 
                 if (_mirrorStateBase == "MirrorCutout" || _mirrorStateBase == "MirrorTransparent")
                 {
                     foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
@@ -277,7 +225,6 @@ namespace PortableMirror
             if (_mirrorCeiling != null && Utils.GetVRCPlayer() != null)
             {
                 _mirrorCeiling.transform.localScale = new Vector3(_mirrorScaleXCeiling, _mirrorScaleZCeiling, 1f);
-                //_mirrorCeiling.transform.position = new Vector3(_mirrorCeiling.transform.position.x, _mirrorCeiling.transform.position.y + ((_mirrorScaleZCeiling - _oldMirrorScaleZCeiling) / _MirrorDistanceCeiling), _mirrorCeiling.transform.position.z);
                 _mirrorCeiling.transform.position = new Vector3(_mirrorCeiling.transform.position.x, _mirrorCeiling.transform.position.y + (_MirrorDistanceCeiling - _oldMirrorDistanceCeiling), _mirrorCeiling.transform.position.z);
 
                 _mirrorCeiling.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
@@ -309,11 +256,10 @@ namespace PortableMirror
 
             if (_mirrorMicro != null && Utils.GetVRCPlayer() != null)
             {
-                _mirrorMicro.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
-
                 _mirrorMicro.transform.localScale = new Vector3(_mirrorScaleXMicro, _mirrorScaleMicro, 1f);
                 _mirrorMicro.transform.position = new Vector3(_mirrorMicro.transform.position.x, _mirrorMicro.transform.position.y + ((_mirrorScaleMicro - _oldMirrorScaleYMicro) / 2), _mirrorMicro.transform.position.z);
 
+                _mirrorMicro.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
                 _mirrorMicro.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorMicro;
 
                 if (_mirrorStateMicro == "MirrorCutout" || _mirrorStateMicro == "MirrorTransparent")
@@ -346,11 +292,9 @@ namespace PortableMirror
             if (_mirrorTrans != null && Utils.GetVRCPlayer() != null)
             {
                 _mirrorTrans.transform.localScale = new Vector3(_mirrorScaleXTrans, _mirrorScaleYTrans, 1f);
-                //_mirrorTrans.transform.position = new Vector3(_mirrorTrans.transform.position.x, _mirrorTrans.transform.position.y + ((_mirrorScaleYTrans - _oldMirrorScaleYTrans) / 2), _mirrorTrans.transform.position.z);
                 _mirrorTrans.transform.position += _mirrorTrans.transform.forward * (_MirrorDistanceTrans - _oldMirrorDistanceTrans);
 
                 _mirrorTrans.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorTrans;
-
 
                 if (_mirrorStateTrans == "MirrorCutout" || _mirrorStateTrans == "MirrorTransparent")
                 {
@@ -366,7 +310,6 @@ namespace PortableMirror
                 }
                 var childMirror = _mirrorTrans.transform.Find(_mirrorStateTrans);
                 childMirror.gameObject.active = true;
-
             }
 
 
@@ -434,7 +377,6 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirror();
-                //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
             }, () => _mirrorBase != null);
             mirrorMenu.AddSimpleButton(StateText(_mirrorStateBase), () =>
             {
@@ -453,7 +395,6 @@ namespace PortableMirror
             mirrorMenu.AddLabel($"Distance: {ModPrefs.GetFloat("PortableMirror", "MirrorDistance")}");
             mirrorMenu.AddSimpleButton("+", () => {
                 ModPrefs.SetFloat("PortableMirror", "MirrorDistance", ModPrefs.GetFloat("PortableMirror", "MirrorDistance") + .25f );
-                //MelonModLogger.Log("distnace " + ModPrefs.GetFloat("PortableMirror", "MirrorDistance"));
                 OnModSettingsApplied();
                 mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
             });
@@ -468,7 +409,6 @@ namespace PortableMirror
                 {
                     if (Utils.GetVRCPlayer() == null) return;
                     ToggleMirror45();
-                    //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
                 }, () => _mirror45 != null);
                 mirrorMenu.AddSimpleButton(StateText(_mirrorState45), () =>
                 {
@@ -503,7 +443,6 @@ namespace PortableMirror
                 {
                     if (Utils.GetVRCPlayer() == null) return;
                     ToggleMirrorCeiling();
-                    //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
                 }, () => _mirrorCeiling != null);
                 mirrorMenu.AddSimpleButton(StateText(_mirrorStateCeiling), () =>
                 {
@@ -538,7 +477,6 @@ namespace PortableMirror
                 {
                     if (Utils.GetVRCPlayer() == null) return;
                     ToggleMirrorMicro();
-                    //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
                 }, () => _mirrorMicro != null);
                 mirrorMenu.AddSimpleButton(StateText(_mirrorStateMicro), () =>
                 {
@@ -567,119 +505,6 @@ namespace PortableMirror
             mirrorMenu.Show();
         }
 
-        private void QuickMenuOptions2Sep()
-        {
-            //Mirror - Wider - Narrower
-            //Taller - Shorter 
-            //45
-            //Ceiling
-
-            //Close - Page 1
-
-            var mirrorMenu = ExpansionKitApi.CreateCustomQuickMenuPage(LayoutDescriptionCustom.QuickMenu3Column);
-            mirrorMenu.AddLabel("Mirror");
-            mirrorMenu.AddSimpleButton("Wider", () => {
-                ModPrefs.SetFloat("PortableMirror", "MirrorScaleX", ModPrefs.GetFloat("PortableMirror", "MirrorScaleX") + .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton("Narrower", () => {
-                ModPrefs.SetFloat("PortableMirror", "MirrorScaleX", ModPrefs.GetFloat("PortableMirror", "MirrorScaleX") -.5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2(); ;
-            });
-            mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton("Taller", () => {
-                ModPrefs.SetFloat("PortableMirror", "MirrorScaleY", ModPrefs.GetFloat("PortableMirror", "MirrorScaleY") + .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2(); ;
-            });
-            mirrorMenu.AddSimpleButton("Shorter", () => {
-                ModPrefs.SetFloat("PortableMirror", "MirrorScaleY", ModPrefs.GetFloat("PortableMirror", "MirrorScaleY") - .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            //
-            mirrorMenu.AddLabel("45 Mirror");
-            mirrorMenu.AddSimpleButton("Wider", () => {
-                ModPrefs.SetFloat("PortableMirror45", "MirrorScaleX", ModPrefs.GetFloat("PortableMirror45", "MirrorScaleX") + .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton("Narrower", () => {
-                ModPrefs.SetFloat("PortableMirror45", "MirrorScaleX", ModPrefs.GetFloat("PortableMirror45", "MirrorScaleX") - .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton("Taller", () => {
-                ModPrefs.SetFloat("PortableMirror45", "MirrorScaleY", ModPrefs.GetFloat("PortableMirror45", "MirrorScaleY") + .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton("Shorter", () => {
-                ModPrefs.SetFloat("PortableMirror45", "MirrorScaleY", ModPrefs.GetFloat("PortableMirror45", "MirrorScaleY") - .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            //
-            mirrorMenu.AddLabel("Ceiling Mirror");
-            mirrorMenu.AddSimpleButton("Wider", () => {
-                ModPrefs.SetFloat("PortableMirrorCeiling", "MirrorScaleX", ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleX") + .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton("Narrower", () => {
-                ModPrefs.SetFloat("PortableMirrorCeiling", "MirrorScaleX", ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleX") - .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton("Taller", () => {
-                ModPrefs.SetFloat("PortableMirrorCeiling", "MirrorScaleZ", ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleZ") + .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2(); ;
-            });
-            mirrorMenu.AddSimpleButton("Shorter", () => {
-                ModPrefs.SetFloat("PortableMirrorCeiling", "MirrorScaleZ", ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleZ") - .5f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            //
-            mirrorMenu.AddSimpleButton($"Transparent\n{(_mirrorTrans != null ? "-Enabled-" : "-Disabled-")}", () =>
-            {
-                if (Utils.GetVRCPlayer() == null) return;
-                ToggleMirrorTrans();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton(ModPrefs.GetBool("PortableMirrorTrans", "OptimizedMirror") ? "Others Optimized" : "Others Full", () =>
-            {
-                ModPrefs.SetBool("PortableMirrorTrans", "OptimizedMirror", !ModPrefs.GetBool("PortableMirrorTrans", "OptimizedMirror"));
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            
-            mirrorMenu.AddLabel($"Distance: {ModPrefs.GetFloat("PortableMirrorTrans", "MirrorDistance")}");
-
-            mirrorMenu.AddSimpleButton($"Page 1", () => {
-                mirrorMenu.Hide();
-                QuickMenuOptions();
-            });
-
-            mirrorMenu.AddSimpleButton("+", () => {
-                ModPrefs.SetFloat("PortableMirrorTrans", "MirrorDistance", ModPrefs.GetFloat("PortableMirrorTrans", "MirrorDistance") + .25f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton("-", () => {
-                ModPrefs.SetFloat("PortableMirrorTrans", "MirrorDistance", ModPrefs.GetFloat("PortableMirrorTrans", "MirrorDistance") - .25f);
-                OnModSettingsApplied();
-                mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            });
-
-
-            mirrorMenu.Show();
-        }
         private void QuickMenuOptions2()
         {
             //Mirror - Wider - Narrower
@@ -695,7 +520,6 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirror();
-                //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
             }, () => _mirrorBase != null);
             mirrorMenu.AddSimpleButton("Larger", () => {
                 ModPrefs.SetFloat("PortableMirror", "MirrorScaleX", ModPrefs.GetFloat("PortableMirror", "MirrorScaleX") + .25f);
@@ -718,7 +542,6 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirror45();
-                //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
             }, () => _mirror45 != null);
             mirrorMenu.AddSimpleButton("Larger", () => {
                 ModPrefs.SetFloat("PortableMirror45", "MirrorScaleX", ModPrefs.GetFloat("PortableMirror45", "MirrorScaleX") + .25f);
@@ -741,7 +564,6 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirrorCeiling();
-                //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
             }, () => _mirrorCeiling != null);
             mirrorMenu.AddSimpleButton("Larger", () => {
                 ModPrefs.SetFloat("PortableMirrorCeiling", "MirrorScaleX", ModPrefs.GetFloat("PortableMirrorCeiling", "MirrorScaleX") + .25f);
@@ -765,14 +587,15 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirrorMicro();
-                //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions();
             }, () => _mirrorMicro != null);
+            
             mirrorMenu.AddSimpleButton("Larger", () => {
                 ModPrefs.SetFloat("PortableMirrorMicro", "MirrorScaleX", ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleX") + .01f);
                 ModPrefs.SetFloat("PortableMirrorMicro", "MirrorScaleY", ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleY") + .01f);
                 OnModSettingsApplied();
                 mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
             });
+         
             mirrorMenu.AddSimpleButton("Smaller", () => {
                 if (ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleX") > .02 && ModPrefs.GetFloat("PortableMirrorMicro", "MirrorScaleY") > .02)
                 {
@@ -784,21 +607,13 @@ namespace PortableMirror
                 }
             });
 
-
-
             //5
             mirrorMenu.AddToggleButton("Transparent", (action) =>
             {
                 if (Utils.GetVRCPlayer() == null) return;
                 ToggleMirrorTrans();
-                //mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
             }, () => _mirrorTrans != null);
-            //mirrorMenu.AddSimpleButton(ModPrefs.GetBool("PortableMirrorTrans", "OptimizedMirror") ? "Others Optimized" : "Others Full", () =>
-            //{
-            //    ModPrefs.SetBool("PortableMirrorTrans", "OptimizedMirror", !ModPrefs.GetBool("PortableMirrorTrans", "OptimizedMirror"));
-            //    OnModSettingsApplied();
-            //    mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
-            //});
+           
             mirrorMenu.AddSimpleButton(StateText(_mirrorStateTrans), () =>
             {
                 if (_mirrorStateTrans == "MirrorFull") ModPrefs.SetString("PortableMirrorTrans", "MirrorState", "MirrorOpt");
@@ -808,8 +623,7 @@ namespace PortableMirror
                 OnModSettingsApplied();
                 mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
             });
-
-            //mirrorMenu.AddSpacer();
+         
             mirrorMenu.AddSimpleButton(ModPrefs.GetBool("PortableMirrorTrans", "CanPickupMirror") ? "Pickupable" : "Not Pickupable", () =>
             {
                 ModPrefs.SetBool("PortableMirrorTrans", "CanPickupMirror", !ModPrefs.GetBool("PortableMirrorTrans", "CanPickupMirror"));
@@ -823,19 +637,22 @@ namespace PortableMirror
                 OnModSettingsApplied();
                 mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
             });
+           
             mirrorMenu.AddSimpleButton("-", () => {
                 ModPrefs.SetFloat("PortableMirrorTrans", "MirrorDistance", ModPrefs.GetFloat("PortableMirrorTrans", "MirrorDistance") - .25f);
                 OnModSettingsApplied();
                 mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
             });
-            //7
+           //7
             mirrorMenu.AddSpacer();
+            
             mirrorMenu.AddSimpleButton("Larger", () => {
                 ModPrefs.SetFloat("PortableMirrorTrans", "MirrorScaleX", ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleX") + .25f);
                 ModPrefs.SetFloat("PortableMirrorTrans", "MirrorScaleY", ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleY") + .25f);
                 OnModSettingsApplied();
                 mirrorMenu.Hide(); mirrorMenu = null; QuickMenuOptions2();
             });
+            
             mirrorMenu.AddSimpleButton("Smaller", () => {
                 if (ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleX") > .25 && ModPrefs.GetFloat("PortableMirrorTrans", "MirrorScaleY") > .25)
                 {
@@ -862,46 +679,10 @@ namespace PortableMirror
         public override void OnUpdate()
         {
             if (Utils.GetVRCPlayer() == null) return;
-
             // Toggle portable mirror
             if (Utils.GetKeyDown(_mirrorKeybindBase))
             {
-                ToggleMirrorTrans();
-            }
-        }
-
-        private void ToggleMirrorOld()
-        {
-            if (_mirrorBase != null)
-            {
-                UnityEngine.Object.Destroy(_mirrorBase);
-                _mirrorBase = null;
-            }
-            else
-            {
-                VRCPlayer player = Utils.GetVRCPlayer();
-                Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * _MirrorDistance);
-                pos.y += _mirrorScaleYBase / 2;
-                GameObject mirror = GameObject.CreatePrimitive(PrimitiveType.Quad);
-                mirror.transform.position = pos;
-                mirror.transform.rotation = player.transform.rotation;
-                mirror.transform.localScale = new Vector3(_mirrorScaleXBase, _mirrorScaleYBase, 1f);
-                mirror.name = "PortableMirror";
-                UnityEngine.Object.Destroy(mirror.GetComponent<Collider>());
-                mirror.GetOrAddComponent<BoxCollider>().size = new Vector3(1f, 1f, 0.05f);
-                mirror.GetOrAddComponent<BoxCollider>().isTrigger = true;
-                mirror.GetOrAddComponent<MeshRenderer>().material.shader = Shader.Find("FX/MirrorReflection");
-                mirror.GetOrAddComponent<VRC_MirrorReflection>().m_ReflectLayers = new LayerMask
-                {
-                    value = 0 // _optimizedMirrorBase ? optMirrorMask : fullMirrorMask
-                };
-                mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
-                mirror.layer = _canPickupMirrorBase ? 0 : 10; //10 - Hides the new mirror from reflecting in other mirrors. 0 - Needs to be in an interactable layer when picked up
-                mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
-                mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
-                mirror.GetOrAddComponent<Rigidbody>().useGravity = false;
-                mirror.GetOrAddComponent<Rigidbody>().isKinematic = true;
-                _mirrorBase = mirror;
+                ToggleMirror();
             }
         }
 
@@ -1049,7 +830,7 @@ namespace PortableMirror
                 childMirror.gameObject.active = true;
                 if (_mirrorStateMicro == "MirrorTransparent")
                 { childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); }
-                mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
+                mirror.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
                 _mirrorMicro = mirror;
@@ -1073,7 +854,7 @@ namespace PortableMirror
                 VRCPlayer player = Utils.GetVRCPlayer();
                 Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * _MirrorDistanceTrans);
                 pos.y += .5f;
-                pos.y += (_mirrorScaleYBase - 1) / 2;
+                pos.y += (_mirrorScaleYTrans - 1) / 2;
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
                 mirror.transform.position = pos;
                 mirror.transform.rotation = player.transform.rotation;
