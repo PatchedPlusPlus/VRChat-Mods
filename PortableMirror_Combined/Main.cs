@@ -34,7 +34,7 @@ namespace PortableMirror
             ModPrefs.RegisterPrefString("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
             ModPrefs.RegisterPrefBool("PortableMirror", "QuickMenuOptions", true, "Quick Menu Settings Button");
             ModPrefs.RegisterPrefFloat("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent - Global for all mirrors");
-
+            ModPrefs.RegisterPrefBool("PortableMirror", "MirrorsShowInCamera", false, "Mirrors show in Cameras");
 
             ModPrefs.RegisterCategory("PortableMirror45", "PortableMirror 45");
             ModPrefs.RegisterPrefFloat("PortableMirror45", "MirrorScaleX", 5f, "Mirror Scale X");
@@ -123,7 +123,7 @@ namespace PortableMirror
             else if(ButtonList.ContainsKey("Settings")) ButtonList["Settings"].gameObject.active = false;
 
             _MirrorTransValue = ModPrefs.GetFloat("PortableMirror", "TransMirrorTrans");
-
+            _MirrorsShowInCamera = ModPrefs.GetBool("PortableMirror", "MirrorsShowInCamera");
 
             _oldMirrorScaleYBase = _mirrorScaleYBase;
             _oldMirrorDistance = _MirrorDistance;
@@ -148,6 +148,7 @@ namespace PortableMirror
                     _mirrorBase.transform.GetChild(i).gameObject.active = false;
                 var childMirror = _mirrorBase.transform.Find(_mirrorStateBase);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
             }
 
 
@@ -162,9 +163,8 @@ namespace PortableMirror
             if (_mirror45 != null && Utils.GetVRCPlayer() != null)
             {
                 _mirror45.transform.localScale = new Vector3(_mirrorScaleX45, _mirrorScaleY45, 1f);
-                _mirror45.transform.rotation = _mirror45.transform.rotation * Quaternion.AngleAxis(-45, Vector3.left);  
-
-                _mirror45.transform.position = new Vector3(_mirror45.transform.position.x, _mirror45.transform.position.y + (_mirrorScaleY45 - _oldMirrorScaleY45), _mirror45.transform.position.z  );
+                _mirror45.transform.rotation = _mirror45.transform.rotation * Quaternion.AngleAxis(-45, Vector3.left);
+                _mirror45.transform.position = new Vector3(_mirror45.transform.position.x, _mirror45.transform.position.y + ((_mirrorScaleY45 - _oldMirrorScaleY45)/2.5f), _mirror45.transform.position.z  );
                 _mirror45.transform.position += _mirror45.transform.forward * (_MirrorDistance45 - _oldMirrorDistance45);
                 _mirror45.transform.rotation = _mirror45.transform.rotation * Quaternion.AngleAxis(45, Vector3.left);
 
@@ -176,6 +176,7 @@ namespace PortableMirror
                     _mirror45.transform.GetChild(i).gameObject.active = false;
                 var childMirror = _mirror45.transform.Find(_mirrorState45);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
             }
 
 
@@ -199,6 +200,7 @@ namespace PortableMirror
                     _mirrorCeiling.transform.GetChild(i).gameObject.active = false;
                 var childMirror = _mirrorCeiling.transform.Find(_mirrorStateCeiling);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
             }
 
 
@@ -223,6 +225,7 @@ namespace PortableMirror
                     _mirrorMicro.transform.GetChild(i).gameObject.active = false;
                 var childMirror = _mirrorMicro.transform.Find(_mirrorStateMicro);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
             }
 
 
@@ -247,6 +250,7 @@ namespace PortableMirror
                     _mirrorTrans.transform.GetChild(i).gameObject.active = false;
                 var childMirror = _mirrorTrans.transform.Find(_mirrorStateTrans);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
             }
 
 
@@ -610,11 +614,11 @@ namespace PortableMirror
         private void SetAllMirrorsToIgnoreShader()
         {
             foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                if (vrcMirrorReflection.isActiveAndEnabled && vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
-                    vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value ^ reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
+                if (vrcMirrorReflection.gameObject.transform.parent.gameObject != (_mirrorBase || _mirror45 || _mirrorCeiling || _mirrorMicro || _mirrorTrans))
+                    vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2                                                                                             
         }
 
-            private void ToggleMirror()
+        private void ToggleMirror()
         {
             if (_mirrorBase != null)
             {
@@ -637,6 +641,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateBase);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10; //Default prefab 4:Water - 10:Playerlocal 
                 if (_mirrorStateBase == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
@@ -660,6 +665,7 @@ namespace PortableMirror
                 Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * _MirrorDistance45);
                 pos.y += .5f;
                 pos.y += (_mirrorScaleY45 - 1) / 2;
+                //pos.y += 2;
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
                 mirror.transform.position = pos;
                 mirror.transform.rotation = player.transform.rotation;
@@ -669,6 +675,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorState45);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
                 if (_mirrorState45 == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _CanPickup45Mirror;
@@ -702,6 +709,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateCeiling);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
                 if (_mirrorStateCeiling == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); 
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
@@ -732,6 +740,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateMicro);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
                 if (_mirrorStateMicro == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorMicro;
@@ -762,6 +771,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateTrans);
                 childMirror.gameObject.active = true;
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
                 if (_mirrorStateTrans == "MirrorTransparent") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorTrans;
@@ -830,6 +840,7 @@ namespace PortableMirror
         private float _MirrorTransValue;
         private bool _enableBase;
         private string _mirrorStateBase;
+        private bool _MirrorsShowInCamera;
 
         private GameObject _mirror45;
         private float _mirrorScaleX45;
