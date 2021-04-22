@@ -1,4 +1,3 @@
-
 ## PortableMirror
 This mod allows the user to locally spawn mirrors for themselves in any VRChat world.
 
@@ -28,6 +27,7 @@ __Portable Mirror Settings__
   * Minor Adjustments to Menus and wording
   * Added an option to remember what QuickMenu page was open last
   * Fixed Transparent Mirror not keeping it's Y position when scaling
+  * Fixed the transparent/cutout mirror not probably setting the layer exclusions in SDK3 worlds
 * v1.4.0
   * Changed all mirrors to be togglable between Full/Optimized/Cutout/Transparent
     * Left the Transparent mirror in the mod, it can be toggled like the others, but defaults to transparent every game load
@@ -46,6 +46,9 @@ __Portable Mirror Settings__
 	* Now can adjust the distance of the mirror live with UIX menu
 	* The options for disabling and enabling the separate mirrors should update live instead of needing a restart 
 
+### Known Bugs
+* Enabling a world mirror after a cutout or transparent mirror exists may not properly hide the layer the effect is on. Disabling and Enabling the transparent mirror, or toggling between the states will fix this. 
+
 ### License
-The majority of this code does not have a license specified and should be assumed to be All Rights Reserved. I have received permission from the original author of ProtableMirror to modify their code and make releases based off of it.  
-The assetbundle mirrorprefab contain aacertainbluecat/VRCPlayersOnlyMirror which is licensed under the MIT License
+The majority of this code does not have a license specified and should be assumed to be All Rights Reserved. I have received permission from the original author of PortableMirror to modify their code and make releases based off of it.  
+The assetbundle mirrorprefab contains aacertainbluecat/VRCPlayersOnlyMirror which is licensed under the MIT License
