@@ -5,7 +5,7 @@ using System.Reflection;
 using MelonLoader;
 using UIExpansionKit.API;
 using UnityEngine;
-using VRCSDK2;
+using VRC.SDKBase;
 using System.Collections.Generic;
 using UnhollowerRuntimeLib;
 using System.IO;
@@ -597,11 +597,19 @@ namespace PortableMirror
 
         private void SetAllMirrorsToIgnoreShader()
         {
-            foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>()) // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                if (vrcMirrorReflection.gameObject.transform.parent.gameObject != _mirrorBase && vrcMirrorReflection.gameObject.transform.parent.gameObject != _mirror45 && vrcMirrorReflection.gameObject.transform.parent.gameObject != _mirrorCeiling && vrcMirrorReflection.gameObject.transform.parent.gameObject != _mirrorMicro && vrcMirrorReflection.gameObject.transform.parent.gameObject != _mirrorTrans)
+            foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>())
+            { // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
+                //MelonLogger.Msg($"-----");
+                //MelonLogger.Msg($"{vrcMirrorReflection.gameObject.name}");
+                GameObject othermirror = vrcMirrorReflection.gameObject.transform.parent.gameObject;
+                //MelonLogger.Msg($"othermirror is null:{othermirror is null}, !=base:{othermirror != _mirrorBase}, !=45:{othermirror != _mirror45}, !=Micro:{othermirror != _mirrorCeiling}, !=trans:{othermirror != _mirrorTrans}");
+                if (othermirror is null || (othermirror != _mirrorBase && othermirror != _mirror45 && othermirror != _mirrorCeiling && othermirror != _mirrorMicro && othermirror != _mirrorTrans)) {
+                    //MelonLogger.Msg($"setting layers");
                     vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2                                                                                             
-        }
+                }
+            }
 
+        }
         private void ToggleMirror()
         {
             if (_mirrorBase != null)
