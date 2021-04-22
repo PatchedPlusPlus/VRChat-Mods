@@ -11,12 +11,18 @@ The mirror can be configured:
   * Show/Hide spawned mirrors in Camera photos
   
 ### Screenshots
-__Quick Menu buttons can be enabled/disabled individually with the "Enable [X] Mirror QM Button" toggles in Mod Settings__  
+__Quick Menu buttons can be enabled/disabled individually with the "Enable [X] Mirror QM Button" toggles in Mod Settings__   
+
 ![image](https://user-images.githubusercontent.com/81605232/113796149-2cb2fd80-9714-11eb-8c25-a340b6f2e849.png)
-__Portable Mirror Settings__
+
+__Portable Mirror Settings__   
+
 ![image](https://user-images.githubusercontent.com/81605232/114292424-272b1f80-9a54-11eb-9a8e-8583b8b3a836.png)
-  __Transparent and Cutout Mirror Examples__  
+
+  __Transparent and Cutout Mirror Examples__    
+  
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
+
 ### Changelog
 * v1.4.2
   * Minor Adjustments to Menus and wording
