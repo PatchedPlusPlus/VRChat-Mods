@@ -1,16 +1,27 @@
+
 ## PortableMirror
-This mod allows the user to locally spawn a mirror for themselves in any VRChat world.
+This mod allows the user to locally spawn mirrors for themselves in any VRChat world.
 
 The mirror can be configured:
   * Allow/disallow mirror pickup
-  * Toggle full/optimized/cutout/transparent mirror
+  * Toggle between full/optimized/cutout/transparent mirrors
   * Configurable mirror size and distance from you
-  * 45 degree, ceiling, small and transparent mirrors
-  * [UIX](https://github.com/knah/VRCMods/releases/latest/download/UIExpansionKit.dll) menu to control settings
-	
+  * Standard, 45 degree, ceiling, small and transparent mirrors
+  * [UIX](https://github.com/knah/VRCMods/releases/latest/download/UIExpansionKit.dll) menu to control settings  
+  * Show/Hide spawned mirrors in Camera photos
+  
+### Screenshots
+__Quick Menu buttons can be enabled/disabled individually with the "Enable [X] Mirror QM Button" toggles in Mod Settings__  
 ![image](https://user-images.githubusercontent.com/81605232/113796149-2cb2fd80-9714-11eb-8c25-a340b6f2e849.png)
-![image](https://user-images.githubusercontent.com/81605232/114292424-272b1f80-9a54-11eb-9a8e-8583b8b3a836.png)Cutout mirror
-![image](https://user-images.githubusercontent.com/81605232/113796268-73a0f300-9714-11eb-919a-a08e644b8b04.png)
+__Portable Mirror Settings__
+![image](https://user-images.githubusercontent.com/81605232/114292424-272b1f80-9a54-11eb-9a8e-8583b8b3a836.png)
+  __Transparent and Cutout Mirror Examples__  
+![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
+### Changelog
+* v1.4.2
+  * Minor Adjustments to Menus and wording
+  * Added an option to remember what QuickMenu page was open last
+  * Fixed Transparent Mirror not keeping it's Y position when scaling
 * v1.4.0
   * Changed all mirrors to be togglable between Full/Optimized/Cutout/Transparent
     * Left the Transparent mirror in the mod, it can be toggled like the others, but defaults to transparent every game load
@@ -29,3 +40,6 @@ The mirror can be configured:
 	* Now can adjust the distance of the mirror live with UIX menu
 	* The options for disabling and enabling the separate mirrors should update live instead of needing a restart 
 
+### License
+The majority of this code does not have a license specified and should be assumed to be All Rights Reserved. I have received permission from the original author of ProtableMirror to modify their code and make releases based off of it.  
+The assetbundle mirrorprefab contain aacertainbluecat/VRCPlayersOnlyMirror which is licensed under the MIT License
