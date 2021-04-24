@@ -11,7 +11,7 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.2", "M-oons, Nirvash")] //Name changed to break auto update
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.3", "M-oons, Nirvash")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 
 namespace PortableMirror
@@ -89,18 +89,6 @@ namespace PortableMirror
             }
         }
 
-        public override void VRChat_OnUiManagerInit()
-        {
-            MelonCoroutines.Start(ButtonState());
-        }
-
-        private IEnumerator ButtonState()
-        {//Give UIX a few seconds to make buttons, then set the state of the Toggle 
-            yield return new WaitForSeconds(5f);
-            OnPreferencesSaved();
-        }
-
-
         public override void OnPreferencesSaved()
         {
             _enableBase = MelonPreferences.GetEntryValue<bool>("PortableMirror", "enableBase");
@@ -109,18 +97,12 @@ namespace PortableMirror
             _enableMicro = MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "enableMicro");
             _enableTrans = MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "enableTrans");
             _quickMenuOptions = MelonPreferences.GetEntryValue<bool>("PortableMirror", "QuickMenuOptions");
-            if (_enableBase && ButtonList.ContainsKey("Base") && ButtonList["Base"] != null) ButtonList["Base"].gameObject.active = true;
-            else if (ButtonList.ContainsKey("Base")) ButtonList["Base"].gameObject.active = false;
-            if (_enable45 && ButtonList.ContainsKey("45") && ButtonList["45"] != null) ButtonList["45"].gameObject.active = true;
-            else if (ButtonList.ContainsKey("45")) ButtonList["45"].gameObject.active = false;
-            if (_enableCeiling && ButtonList.ContainsKey("Ceiling") && ButtonList["Ceiling"] != null) ButtonList["Ceiling"].gameObject.active = true;
-            else if (ButtonList.ContainsKey("Ceiling")) ButtonList["Ceiling"].gameObject.active = false;
-            if (_enableMicro && ButtonList.ContainsKey("Micro") && ButtonList["Micro"] != null) ButtonList["Micro"].gameObject.active = true;
-            else if (ButtonList.ContainsKey("Micro")) ButtonList["Micro"].gameObject.active = false;
-            if (_enableTrans && ButtonList.ContainsKey("Trans") && ButtonList["Trans"] != null) ButtonList["Trans"].gameObject.active = true;
-            else if (ButtonList.ContainsKey("Trans")) ButtonList["Trans"].gameObject.active = false;
-            if (_quickMenuOptions && ButtonList.ContainsKey("Settings") && ButtonList["Settings"] != null) ButtonList["Settings"].gameObject.active = true;
-            else if(ButtonList.ContainsKey("Settings")) ButtonList["Settings"].gameObject.active = false;
+            if (ButtonList.ContainsKey("Base") && ButtonList["Base"] != null) ButtonList["Base"].gameObject.SetActive(_enableBase);
+            if (ButtonList.ContainsKey("45") && ButtonList["45"] != null) ButtonList["45"].gameObject.SetActive(_enable45);
+            if (ButtonList.ContainsKey("Ceiling") && ButtonList["Ceiling"] != null) ButtonList["Ceiling"].gameObject.SetActive(_enableCeiling);
+            if (ButtonList.ContainsKey("Micro") && ButtonList["Micro"] != null) ButtonList["Micro"].gameObject.SetActive(_enableMicro);
+            if (ButtonList.ContainsKey("Trans") && ButtonList["Trans"] != null) ButtonList["Trans"].gameObject.SetActive(_enableTrans);
+            if (ButtonList.ContainsKey("Settings") && ButtonList["Settings"] != null) ButtonList["Settings"].gameObject.SetActive(_quickMenuOptions);
 
             _MirrorTransValue = MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans");
             _MirrorsShowInCamera = MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera");
@@ -265,28 +247,28 @@ namespace PortableMirror
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nPortable\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) ToggleMirror();
-            }, (button) => ButtonList["Base"] = button.transform);
+            }, (button) => { ButtonList["Base"] = button.transform; button.gameObject.SetActive(_enableBase); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nPortable\nMirror 45", () =>
             {
                 if (Utils.GetVRCPlayer() != null) ToggleMirror45();
-            }, (button) => ButtonList["45"] = button.transform);                  
+            }, (button) => { ButtonList["45"] = button.transform; button.gameObject.SetActive(_enable45); });                  
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nCeiling\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) ToggleMirrorCeiling(); ;
-            }, (button) => ButtonList["Ceiling"] = button.transform);
+            }, (button) => { ButtonList["Ceiling"] = button.transform; button.gameObject.SetActive(_enableCeiling); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nMicro\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) ToggleMirrorMicro();   
-            }, (button) => ButtonList["Micro"] = button.transform);
+            }, (button) => { ButtonList["Micro"] = button.transform; button.gameObject.SetActive(_enableMicro); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nTransparent\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) ToggleMirrorTrans();
-            }, (button) => ButtonList["Trans"] = button.transform);
+            }, (button) => { ButtonList["Trans"] = button.transform; button.gameObject.SetActive(_enableTrans); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Portable\nMirror\nSettings", () =>
             {
                 if (_openLastQMpage && _qmOptionsLastPage == 2) QuickMenuOptions2();
                     else QuickMenuOptions();
-            }, (button) => ButtonList["Settings"] = button.transform);
+            }, (button) => { ButtonList["Settings"] = button.transform; button.gameObject.SetActive(_quickMenuOptions); });
         }
 
         private string StateText(string stateRaw)
