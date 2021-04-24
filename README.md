@@ -23,6 +23,8 @@ __Portable Mirror Settings__
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
 
 ### Changelog
+* v1.4.3
+  * Changed how the default state of the QuickMenu buttons gets set as some other mods may delay UIX from decorating the menus for a while
 * v1.4.2
   * Minor Adjustments to Menus and wording
   * Added an option to remember what QuickMenu page was open last
