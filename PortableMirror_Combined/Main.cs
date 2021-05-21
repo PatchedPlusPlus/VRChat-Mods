@@ -38,6 +38,7 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirror", "OpenLastQMpage", false, "Quick Menu Settings remembers last page opened");
             MelonPreferences.CreateEntry<float>("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent - Global for all mirrors");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorsShowInCamera", false, "Mirrors show in Cameras - Global for all mirrors");
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "ActionMenu", true, "Enable Controls on Action Menu (Requires Restart)");
 
             MelonPreferences.CreateCategory("PortableMirror45", "PortableMirror 45 Degree");
             MelonPreferences.CreateEntry<float>("PortableMirror45", "MirrorScaleX", 5f, "Mirror Scale X");
@@ -90,7 +91,7 @@ namespace PortableMirror
                 });
             }
 
-            if (MelonHandler.Mods.Any(m => m.Info.Name == "ActionMenuApi"))
+            if (MelonHandler.Mods.Any(m => m.Info.Name == "ActionMenuApi") && MelonPreferences.GetEntryValue<bool>("PortableMirror", "ActionMenu"))
             {
                 CustomActionMenu.InitUi();
             }

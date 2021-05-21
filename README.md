@@ -23,6 +23,8 @@ __Portable Mirror Settings__
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
 
 ### Changelog
+* v1.4.4
+	* Added support for [ActionMenuApi](https://github.com/gompocp/ActionMenuApi) this is an **optional feature** that puts the controls for the mirror on your radial menu. 
 * v1.4.3
   * Changed how the default state of the QuickMenu buttons gets set as some other mods may delay UIX from decorating the menus for a while
 * v1.4.2
