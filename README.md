@@ -22,8 +22,8 @@ __Portable Mirror Settings__
   
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
 __Action Menu__  
-![image](https://user-images.githubusercontent.com/81605232/119162313-d2e66880-ba1f-11eb-9954-a06365ae5845.png)     
-You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenuApi/releases and put it in your mods folder for this feature to work.    
+![image](https://user-images.githubusercontent.com/81605232/119205527-11027d00-ba5e-11eb-9534-5e1d4f49344e.png))     
+You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenuApi/releases Put it in your mods folder for this feature to work.    
 
 
 ### Changelog
