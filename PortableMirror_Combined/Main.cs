@@ -11,8 +11,10 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.3", "M-oons, Nirvash")] //Name changed to break auto update
+
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.4", "M-oons, Nirvash")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
+[assembly: MelonOptionalDependencies("ActionMenuApi")]
 
 namespace PortableMirror
 {
@@ -87,6 +89,12 @@ namespace PortableMirror
                     CreateQuickMenuButton()
                 });
             }
+
+            if (MelonHandler.Mods.Any(m => m.Info.Name == "ActionMenuApi"))
+            {
+                CustomActionMenu.InitUi();
+            }
+            
         }
 
         public override void OnPreferencesSaved()
@@ -271,7 +279,7 @@ namespace PortableMirror
             }, (button) => { ButtonList["Settings"] = button.transform; button.gameObject.SetActive(_quickMenuOptions); });
         }
 
-        private string StateText(string stateRaw)
+        public static string StateText(string stateRaw)
         {
             switch (stateRaw)
             {
@@ -282,7 +290,7 @@ namespace PortableMirror
                 default: return "Something Broke";
             }
         }
-        private void ToggleMirrorState(string MelonPrefCat, string mirrorState)
+        public static void ToggleMirrorState(string MelonPrefCat, string mirrorState)
         {
             if (mirrorState == "MirrorFull") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorOpt");
             else if (mirrorState == "MirrorOpt") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorCutout");
@@ -577,7 +585,7 @@ namespace PortableMirror
             }
         }
 
-        private void SetAllMirrorsToIgnoreShader()
+        private static void SetAllMirrorsToIgnoreShader()
         {
             foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>())
             { // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
@@ -592,7 +600,7 @@ namespace PortableMirror
             }
 
         }
-        private void ToggleMirror()
+        public static void ToggleMirror()
         {
             if (_mirrorBase != null)
             {
@@ -625,7 +633,7 @@ namespace PortableMirror
             }
         }
 
-        private void ToggleMirror45()
+        public static void ToggleMirror45()
         {
             if (_mirror45 != null)
             {
@@ -659,7 +667,7 @@ namespace PortableMirror
             }
         }
 
-        private void ToggleMirrorCeiling()
+        public static void ToggleMirrorCeiling()
         {
             
             if (_mirrorCeiling != null)
@@ -693,7 +701,7 @@ namespace PortableMirror
             }
         }
 
-        private void ToggleMirrorMicro()
+        public static void ToggleMirrorMicro()
         {
             if (_mirrorMicro != null)
             {
@@ -723,7 +731,7 @@ namespace PortableMirror
             }
         }
 
-        private void ToggleMirrorTrans()
+        public static void ToggleMirrorTrans()
         {
             if (_mirrorTrans != null)
             {
@@ -783,66 +791,66 @@ namespace PortableMirror
         //UiLayer = 1 << 5;
         //UiMenuLayer = 1 << 12;
         //MirrorReflectionLayer = 1 << 18;
-        private int reserved2 = 1 << 19;
+        public static int reserved2 = 1 << 19;
         //int optMirrorMask = PlayerLayer | MirrorReflectionLayer;
         //int fullMirrorMask = -1 & ~UiLayer & ~UiMenuLayer & ~PlayerLocalLayer & ~reserved2;
 
-        private AssetBundle assetBundle;
-        private GameObject mirrorPrefab;
+        public static AssetBundle assetBundle;
+        public static GameObject mirrorPrefab;
 
-        private GameObject _mirrorBase;
-        private float _mirrorScaleXBase;
-        private float _mirrorScaleYBase;
-        private float _MirrorDistance;
-        private float _oldMirrorDistance;
-        private float _oldMirrorScaleYBase;
-        private bool _canPickupMirrorBase;
-        private KeyCode _mirrorKeybindBase;
-        private bool _quickMenuOptions;
-        private bool _openLastQMpage;
-        private int _qmOptionsLastPage = 1;
-        private float _MirrorTransValue;
-        private bool _enableBase;
-        private string _mirrorStateBase;
-        private bool _MirrorsShowInCamera;
+        public static GameObject _mirrorBase;
+        public static float _mirrorScaleXBase;
+        public static float _mirrorScaleYBase;
+        public static float _MirrorDistance;
+        public static float _oldMirrorDistance;
+        public static float _oldMirrorScaleYBase;
+        public static bool _canPickupMirrorBase;
+        public static KeyCode _mirrorKeybindBase;
+        public static bool _quickMenuOptions;
+        public static bool _openLastQMpage;
+        public static int _qmOptionsLastPage = 1;
+        public static float _MirrorTransValue;
+        public static bool _enableBase;
+        public static string _mirrorStateBase;
+        public static bool _MirrorsShowInCamera;
 
-        private GameObject _mirror45;
-        private float _mirrorScaleX45;
-        private float _mirrorScaleY45;
-        private float _MirrorDistance45;
-        private float _oldMirrorDistance45;
-        private float _oldMirrorScaleY45;
-        private bool _CanPickup45Mirror;
-        private bool _enable45;
-        private string _mirrorState45;
+        public static GameObject _mirror45;
+        public static float _mirrorScaleX45;
+        public static float _mirrorScaleY45;
+        public static float _MirrorDistance45;
+        public static float _oldMirrorDistance45;
+        public static float _oldMirrorScaleY45;
+        public static bool _CanPickup45Mirror;
+        public static bool _enable45;
+        public static string _mirrorState45;
 
-        private GameObject _mirrorCeiling;
-        private float _mirrorScaleXCeiling;
-        private float _mirrorScaleZCeiling;
-        private float _MirrorDistanceCeiling;
-        private float _oldMirrorDistanceCeiling;
-        private bool _canPickupCeilingMirror;
-        private bool _enableCeiling;
-        private string _mirrorStateCeiling;
+        public static GameObject _mirrorCeiling;
+        public static float _mirrorScaleXCeiling;
+        public static float _mirrorScaleZCeiling;
+        public static float _MirrorDistanceCeiling;
+        public static float _oldMirrorDistanceCeiling;
+        public static bool _canPickupCeilingMirror;
+        public static bool _enableCeiling;
+        public static string _mirrorStateCeiling;
 
-        private GameObject _mirrorMicro;
-        private float _mirrorScaleXMicro;
-        private float _mirrorScaleMicro;
-        private float _grabRangeMicro;
-        private float _oldMirrorScaleYMicro;
-        private bool _canPickupMirrorMicro;
-        private bool _enableMicro;
-        private string _mirrorStateMicro;
+        public static GameObject _mirrorMicro;
+        public static float _mirrorScaleXMicro;
+        public static float _mirrorScaleMicro;
+        public static float _grabRangeMicro;
+        public static float _oldMirrorScaleYMicro;
+        public static bool _canPickupMirrorMicro;
+        public static bool _enableMicro;
+        public static string _mirrorStateMicro;
 
-        private GameObject _mirrorTrans;
-        private float _mirrorScaleXTrans;
-        private float _mirrorScaleYTrans;
-        private float _MirrorDistanceTrans;
-        private float _oldMirrorDistanceTrans;
-        private float _oldMirrorScaleYTrans;
-        private bool _canPickupMirrorTrans;
-        private bool _enableTrans;
-        private string _mirrorStateTrans;
+        public static GameObject _mirrorTrans;
+        public static float _mirrorScaleXTrans;
+        public static float _mirrorScaleYTrans;
+        public static float _MirrorDistanceTrans;
+        public static float _oldMirrorDistanceTrans;
+        public static float _oldMirrorScaleYTrans;
+        public static bool _canPickupMirrorTrans;
+        public static bool _enableTrans;
+        public static string _mirrorStateTrans;
     }
 }
 
