@@ -21,6 +21,10 @@ __Portable Mirror Settings__
   __Transparent and Cutout Mirror Examples__    
   
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
+__Action Menu__  
+![image](https://user-images.githubusercontent.com/81605232/119162313-d2e66880-ba1f-11eb-9954-a06365ae5845.png)     
+You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenuApi/releases and put it in your mods folder for this feature to work.    
+
 
 ### Changelog
 * v1.4.4

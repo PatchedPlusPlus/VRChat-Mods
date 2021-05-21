@@ -95,7 +95,9 @@ namespace PortableMirror
             {
                 CustomActionMenu.InitUi();
             }
-            
+            else MelonLogger.Msg("ActionMenuApi is missing, or setting is toggled off in Mod Settings - Not adding controls to ActionMenu");
+
+
         }
 
         public override void OnPreferencesSaved()
