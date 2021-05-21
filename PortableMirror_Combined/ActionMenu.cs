@@ -75,6 +75,7 @@ namespace PortableMirror
                     CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
+                        AMUtils.RefreshActionMenu();
                     }, MirrorBase);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
@@ -105,6 +106,7 @@ namespace PortableMirror
                     {
                         MelonPreferences.SetEntryValue<bool>("PortableMirror", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "CanPickupMirror"));
                         Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
                     }, Grab);
 
                     CustomSubMenu.AddSubMenu("Location & Size", () =>
@@ -148,6 +150,7 @@ namespace PortableMirror
                     CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
+                        AMUtils.RefreshActionMenu();
                     }, MirrorBase);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
@@ -178,6 +181,7 @@ namespace PortableMirror
                     {
                         MelonPreferences.SetEntryValue<bool>("PortableMirror45", "CanPickup45Mirror", !MelonPreferences.GetEntryValue<bool>("PortableMirror45", "CanPickup45Mirror"));
                         Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
                     }, Grab);
 
                     CustomSubMenu.AddSubMenu("Location & Size", () =>
@@ -220,6 +224,7 @@ namespace PortableMirror
                     CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
+                        AMUtils.RefreshActionMenu();
                     }, MirrorBase);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
@@ -250,6 +255,7 @@ namespace PortableMirror
                     {
                         MelonPreferences.SetEntryValue<bool>("PortableMirrorCeiling", "CanPickupCeilingMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "CanPickupCeilingMirror"));
                         Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
                     }, Grab);
 
                     CustomSubMenu.AddSubMenu("Location & Size", () =>
@@ -292,6 +298,7 @@ namespace PortableMirror
                     CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
+                        AMUtils.RefreshActionMenu();
                     }, MirrorBase);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
@@ -322,6 +329,7 @@ namespace PortableMirror
                     {
                         MelonPreferences.SetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirrorMicro", !MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirrorMicro"));
                         Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
                     }, Grab);
 
                     CustomSubMenu.AddSubMenu("Location & Size", () =>
@@ -353,6 +361,7 @@ namespace PortableMirror
                     CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
+                        AMUtils.RefreshActionMenu();
                     }, MirrorBase);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
@@ -383,6 +392,7 @@ namespace PortableMirror
                     {
                         MelonPreferences.SetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror"));
                         Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
                     }, Grab);
 
                     CustomSubMenu.AddSubMenu("Location & Size", () =>
@@ -441,6 +451,7 @@ namespace PortableMirror
                     {
                         MelonPreferences.SetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"));
                         Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
                     }, CameraMirror);
 
                 }, SettingsGear);
