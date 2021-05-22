@@ -221,7 +221,7 @@ namespace PortableMirror
 
                 CustomSubMenu.AddSubMenu("Ceiling Mirror", () =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
+                    CustomSubMenu.AddToggle("Enable", (Main._mirrorCeiling != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
                         AMUtils.RefreshActionMenu();
@@ -295,7 +295,7 @@ namespace PortableMirror
 
                 CustomSubMenu.AddSubMenu("Micro Mirror", () =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
+                    CustomSubMenu.AddToggle("Enable", (Main._mirrorMicro != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
                         AMUtils.RefreshActionMenu();
@@ -358,7 +358,7 @@ namespace PortableMirror
 
                 CustomSubMenu.AddSubMenu("Transparent Mirror", () =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
+                    CustomSubMenu.AddToggle("Enable", (Main._mirrorTrans != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
                         AMUtils.RefreshActionMenu();
