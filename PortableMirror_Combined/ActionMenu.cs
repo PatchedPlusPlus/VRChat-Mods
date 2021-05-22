@@ -147,7 +147,7 @@ namespace PortableMirror
 
                 CustomSubMenu.AddSubMenu("45 Mirror", () =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
+                    CustomSubMenu.AddToggle("Enable", (Main._mirror45 != null), (action) =>
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
                         AMUtils.RefreshActionMenu();
