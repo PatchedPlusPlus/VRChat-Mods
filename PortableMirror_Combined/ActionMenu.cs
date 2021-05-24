@@ -151,7 +151,7 @@ namespace PortableMirror
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
                         AMUtils.RefreshActionMenu();
-                    }, MirrorBase);
+                    }, Mirror45);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
                     {
@@ -225,7 +225,7 @@ namespace PortableMirror
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
                         AMUtils.RefreshActionMenu();
-                    }, MirrorBase);
+                    }, MirrorCeil);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
                     {
@@ -299,7 +299,7 @@ namespace PortableMirror
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
                         AMUtils.RefreshActionMenu();
-                    }, MirrorBase);
+                    }, MirrorMicro);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
                     {
@@ -362,7 +362,7 @@ namespace PortableMirror
                     {
                         if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
                         AMUtils.RefreshActionMenu();
-                    }, MirrorBase);
+                    }, MirrorTrans);
 
                     CustomSubMenu.AddSubMenu("Mirror Type", () =>
                     {
@@ -458,7 +458,7 @@ namespace PortableMirror
 
 
 
-            }, MirrorBase);
+            }, MirrorOpt);
         }
     }
 }
