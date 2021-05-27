@@ -27,6 +27,11 @@ You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenu
 
 
 ### Changelog
+* v1.4.6
+	* Added a toggle to disable keybinds for spawning the Portable Mirror
+	* Fixed a bug where using a cutout or transparent mirror would cause a NRE in certain worlds
+* v1.4.5
+	* Changed around Icons to make it more clear what menu you are in. The enabled buttons now match the icon for the Submenu
 * v1.4.4
 	* Added support for [ActionMenuApi](https://github.com/gompocp/ActionMenuApi) this is an **optional feature** that puts the controls for the mirror on your radial menu. 
 * v1.4.3
