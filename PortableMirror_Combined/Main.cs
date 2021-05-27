@@ -12,7 +12,7 @@ using System.IO;
 
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.5", "M-oons, Nirvash")] //Name changed to break auto update
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.6", "M-oons, Nirvash")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
 
@@ -34,6 +34,7 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirror", "CanPickupMirror", false, "Can Pickup Mirror");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "enableBase", true, "Enable Portable Mirror Quick Menu Button");
             MelonPreferences.CreateEntry<string>("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorKeybindEnabled", true, "Enabled Mirror Keybind");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "QuickMenuOptions", true, "Enable Settings Quick Menu Button");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "OpenLastQMpage", false, "Quick Menu Settings remembers last page opened");
             MelonPreferences.CreateEntry<float>("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent - Global for all mirrors");
@@ -126,6 +127,7 @@ namespace PortableMirror
             _MirrorDistance = MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance");
             _canPickupMirrorBase = MelonPreferences.GetEntryValue<bool>("PortableMirror", "CanPickupMirror");
             _mirrorKeybindBase = Utils.GetMirrorKeybind();
+            _mirrorKeybindEnabled = MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorKeybindEnabled");
             _mirrorStateBase = MelonPreferences.GetEntryValue<string>("PortableMirror", "MirrorState");
 
             if (_mirrorBase != null && Utils.GetVRCPlayer() != null)
@@ -582,7 +584,7 @@ namespace PortableMirror
         {
             if (Utils.GetVRCPlayer() == null) return;
             // Toggle portable mirror
-            if (Utils.GetKeyDown(_mirrorKeybindBase))
+            if (_mirrorKeybindEnabled && Utils.GetKeyDown(_mirrorKeybindBase))
             {
                 ToggleMirror();
             }
@@ -592,14 +594,19 @@ namespace PortableMirror
         {
             foreach (var vrcMirrorReflection in UnityEngine.Object.FindObjectsOfType<VRC_MirrorReflection>())
             { // https://github.com/knah/VRCMods/blob/master/MirrorResolutionUnlimiter/UiExtensionsAddon.cs
-                //MelonLogger.Msg($"-----");
-                //MelonLogger.Msg($"{vrcMirrorReflection.gameObject.name}");
-                GameObject othermirror = vrcMirrorReflection.gameObject.transform.parent.gameObject;
-                //MelonLogger.Msg($"othermirror is null:{othermirror is null}, !=base:{othermirror != _mirrorBase}, !=45:{othermirror != _mirror45}, !=Micro:{othermirror != _mirrorCeiling}, !=trans:{othermirror != _mirrorTrans}");
-                if (othermirror is null || (othermirror != _mirrorBase && othermirror != _mirror45 && othermirror != _mirrorCeiling && othermirror != _mirrorMicro && othermirror != _mirrorTrans)) {
-                    //MelonLogger.Msg($"setting layers");
-                    vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2                                                                                             
+                try
+                {
+                    //MelonLogger.Msg($"-----");
+                    //MelonLogger.Msg($"{vrcMirrorReflection.gameObject.name}");
+                    GameObject othermirror = vrcMirrorReflection?.gameObject?.transform?.parent?.gameObject; // Question marks are always the answer
+                    //MelonLogger.Msg($"othermirror is null:{othermirror is null}, !=base:{othermirror != _mirrorBase}, !=45:{othermirror != _mirror45}, !=Micro:{othermirror != _mirrorCeiling}, !=trans:{othermirror != _mirrorTrans}");
+                    if (othermirror is null || (othermirror != _mirrorBase && othermirror != _mirror45 && othermirror != _mirrorCeiling && othermirror != _mirrorMicro && othermirror != _mirrorTrans))
+                    {
+                        //MelonLogger.Msg($"setting layers");
+                        vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2                                                                                             
+                    }
                 }
+                catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); }
             }
 
         }
@@ -815,6 +822,7 @@ namespace PortableMirror
         public static float _MirrorTransValue;
         public static bool _enableBase;
         public static string _mirrorStateBase;
+        public static bool _mirrorKeybindEnabled;
         public static bool _MirrorsShowInCamera;
 
         public static GameObject _mirror45;
