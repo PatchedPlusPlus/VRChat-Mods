@@ -11,7 +11,7 @@ namespace PortableMirror
     public class CustomActionMenu
     {
         public static AssetBundle assetBundleIcons;
-        public static Texture2D DistMinus, DistPlus, SizeMinus, SizePlus, Grab, MirrorBase, Mirror45, MirrorCeil, MirrorCut, MirrorFull, MirrorMicro, MirrorOpt, MirrorTrans, MirrorRuler, MirrorOptions, SettingsGear, TransPlus, TransMinus, CameraMirror;
+        public static Texture2D DistMinus, DistPlus, SizeMinus, SizePlus, Grab, MirrorBase, Mirror45, MirrorCeil, MirrorCut, MirrorFull, MirrorMicro, MirrorOpt, MirrorTrans, MirrorRuler, MirrorOptions, SettingsGear, TransPlus, TransMinus, CameraMirror, DistAdjIcon;
 
         private static void loadAssets()
         {
@@ -46,9 +46,7 @@ namespace PortableMirror
                 try { TransPlus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransPlus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
                 try { TransMinus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransMinus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
                 try { CameraMirror = LoadTexture("icons8-rectangular-mirror-128-BW-Camera.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-
-
-
+                try { DistAdjIcon = LoadTexture("icons8-distance-128-Distance-Adj.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
             }
             else MelonLogger.Error("Bundle was null");
         }
@@ -63,24 +61,8 @@ namespace PortableMirror
 
         private static void MirrorMenu(string MirrorType)
         {
-            string CanPickup = null;
-            if (MirrorType == "PortableMirror" || MirrorType == "PortableMirrorTrans") 
-                CanPickup = "CanPickupMirror";
-            else if (MirrorType == "PortableMirror45") 
-                CanPickup = "CanPickup45Mirror";
-            else if (MirrorType == "PortableMirrorCeiling") 
-                CanPickup = "CanPickupCeilingMirror";
-            else 
-                CanPickup = "CanPickupMirrorMicro";
-
             string MirrorScaleType = "MirrorScale" + (MirrorType == "PortableMirrorCeiling" ? "Z" : "Y");
             float Scale = (MirrorType == "PortableMirrorMicro" ? .01f : .25f);
-
-            CustomSubMenu.AddToggle("Enable", (Main._mirror45 != null), (action) =>
-            {
-                if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
-                AMUtils.RefreshActionMenu();
-            }, Mirror45);
 
             CustomSubMenu.AddSubMenu("Mirror Type", () =>
             {
@@ -106,9 +88,9 @@ namespace PortableMirror
                 }, MirrorTrans);
             }, MirrorOptions);
 
-            CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>(MirrorType, CanPickup), (action) =>
+            CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"), (action) =>
             {
-                MelonPreferences.SetEntryValue<bool>(MirrorType, CanPickup, !MelonPreferences.GetEntryValue<bool>(MirrorType, CanPickup));
+                MelonPreferences.SetEntryValue<bool>(MirrorType, "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"));
                 Main main = new Main(); main.OnPreferencesSaved();
                 AMUtils.RefreshActionMenu();
             }, Grab);
@@ -119,13 +101,13 @@ namespace PortableMirror
                 {
                     CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance")}", () =>
                     {
-                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") + .25f);
+                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") + Main._mirrorDistAdj);
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, DistPlus);
                     CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance")}", () =>
                     {
-                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") - .25f);
+                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") - Main._mirrorDistAdj);
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, DistMinus);
@@ -158,7 +140,6 @@ namespace PortableMirror
 
             VRCActionMenuPage.AddSubMenu(ActionMenuPage.Main, "<color=#ff00ff>Portable Mirror</color>", () =>
             {
-
 
                 CustomSubMenu.AddSubMenu("Portable Mirror", () =>
                 {
@@ -242,6 +223,12 @@ namespace PortableMirror
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, CameraMirror);
+                    CustomSubMenu.AddToggle("High Precision Adjust", Main._mirrorDistHighPrec, (action) =>
+                    {
+                        Main._mirrorDistHighPrec = !Main._mirrorDistHighPrec;
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    }, DistAdjIcon);
                 }, SettingsGear);
 
 
