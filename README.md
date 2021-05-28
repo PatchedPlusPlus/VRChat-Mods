@@ -27,6 +27,9 @@ You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenu
 
 
 ### Changelog
+* v1.4.7
+	* Added a 'High Precision' mode for adjusting the mirror distance in the menus. It is on the bottom right of page 1 for the QM. And in the extras menu of the Action Menu. The High Precision value is adjustable in Mod Settings
+	* Code cleanup, much in part to Davi
 * v1.4.6
 	* Added a toggle to disable keybinds for spawning the Portable Mirror
 	* Fixed a bug where using a cutout or transparent mirror would cause a NRE in certain worlds
