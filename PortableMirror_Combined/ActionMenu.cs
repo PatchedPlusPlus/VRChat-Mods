@@ -7,7 +7,7 @@ using ActionMenuApi.Api;
 
 namespace PortableMirror
 {
-    //I could do this better and have less duplicate code, but copy pasting is so much faster...
+    //I could do this better and have less duplicate code, but copy pasting is so much faster... // I gotcha mate! - Davi
     public class CustomActionMenu
     {
         public static AssetBundle assetBundleIcons;
@@ -61,6 +61,95 @@ namespace PortableMirror
             return Texture2;
         }
 
+        private static void MirrorMenu(string MirrorType)
+        {
+            string CanPickup = null;
+            if (MirrorType == "PortableMirror" || MirrorType == "PortableMirrorTrans") 
+                CanPickup = "CanPickupMirror";
+            else if (MirrorType == "PortableMirror45") 
+                CanPickup = "CanPickup45Mirror";
+            else if (MirrorType == "PortableMirrorCeiling") 
+                CanPickup = "CanPickupCeilingMirror";
+            else 
+                CanPickup = "CanPickupMirrorMicro";
+
+            string MirrorScaleType = "MirrorScale" + (MirrorType == "PortableMirrorCeiling" ? "Z" : "Y");
+            float Scale = (MirrorType == "PortableMirrorMicro" ? .01f : .25f);
+
+            CustomSubMenu.AddToggle("Enable", (Main._mirror45 != null), (action) =>
+            {
+                if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
+                AMUtils.RefreshActionMenu();
+            }, Mirror45);
+
+            CustomSubMenu.AddSubMenu("Mirror Type", () =>
+            {
+                CustomSubMenu.AddButton("Full", () =>
+                {
+                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorFull");
+                    Main main = new Main(); main.OnPreferencesSaved();
+                }, MirrorFull);
+                CustomSubMenu.AddButton("Optimized", () =>
+                {
+                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorOpt");
+                    Main main = new Main(); main.OnPreferencesSaved();
+                }, MirrorOpt);
+                CustomSubMenu.AddButton("Cutout", () =>
+                {
+                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorCutout");
+                    Main main = new Main(); main.OnPreferencesSaved();
+                }, MirrorCut);
+                CustomSubMenu.AddButton("Transparent", () =>
+                {
+                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorTransparent");
+                    Main main = new Main(); main.OnPreferencesSaved();
+                }, MirrorTrans);
+            }, MirrorOptions);
+
+            CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>(MirrorType, CanPickup), (action) =>
+            {
+                MelonPreferences.SetEntryValue<bool>(MirrorType, CanPickup, !MelonPreferences.GetEntryValue<bool>(MirrorType, CanPickup));
+                Main main = new Main(); main.OnPreferencesSaved();
+                AMUtils.RefreshActionMenu();
+            }, Grab);
+
+            CustomSubMenu.AddSubMenu("Location & Size", () =>
+            {
+                if (MirrorType != "PortableMirrorMicro")
+                {
+                    CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance")}", () =>
+                    {
+                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") + .25f);
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    }, DistPlus);
+                    CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance")}", () =>
+                    {
+                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") - .25f);
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    }, DistMinus);
+                }
+                CustomSubMenu.AddButton("Larger", () =>
+                {
+                    MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorScaleX", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") + Scale);
+                    MelonPreferences.SetEntryValue<float>(MirrorType, MirrorScaleType, MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) + Scale);
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, SizePlus);
+                CustomSubMenu.AddButton("Smaller", () =>
+                {
+                    if (MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f))
+                    {
+                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorScaleX", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") - Scale);
+                        MelonPreferences.SetEntryValue<float>(MirrorType, MirrorScaleType, MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) - Scale);
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    }
+                }, SizeMinus);
+            }, MirrorRuler);
+        }
+
         public static void InitUi()
         {
             loadAssets();
@@ -70,6 +159,7 @@ namespace PortableMirror
             VRCActionMenuPage.AddSubMenu(ActionMenuPage.Main, "<color=#ff00ff>Portable Mirror</color>", () =>
             {
 
+
                 CustomSubMenu.AddSubMenu("Portable Mirror", () =>
                 {
                     CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
@@ -78,70 +168,7 @@ namespace PortableMirror
                         AMUtils.RefreshActionMenu();
                     }, MirrorBase);
 
-                    CustomSubMenu.AddSubMenu("Mirror Type", () =>
-                    {
-                        CustomSubMenu.AddButton("Full", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror", "MirrorState", "MirrorFull");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorFull);
-                        CustomSubMenu.AddButton("Optimzied", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror", "MirrorState", "MirrorOpt");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorOpt);
-                        CustomSubMenu.AddButton("Cutout", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror", "MirrorState", "MirrorCutout");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorCut);
-                        CustomSubMenu.AddButton("Transparent", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror", "MirrorState", "MirrorTransparent");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorTrans);
-                    }, MirrorOptions);
-
-                    CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>("PortableMirror", "CanPickupMirror"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirror", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "CanPickupMirror"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, Grab);
-
-                    CustomSubMenu.AddSubMenu("Location & Size", () =>
-                    {
-                        CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistPlus);
-                        CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance") - .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistMinus);
-                        CustomSubMenu.AddButton("Larger", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleX") + .25f);
-                            MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleY") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, SizePlus);
-                        CustomSubMenu.AddButton("Smaller", () =>
-                        {
-                            if (MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleY") > .25)
-                            {
-                                MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleX") - .25f);
-                                MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleY") - .25f);
-                                Main main = new Main(); main.OnPreferencesSaved();
-                                AMUtils.RefreshActionMenu();
-                            }
-                        }, SizeMinus);
-
-                    }, MirrorRuler);
+                    MirrorMenu("PortableMirror");
 
                 }, MirrorBase);
 
@@ -153,70 +180,8 @@ namespace PortableMirror
                         AMUtils.RefreshActionMenu();
                     }, Mirror45);
 
-                    CustomSubMenu.AddSubMenu("Mirror Type", () =>
-                    {
-                        CustomSubMenu.AddButton("Full", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror45", "MirrorState", "MirrorFull");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorFull);
-                        CustomSubMenu.AddButton("Optimzied", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror45", "MirrorState", "MirrorOpt");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorOpt);
-                        CustomSubMenu.AddButton("Cutout", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror45", "MirrorState", "MirrorCutout");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorCut);
-                        CustomSubMenu.AddButton("Transparent", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirror45", "MirrorState", "MirrorTransparent");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorTrans);
-                    }, MirrorOptions);
+                    MirrorMenu("PortableMirror45");
 
-                    CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>("PortableMirror45", "CanPickup45Mirror"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirror45", "CanPickup45Mirror", !MelonPreferences.GetEntryValue<bool>("PortableMirror45", "CanPickup45Mirror"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, Grab);
-
-                    CustomSubMenu.AddSubMenu("Location & Size", () =>
-                    {
-                        CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistPlus);
-                        CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance") - .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistMinus);
-                        CustomSubMenu.AddButton("Larger", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleX") + .25f);
-                            MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleY") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, SizePlus);
-                        CustomSubMenu.AddButton("Smaller", () =>
-                        {
-                            if (MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleY") > .25)
-                            {
-                                MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleX") - .25f);
-                                MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleY") - .25f);
-                                Main main = new Main(); main.OnPreferencesSaved();
-                                AMUtils.RefreshActionMenu();
-                            }
-                        }, SizeMinus);
-
-                    }, MirrorRuler);
                 }, Mirror45);
 
                 CustomSubMenu.AddSubMenu("Ceiling Mirror", () =>
@@ -227,70 +192,8 @@ namespace PortableMirror
                         AMUtils.RefreshActionMenu();
                     }, MirrorCeil);
 
-                    CustomSubMenu.AddSubMenu("Mirror Type", () =>
-                    {
-                        CustomSubMenu.AddButton("Full", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorCeiling", "MirrorState", "MirrorFull");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorFull);
-                        CustomSubMenu.AddButton("Optimzied", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorCeiling", "MirrorState", "MirrorOpt");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorOpt);
-                        CustomSubMenu.AddButton("Cutout", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorCeiling", "MirrorState", "MirrorCutout");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorCut);
-                        CustomSubMenu.AddButton("Transparent", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorCeiling", "MirrorState", "MirrorTransparent");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorTrans);
-                    }, MirrorOptions);
+                    MirrorMenu("PortableMirrorCeiling");
 
-                    CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "CanPickupCeilingMirror"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirrorCeiling", "CanPickupCeilingMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "CanPickupCeilingMirror"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, Grab);
-
-                    CustomSubMenu.AddSubMenu("Location & Size", () =>
-                    {
-                        CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistPlus);
-                        CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance") - .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistMinus);
-                        CustomSubMenu.AddButton("Larger", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX") + .25f);
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, SizePlus);
-                        CustomSubMenu.AddButton("Smaller", () =>
-                        {
-                            if (MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ") > .25)
-                            {
-                                MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX") - .25f);
-                                MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ") - .25f);
-                                Main main = new Main(); main.OnPreferencesSaved();
-                                AMUtils.RefreshActionMenu();
-                            }
-                        }, SizeMinus);
-
-                    }, MirrorRuler);
                 }, MirrorCeil);
 
                 CustomSubMenu.AddSubMenu("Micro Mirror", () =>
@@ -301,59 +204,8 @@ namespace PortableMirror
                         AMUtils.RefreshActionMenu();
                     }, MirrorMicro);
 
-                    CustomSubMenu.AddSubMenu("Mirror Type", () =>
-                    {
-                        CustomSubMenu.AddButton("Full", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorMicro", "MirrorState", "MirrorFull");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorFull);
-                        CustomSubMenu.AddButton("Optimzied", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorMicro", "MirrorState", "MirrorOpt");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorOpt);
-                        CustomSubMenu.AddButton("Cutout", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorMicro", "MirrorState", "MirrorCutout");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorCut);
-                        CustomSubMenu.AddButton("Transparent", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorMicro", "MirrorState", "MirrorTransparent");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorTrans);
-                    }, MirrorOptions);
+                    MirrorMenu("PortableMirrorMicro");
 
-                    CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirrorMicro"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirrorMicro", !MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirrorMicro"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, Grab);
-
-                    CustomSubMenu.AddSubMenu("Location & Size", () =>
-                    {
-
-                        CustomSubMenu.AddButton("Larger", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX") + .01f);
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY") + .01f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, SizePlus);
-                        CustomSubMenu.AddButton("Smaller", () =>
-                        {
-                            if (MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX") > .02 && MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY") > .02)
-                            {
-                                MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX") - .01f);
-                                MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY") - .01f);
-                                Main main = new Main(); main.OnPreferencesSaved();
-                                AMUtils.RefreshActionMenu();
-                            }
-                        }, SizeMinus);
-
-                    }, MirrorRuler);
                 }, MirrorMicro);
 
                 CustomSubMenu.AddSubMenu("Transparent Mirror", () =>
@@ -364,76 +216,13 @@ namespace PortableMirror
                         AMUtils.RefreshActionMenu();
                     }, MirrorTrans);
 
-                    CustomSubMenu.AddSubMenu("Mirror Type", () =>
-                    {
-                        CustomSubMenu.AddButton("Full", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorTrans", "MirrorState", "MirrorFull");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorFull);
-                        CustomSubMenu.AddButton("Optimzied", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorTrans", "MirrorState", "MirrorOpt");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorOpt);
-                        CustomSubMenu.AddButton("Cutout", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorTrans", "MirrorState", "MirrorCutout");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorCut);
-                        CustomSubMenu.AddButton("Transparent", () =>
-                        {
-                            MelonPreferences.SetEntryValue<string>("PortableMirrorTrans", "MirrorState", "MirrorTransparent");
-                            Main main = new Main(); main.OnPreferencesSaved();
-                        }, MirrorTrans);
-                    }, MirrorOptions);
+                    MirrorMenu("PortableMirrorTrans");
 
-                    CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, Grab);
-
-                    CustomSubMenu.AddSubMenu("Location & Size", () =>
-                    {
-                        CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistPlus);
-                        CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance")}", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance") - .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, DistMinus);
-                        CustomSubMenu.AddButton("Larger", () =>
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX") + .25f);
-                            MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY") + .25f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }, SizePlus);
-                        CustomSubMenu.AddButton("Smaller", () =>
-                        {
-                            if (MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY") > .25)
-                            {
-                                MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX") - .25f);
-                                MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY") - .25f);
-                                Main main = new Main(); main.OnPreferencesSaved();
-                                AMUtils.RefreshActionMenu();
-                            }
-                        }, SizeMinus);
-
-                    }, MirrorRuler);
                 }, MirrorTrans);
 
 
 
-
-                 CustomSubMenu.AddSubMenu("Extras", () =>
+                CustomSubMenu.AddSubMenu("Extras", () =>
                 {
                     CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
                     {
@@ -453,9 +242,7 @@ namespace PortableMirror
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, CameraMirror);
-
                 }, SettingsGear);
-
 
 
             }, MirrorOpt);
