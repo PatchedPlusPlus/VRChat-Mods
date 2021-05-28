@@ -121,7 +121,7 @@ namespace PortableMirror
                 }, SizePlus);
                 CustomSubMenu.AddButton("Smaller", () =>
                 {
-                    if (MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f))
+                    if ((MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f) && MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f))
                     {
                         MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorScaleX", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") - Scale);
                         MelonPreferences.SetEntryValue<float>(MirrorType, MirrorScaleType, MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) - Scale);
