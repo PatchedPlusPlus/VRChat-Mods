@@ -11,7 +11,7 @@ namespace PortableMirror
     public class CustomActionMenu
     {
         public static AssetBundle assetBundleIcons;
-        public static Texture2D DistMinus, DistPlus, SizeMinus, SizePlus, Grab, MirrorBase, Mirror45, MirrorCeil, MirrorCut, MirrorFull, MirrorMicro, MirrorOpt, MirrorTrans, MirrorRuler, MirrorOptions, SettingsGear, TransPlus, TransMinus, CameraMirror, DistAdjIcon;
+        public static Texture2D DistMinus, DistPlus, SizeMinus, SizePlus, Grab, MirrorBase, Mirror45, MirrorCeil, MirrorCut, MirrorFull, MirrorMicro, MirrorOpt, MirrorTrans, MirrorRuler, MirrorOptions, SettingsGear, TransPlus, TransMinus, CameraMirror, DistAdjIcon, GrabDistPlus, GrabDistMinus;
 
         private static void loadAssets()
         {
@@ -47,6 +47,8 @@ namespace PortableMirror
                 try { TransMinus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransMinus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
                 try { CameraMirror = LoadTexture("icons8-rectangular-mirror-128-BW-Camera.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
                 try { DistAdjIcon = LoadTexture("icons8-distance-128-Distance-Adj.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { GrabDistPlus = LoadTexture("icons8-grab-100-edit-Distance_Plus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { GrabDistMinus = LoadTexture("icons8-grab-100-edit-Distance_Minus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
             }
             else MelonLogger.Error("Bundle was null");
         }
@@ -99,13 +101,13 @@ namespace PortableMirror
             {
                 if (MirrorType != "PortableMirrorMicro")
                 {
-                    CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance")}", () =>
+                    CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance").ToString("F2").TrimEnd('0')}", () =>
                     {
                         MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") + Main._mirrorDistAdj);
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, DistPlus);
-                    CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance")}", () =>
+                    CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance").ToString("F2").TrimEnd('0')}", () =>
                     {
                         MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") - Main._mirrorDistAdj);
                         Main main = new Main(); main.OnPreferencesSaved();
@@ -229,6 +231,36 @@ namespace PortableMirror
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, DistAdjIcon);
+
+                    CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                    {
+                        MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") + .1f);
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    }, GrabDistPlus);
+                    CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                    {
+                        if (MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") > .1f)
+                        {
+                            MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") - .1f);
+                            Main main = new Main(); main.OnPreferencesSaved();
+                            AMUtils.RefreshActionMenu();
+                        }
+                    }, GrabDistMinus);
+
+                    CustomSubMenu.AddToggle("Pickups snap to hand", MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"), (action) =>
+                    {
+                        MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    } );
+
+                    CustomSubMenu.AddToggle("Auto Hold Pickups", MelonPreferences.GetEntryValue<bool>("PortableMirror", "AutoHold"), (action) =>
+                    {
+                        MelonPreferences.SetEntryValue<bool>("PortableMirror", "AutoHold", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "AutoHold"));
+                        Main main = new Main(); main.OnPreferencesSaved();
+                        AMUtils.RefreshActionMenu();
+                    });
                 }, SettingsGear);
 
 

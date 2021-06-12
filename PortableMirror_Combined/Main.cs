@@ -41,6 +41,10 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorsShowInCamera", false, "Mirrors show in Cameras - Global for all mirrors");
             MelonPreferences.CreateEntry<float>("PortableMirror", "MirrorDistAdjAmmount", .05f, "High Precision Distance Adjustment");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "ActionMenu", true, "Enable Controls on Action Menu (Requires Restart)");
+            MelonPreferences.CreateEntry<float>("PortableMirror", "ColliderDepth", 0.01f, "Collider Depth");
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "PickupToHand", true, "Pickups snap to hand");
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "AutoHold", true, "Auto Hold Pickups");
+
 
             MelonPreferences.CreateCategory("PortableMirror45", "PortableMirror 45 Degree");
             MelonPreferences.CreateEntry<float>("PortableMirror45", "MirrorScaleX", 5f, "Mirror Scale X");
@@ -130,7 +134,10 @@ namespace PortableMirror
             _mirrorKeybindBase = Utils.GetMirrorKeybind();
             _mirrorKeybindEnabled = MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorKeybindEnabled");
             _mirrorStateBase = MelonPreferences.GetEntryValue<string>("PortableMirror", "MirrorState");
-            _mirrorDistAdj = _mirrorDistHighPrec ? MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistAdjAmmount") : .25f; 
+            _mirrorDistAdj = _mirrorDistHighPrec ? MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistAdjAmmount") : .25f;
+            _colliderDepth = MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth");
+            _pickupOrient = MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"); 
+            _autoHold = MelonPreferences.GetEntryValue<bool>("PortableMirror", "AutoHold");
 
             if (_mirrorBase != null && Utils.GetVRCPlayer() != null)
             {
@@ -139,7 +146,9 @@ namespace PortableMirror
                 _mirrorBase.transform.position += _mirrorBase.transform.forward * (_MirrorDistance - _oldMirrorDistance);
 
                 _mirrorBase.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
- 
+                _mirrorBase.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                _mirrorBase.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
+
                 if (_mirrorStateBase == "MirrorCutout" || _mirrorStateBase == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 if (_mirrorStateBase == "MirrorTransparent") _mirrorBase.transform.Find(_mirrorStateBase).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 for (int i = 0; i < _mirrorBase.transform.childCount; i++)
@@ -147,6 +156,7 @@ namespace PortableMirror
                 var childMirror = _mirrorBase.transform.Find(_mirrorStateBase);
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
+                _mirrorBase.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
             }
 
 
@@ -167,6 +177,8 @@ namespace PortableMirror
                 _mirror45.transform.rotation = _mirror45.transform.rotation * Quaternion.AngleAxis(45, Vector3.left);
 
                 _mirror45.GetOrAddComponent<VRC_Pickup>().pickupable = _CanPickup45Mirror;
+                _mirror45.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                _mirror45.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
 
                 if (_mirrorState45 == "MirrorCutout" || _mirrorState45 == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 if (_mirrorState45 == "MirrorTransparent") _mirror45.transform.Find(_mirrorState45).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
@@ -175,6 +187,7 @@ namespace PortableMirror
                 var childMirror = _mirror45.transform.Find(_mirrorState45);
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
+                _mirror45.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
             }
 
 
@@ -191,6 +204,8 @@ namespace PortableMirror
                 _mirrorCeiling.transform.position = new Vector3(_mirrorCeiling.transform.position.x, _mirrorCeiling.transform.position.y + (_MirrorDistanceCeiling - _oldMirrorDistanceCeiling), _mirrorCeiling.transform.position.z);
 
                 _mirrorCeiling.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
+                _mirrorCeiling.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                _mirrorCeiling.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
 
                 if (_mirrorStateCeiling == "MirrorCutout" || _mirrorStateCeiling == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 if (_mirrorStateCeiling == "MirrorTransparent") _mirrorCeiling.transform.Find(_mirrorStateCeiling).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
@@ -199,6 +214,7 @@ namespace PortableMirror
                 var childMirror = _mirrorCeiling.transform.Find(_mirrorStateCeiling);
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
+                _mirrorCeiling.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
             }
 
 
@@ -216,6 +232,8 @@ namespace PortableMirror
 
                 _mirrorMicro.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
                 _mirrorMicro.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorMicro;
+                _mirrorMicro.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                _mirrorMicro.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
 
                 if (_mirrorStateMicro == "MirrorCutout" || _mirrorStateMicro == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 if (_mirrorStateMicro == "MirrorTransparent") _mirrorMicro.transform.Find(_mirrorStateMicro).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
@@ -242,6 +260,8 @@ namespace PortableMirror
                 _mirrorTrans.transform.position += _mirrorTrans.transform.forward * (_MirrorDistanceTrans - _oldMirrorDistanceTrans);
 
                 _mirrorTrans.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorTrans;
+                _mirrorTrans.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                _mirrorTrans.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
 
                 if (_mirrorStateTrans == "MirrorCutout" || _mirrorStateTrans == "MirrorTransparent") SetAllMirrorsToIgnoreShader();
                 if (_mirrorStateTrans == "MirrorTransparent") _mirrorTrans.transform.Find(_mirrorStateTrans).GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
@@ -250,6 +270,8 @@ namespace PortableMirror
                 var childMirror = _mirrorTrans.transform.Find(_mirrorStateTrans);
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
+                _mirrorTrans.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
+
             }
 
 
@@ -646,6 +668,9 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
+                mirror.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                mirror.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
+                mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
 
                 _mirrorBase = mirror;
             }
@@ -680,6 +705,9 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _CanPickup45Mirror;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
+                mirror.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                mirror.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
+                mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
                 _mirror45 = mirror;
 
             }
@@ -714,6 +742,9 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
+                mirror.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                mirror.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
+                mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
                 _mirrorCeiling = mirror;
 
             }
@@ -745,6 +776,8 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = _grabRangeMicro;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorMicro;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
+                mirror.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                mirror.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
                 _mirrorMicro = mirror;
             }
         }
@@ -776,6 +809,9 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorTrans;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
+                mirror.GetOrAddComponent<VRC_Pickup>().AutoHold = _autoHold ? VRC_Pickup.AutoHoldMode.Yes : VRC_Pickup.AutoHoldMode.No;
+                mirror.GetOrAddComponent<VRC_Pickup>().orientation = _pickupOrient ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
+                mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
 
                 _mirrorTrans = mirror;
             }
@@ -834,6 +870,9 @@ namespace PortableMirror
         public static bool _MirrorsShowInCamera;
         public static float _mirrorDistAdj;
         public static bool _mirrorDistHighPrec = false;
+        public static float _colliderDepth;
+        public static bool _pickupOrient;
+        public static bool _autoHold;
 
         public static GameObject _mirror45;
         public static float _mirrorScaleX45;
