@@ -11,7 +11,7 @@ namespace PortableMirror
     public class CustomActionMenu
     {
         public static AssetBundle assetBundleIcons;
-        public static Texture2D DistMinus, DistPlus, SizeMinus, SizePlus, Grab, MirrorBase, Mirror45, MirrorCeil, MirrorCut, MirrorFull, MirrorMicro, MirrorOpt, MirrorTrans, MirrorRuler, MirrorOptions, SettingsGear, TransPlus, TransMinus, CameraMirror, DistAdjIcon, GrabDistPlus, GrabDistMinus;
+        public static Texture2D DistMinus, DistPlus, SizeMinus, SizePlus, Grab, MirrorBase, Mirror45, MirrorCeil, MirrorCut, MirrorFull, MirrorMicro, MirrorOpt, MirrorTrans, MirrorRuler, MirrorOptions, SettingsGear, TransPlus, TransMinus, CameraMirror, DistAdjIcon, GrabDistPlus, GrabDistMinus, MirrorCutSolo, MirrorTransSolo, SnapToHand, PosfromView, FollowsYou;
 
         private static void loadAssets()
         {
@@ -49,6 +49,11 @@ namespace PortableMirror
                 try { DistAdjIcon = LoadTexture("icons8-distance-128-Distance-Adj.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
                 try { GrabDistPlus = LoadTexture("icons8-grab-100-edit-Distance_Plus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
                 try { GrabDistMinus = LoadTexture("icons8-grab-100-edit-Distance_Minus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { MirrorCutSolo = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-CutSolo.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { MirrorTransSolo = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransSolo.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { SnapToHand = LoadTexture("icons8-grab-100-edit-SnapToHand.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { PosfromView = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-PosfromView.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { FollowsYou = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-FollowsYou.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
             }
             else MelonLogger.Error("Bundle was null");
         }
@@ -88,15 +93,26 @@ namespace PortableMirror
                     MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorTransparent");
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorTrans);
+                CustomSubMenu.AddButton("Cutout Solo", () =>
+                {
+                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorCutoutSolo");
+                    Main main = new Main(); main.OnPreferencesSaved();
+                }, MirrorCutSolo);
+                CustomSubMenu.AddButton("Transparent Solo", () =>
+                {
+                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorTransparentSolo");
+                    Main main = new Main(); main.OnPreferencesSaved();
+                }, MirrorTransSolo);
             }, MirrorOptions);
 
+            
             CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"), (action) =>
             {
                 MelonPreferences.SetEntryValue<bool>(MirrorType, "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"));
                 Main main = new Main(); main.OnPreferencesSaved();
                 AMUtils.RefreshActionMenu();
             }, Grab);
-
+            
             CustomSubMenu.AddSubMenu("Location & Size", () =>
             {
                 if (MirrorType != "PortableMirrorMicro")
@@ -132,6 +148,24 @@ namespace PortableMirror
                     }
                 }, SizeMinus);
             }, MirrorRuler);
+
+            if (MirrorType == "PortableMirror" || MirrorType == "PortableMirrorTrans" || MirrorType == "PortableMirrorMicro")
+            {
+                CustomSubMenu.AddToggle("Pos&Rotation from View", MelonPreferences.GetEntryValue<bool>(MirrorType, "PositionOnView"), (action) =>
+                {
+                    MelonPreferences.SetEntryValue<bool>(MirrorType, "PositionOnView", !MelonPreferences.GetEntryValue<bool>(MirrorType, "PositionOnView"));
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, PosfromView);
+            }
+
+            CustomSubMenu.AddToggle("Mirror follows you", MelonPreferences.GetEntryValue<bool>(MirrorType, "AnchorToTracking"), (action) =>
+            {
+                MelonPreferences.SetEntryValue<bool>(MirrorType, "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>(MirrorType, "AnchorToTracking"));
+                Main main = new Main(); main.OnPreferencesSaved();
+                AMUtils.RefreshActionMenu();
+            }, FollowsYou);
+
         }
 
         public static void InitUi()
@@ -253,14 +287,8 @@ namespace PortableMirror
                         MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
-                    } );
+                    }, SnapToHand);
 
-                    CustomSubMenu.AddToggle("Auto Hold Pickups", MelonPreferences.GetEntryValue<bool>("PortableMirror", "AutoHold"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirror", "AutoHold", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "AutoHold"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    });
                 }, SettingsGear);
 
 
