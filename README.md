@@ -18,7 +18,7 @@ __Portable Mirror Settings__
 
 ![image](https://user-images.githubusercontent.com/81605232/114292424-272b1f80-9a54-11eb-9a8e-8583b8b3a836.png)
 
-  __Transparent and Cutout Mirror Examples__    
+__Transparent and Cutout Mirror Examples__    
   
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
 __Action Menu__  
@@ -27,6 +27,12 @@ You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenu
 
 
 ### Changelog
+* v1.4.8
+	* Per request added a 'Grab Distance +/-' that changes the box collider size on mirrors. - Only in AMAPI so far
+	* Added a toggle for 'Pickups snap to hand' _- Only in AMAPI so far_
+	* Addded "Position & Rotation from View" this places the mirror based on the angle you are looking _- Only in AMAPI so far_
+	* "Mirror follows you" mirror follows your local tracking space instead of being locked to the world. _- Only in AMAPI so far_
+	* Added Solo (local player only) Cutout and Transparent Mirrors. Useful if you just want to see yourself for positioning
 * v1.4.7
 	* Added a 'High Precision' mode for adjusting the mirror distance in the menus. It is on the bottom right of page 1 for the QM. And in the extras menu of the Action Menu. The High Precision value is adjustable in Mod Settings
 	* Code cleanup, much in part to Davi
@@ -64,6 +70,10 @@ You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenu
 
 ### Known Bugs
 * Enabling a world mirror after a cutout or transparent mirror exists may not properly hide the layer the effect is on. Disabling and Enabling the transparent mirror, or toggling between the states will fix this. 
+
+### Planned Changes
+* Ability to change world mirrors to Cutout
+* Mirror only grabable when hotkey is pressed on controller
 
 ### License
 The majority of this code does not have a license specified and should be assumed to be All Rights Reserved. I have received permission from the original author of PortableMirror to modify their code and make releases based off of it.  

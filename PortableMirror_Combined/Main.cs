@@ -12,7 +12,7 @@ using System.IO;
 
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.7", "M-oons, Nirvash")] //Name changed to break auto update
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.4.8", "M-oons, Nirvash")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
 
@@ -46,6 +46,7 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirror", "PositionOnView", false, "Position mirror based on view angle (Doesn't update live, need to toggle mirror)");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "AnchorToTracking", false, "Mirror Follows You (Doesn't update live, need to toggle mirror)");
 
+
             MelonPreferences.CreateCategory("PortableMirror45", "PortableMirror 45 Degree");
             MelonPreferences.CreateEntry<float>("PortableMirror45", "MirrorScaleX", 5f, "Mirror Scale X");
             MelonPreferences.CreateEntry<float>("PortableMirror45", "MirrorScaleY", 4f, "Mirror Scale Y");
@@ -55,7 +56,6 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirror45", "CanPickupMirror", false, "Can Pickup 45 Mirror");
             MelonPreferences.CreateEntry<bool>("PortableMirror45", "enable45", true, "Enable 45 Mirror QM Button");
             MelonPreferences.CreateEntry<bool>("PortableMirror45", "AnchorToTracking", false, "Mirror Follows You (Doesn't update live, need to toggle mirror)");
-
 
 
             MelonPreferences.CreateCategory("PortableMirrorCeiling", "PortableMirror Ceiling");
@@ -81,7 +81,6 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirrorMicro", "AnchorToTracking", false, "Mirror Follows You (Doesn't update live, need to toggle mirror)");
 
 
-
             MelonPreferences.CreateCategory("PortableMirrorTrans", "PortableMirror Transparent");
             MelonPreferences.CreateEntry<float>("PortableMirrorTrans", "MirrorScaleX", 5f, "Mirror Scale X");
             MelonPreferences.CreateEntry<float>("PortableMirrorTrans", "MirrorScaleY", 3f, "Mirror Scale Y");
@@ -93,7 +92,6 @@ namespace PortableMirror
             MelonPreferences.CreateEntry<bool>("PortableMirrorTrans", "enableTrans", true, "Enable Transparent Mirror QM Button");
             MelonPreferences.CreateEntry<bool>("PortableMirrorTrans", "PositionOnView", false, "Position mirror based on view angle (Doesn't update live, need to toggle mirror)");
             MelonPreferences.CreateEntry<bool>("PortableMirrorTrans", "AnchorToTracking", false, "Mirror Follows You (Doesn't update live, need to toggle mirror)");
-
 
 
             OnPreferencesSaved();
@@ -184,8 +182,6 @@ namespace PortableMirror
             _mirrorState45 = MelonPreferences.GetEntryValue<string>("PortableMirror45", "MirrorState");
             _anchorTracking45 = MelonPreferences.GetEntryValue<bool>("PortableMirror45", "AnchorToTracking");
 
-
-
             if (_mirror45 != null && Utils.GetVRCPlayer() != null)
             {
                 _mirror45.transform.SetParent(null);
@@ -218,7 +214,6 @@ namespace PortableMirror
             _mirrorStateCeiling = MelonPreferences.GetEntryValue<string>("PortableMirrorCeiling", "MirrorState");
             _anchorTrackingCeiling = MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "AnchorToTracking");
 
-
             if (_mirrorCeiling != null && Utils.GetVRCPlayer() != null)
             {
                 _mirrorCeiling.transform.SetParent(null);
@@ -248,8 +243,6 @@ namespace PortableMirror
             _mirrorStateMicro = MelonPreferences.GetEntryValue<string>("PortableMirrorMicro", "MirrorState");
             _posOnViewMicro = MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "PositionOnView");
             _anchorTrackingMicro = MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "AnchorToTracking");
-
-
 
             if (_mirrorMicro != null && Utils.GetVRCPlayer() != null)
             {
@@ -282,8 +275,6 @@ namespace PortableMirror
             _posOnViewTrans = MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "PositionOnView");
             _anchorTrackingTrans = MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "AnchorToTracking");
 
-
-
             if (_mirrorTrans != null && Utils.GetVRCPlayer() != null)
             {
                 _mirrorTrans.transform.SetParent(null);
@@ -305,8 +296,6 @@ namespace PortableMirror
                 if (_anchorTrackingTrans) _mirrorTrans.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
 
             }
-
-
         }
 
         private IEnumerator CreateQuickMenuButton()
@@ -674,7 +663,6 @@ namespace PortableMirror
                 }
                 catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); }
             }
-
         }
         public static void ToggleMirror()
         {
@@ -701,7 +689,7 @@ namespace PortableMirror
                 {
                     GameObject IKEffector = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector");
                     mirror.transform.position = IKEffector.transform.position + (IKEffector.transform.forward * _MirrorDistance);
-                    mirror.transform.rotation = IKEffector.transform.rotation;// * Quaternion.AngleAxis(180, Vector3.up);  // Rotate to face you
+                    mirror.transform.rotation = IKEffector.transform.rotation;
                 }
 
                 var childMirror = mirror.transform.Find(_mirrorStateBase);
@@ -819,7 +807,7 @@ namespace PortableMirror
                 {
                     GameObject IKEffector = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector");
                     mirror.transform.position = IKEffector.transform.position + (IKEffector.transform.forward * _mirrorScaleMicro);
-                    mirror.transform.rotation = IKEffector.transform.rotation;// * Quaternion.AngleAxis(180, Vector3.up);  // Rotate to face you
+                    mirror.transform.rotation = IKEffector.transform.rotation;
                 }
 
                 var childMirror = mirror.transform.Find(_mirrorStateMicro);
@@ -861,7 +849,7 @@ namespace PortableMirror
                 {
                     GameObject IKEffector = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector");
                     mirror.transform.position = IKEffector.transform.position + (IKEffector.transform.forward * _MirrorDistanceTrans);
-                    mirror.transform.rotation = IKEffector.transform.rotation;// * Quaternion.AngleAxis(180, Vector3.up);  // Rotate to face you
+                    mirror.transform.rotation = IKEffector.transform.rotation;
                 }
 
                 var childMirror = mirror.transform.Find(_mirrorStateTrans);
@@ -981,7 +969,6 @@ namespace PortableMirror
         public static string _mirrorStateTrans;
         public static bool _posOnViewTrans;
         public static bool _anchorTrackingTrans;
-
     }
 }
 
