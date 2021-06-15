@@ -16,17 +16,20 @@ __Quick Menu buttons can be enabled/disabled individually with the "Enable [X] M
 
 __Portable Mirror Settings__   
 
-![image](https://user-images.githubusercontent.com/81605232/114292424-272b1f80-9a54-11eb-9a8e-8583b8b3a836.png)
+![image](https://user-images.githubusercontent.com/81605232/121982852-f3bb8880-cd55-11eb-90a2-f7d06b5ff528.png)
 
 __Transparent and Cutout Mirror Examples__    
   
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
 __Action Menu__  
-![image](https://user-images.githubusercontent.com/81605232/119205527-11027d00-ba5e-11eb-9534-5e1d4f49344e.png))     
+![image](https://user-images.githubusercontent.com/81605232/121983290-b3a8d580-cd56-11eb-8008-92b6abddc8ca.png)  
 You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenuApi/releases Put it in your mods folder for this feature to work.    
 
 
 ### Changelog
+* v1.5.0
+	* Added buttons for 'Position based on View' and 'Anchor to World/Tracking' to page 2 of the QuickMenu Settings. 
+	* Code Cleanup & Added Loader Integrity Check
 * v1.4.8
 	* Per request added a 'Grab Distance +/-' that changes the box collider size on mirrors. - Only in AMAPI so far
 	* Added a toggle for 'Pickups snap to hand' _- Only in AMAPI so far_
