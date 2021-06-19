@@ -7,6 +7,7 @@ The mirror can be configured:
   * Configurable mirror size and distance from you
   * Standard, 45 degree, ceiling, small and transparent mirrors
   * [UIX](https://github.com/knah/VRCMods/releases/latest/download/UIExpansionKit.dll) menu to control settings  
+  * [ActionMenuApi](https://github.com/gompocp/ActionMenuApi/releases/latest/download/ActionMenuApi.dll) to control the mirror from your Radial Menu (Optional)
   * Show/Hide spawned mirrors in Camera photos
   
 ### Screenshots
