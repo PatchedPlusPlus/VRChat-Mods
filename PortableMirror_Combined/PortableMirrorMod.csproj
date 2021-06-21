@@ -51,6 +51,10 @@
   <ItemGroup>
     <EmbeddedResource Include="mirrorprefab" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="mirroricons" />
+    <EmbeddedResource Include="mirrorprefabpickup" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
     <VisualStudio AllowExistingFolder="true" />

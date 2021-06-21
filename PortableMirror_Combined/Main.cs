@@ -20,9 +20,11 @@ namespace PortableMirror
 {
 
     public class Main : MelonMod
-    { 
+    {
         public Main()
-        { LoaderIntegrityCheck.CheckIntegrity(); }
+        {
+            //LoaderIntegrityCheck.CheckIntegrity();
+        }
         public override void OnApplicationStart()
         {
             loadAssets();
@@ -325,7 +327,7 @@ namespace PortableMirror
                     if (othermirror is null || (othermirror != _mirrorBase && othermirror != _mirror45 && othermirror != _mirrorCeiling && othermirror != _mirrorMicro && othermirror != _mirrorTrans))
                     {
                         //MelonLogger.Msg($"setting layers");
-                        vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2                                                                                             
+                        vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
                     }
                 }
                 catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); }
@@ -361,7 +363,7 @@ namespace PortableMirror
 
                 var childMirror = mirror.transform.Find(_mirrorStateBase);
                 childMirror.gameObject.active = true;
-                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10; //Default prefab 4:Water - 10:Playerlocal 
+                childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10; //Default prefab 4:Water - 10:Playerlocal
                 if (_mirrorStateBase == "MirrorTransparent" || _mirrorStateBase == "MirrorTransparentSolo") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupMirrorBase;
@@ -408,14 +410,14 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
                 if (!_anchorTracking45) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-               
+
                 _mirror45 = mirror;
             }
         }
 
         public static void ToggleMirrorCeiling()
         {
-            
+
             if (_mirrorCeiling != null)
             {
                 try { UnityEngine.Object.Destroy(_mirrorCeiling); } catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); }
@@ -425,7 +427,7 @@ namespace PortableMirror
             {
                 if (_mirrorStateCeiling == "MirrorCutout" || _mirrorStateCeiling == "MirrorTransparent" || _mirrorStateCeiling == "MirrorCutoutSolo" || _mirrorStateCeiling == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
-                Vector3 pos = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position + (player.transform.up); // Bases mirror position off of hip, to allow for play space moving 
+                Vector3 pos = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position + (player.transform.up); // Bases mirror position off of hip, to allow for play space moving
                 //MelonLogger.Msg($"x:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.x}, y:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.y}, z:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.z}");
                 pos.y += _MirrorDistanceCeiling;
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
@@ -438,7 +440,7 @@ namespace PortableMirror
                 var childMirror = mirror.transform.Find(_mirrorStateCeiling);
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = _MirrorsShowInCamera ? 4 : 10;
-                if (_mirrorStateCeiling == "MirrorTransparent" || _mirrorStateCeiling == "MirrorTransparentSolo") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue); 
+                if (_mirrorStateCeiling == "MirrorTransparent" || _mirrorStateCeiling == "MirrorTransparentSolo") childMirror.GetComponent<Renderer>().material.SetFloat("_Transparency", _MirrorTransValue);
                 mirror.GetOrAddComponent<VRC_Pickup>().proximity = 3f;
                 mirror.GetOrAddComponent<VRC_Pickup>().pickupable = _canPickupCeilingMirror;
                 mirror.GetOrAddComponent<VRC_Pickup>().allowManipulationWhenEquipped = false;
@@ -535,16 +537,24 @@ namespace PortableMirror
             }
         }
 
-        
+
         private void loadAssets()
         {//https://github.com/ddakebono/BTKSASelfPortrait/blob/master/BTKSASelfPortrait.cs
+
             using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableMirrorMod.mirrorprefab"))
             {
-                using (var tempStream = new MemoryStream((int)assetStream.Length))
+                try
                 {
-                    assetStream.CopyTo(tempStream);
-                    assetBundle = AssetBundle.LoadFromMemory_Internal(tempStream.ToArray(), 0);
-                    assetBundle.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                    using (var tempStream = new MemoryStream((int)assetStream.Length))
+                    {
+                        assetStream.CopyTo(tempStream);
+                        assetBundle = AssetBundle.LoadFromMemory_Internal(tempStream.ToArray(), 0);
+                        assetBundle.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MelonLogger.Error(ex);
                 }
             }
 

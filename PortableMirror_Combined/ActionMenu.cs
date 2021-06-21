@@ -4,6 +4,8 @@ using UnityEngine;
 using UnhollowerRuntimeLib;
 using System.IO;
 using ActionMenuApi.Api;
+using System;
+
 
 namespace PortableMirror
 {
@@ -17,11 +19,18 @@ namespace PortableMirror
         {
             using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableMirrorMod.mirroricons"))
             {
-                using (var tempStream = new MemoryStream((int)assetStream.Length))
+                try
                 {
-                    assetStream.CopyTo(tempStream);
-                    assetBundleIcons = AssetBundle.LoadFromMemory_Internal(tempStream.ToArray(), 0);
-                    assetBundleIcons.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                    using (var tempStream = new MemoryStream((int)assetStream.Length))
+                    {
+                        assetStream.CopyTo(tempStream);
+                        assetBundleIcons = AssetBundle.LoadFromMemory_Internal(tempStream.ToArray(), 0);
+                        assetBundleIcons.hideFlags |= HideFlags.DontUnloadUnusedAsset;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MelonLogger.Error(ex);
                 }
             }
 
@@ -105,14 +114,14 @@ namespace PortableMirror
                 }, MirrorTransSolo);
             }, MirrorOptions);
 
-            
+
             CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"), (action) =>
             {
                 MelonPreferences.SetEntryValue<bool>(MirrorType, "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"));
                 Main main = new Main(); main.OnPreferencesSaved();
                 AMUtils.RefreshActionMenu();
             }, Grab);
-            
+
             CustomSubMenu.AddSubMenu("Location & Size", () =>
             {
                 if (MirrorType != "PortableMirrorMicro")
