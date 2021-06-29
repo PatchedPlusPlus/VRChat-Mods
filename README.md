@@ -28,6 +28,8 @@ You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenu
 
 
 ### Changelog
+* v1.5.1
+	* Added all possible mirror layers to the Full Mirror. Some maps put world stuff on the user layers, which previously weren't reflected. 
 * v1.5.0
 	* Added buttons for 'Position based on View' and 'Anchor to World/Tracking' to page 2 of the QuickMenu Settings. 
 	* Code Cleanup & Added Loader Integrity Check
