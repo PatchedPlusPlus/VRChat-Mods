@@ -1,3 +1,14 @@
+This repository contains a modified version of [Nirv-git](https://github.com/Nirv-git/VRChat-Mods) for VRChat. 
+Join the [VRChat Modding Group discord](https://discord.gg/rCqKSvR) for support and more mods!
+Join the [VRCMG Unchained discord](https://discord.gg/boycottknah) for support and more mods!
+
+Using a modified MelonLoader without some security features brings a risk with it, you should read Knah's blogpost: [Malicious Mods and you](https://github.com/knah/VRCMods/edit/master/Malicious-Mods.md)
+
+Don't blame me or other when you data or tokens get stolen. Always think about what mods you are using and why they are obfuscated and so on. 
+
+Don't hatespeech the original Author please, without them this would not be possible!
+
+
 ## PortableMirror
 This mod allows the user to locally spawn mirrors for themselves in any VRChat world.
 
