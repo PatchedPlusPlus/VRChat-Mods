@@ -167,11 +167,16 @@
             <Private>false</Private>
             <HintPath>$(MsBuildThisFileDirectory)..\..\..\Dependencies\MelonLoader\Managed\VRCSDK3.dll</HintPath>
         </Reference>
-        <Reference Include="Il2CppSystem.Collections.Immutable, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-             <SpecificVersion>false</SpecificVersion>
-             <Private>false</Private>
-             <HintPath>$(MsBuildThisFileDirectory)..\..\..\Dependencies\MelonLoader\Managed\Il2CppSystem.Collections.Immutable.dll</HintPath>
-        </Reference>
+      <Reference Include="Il2CppSystem.Collections.Immutable, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <SpecificVersion>false</SpecificVersion>
+        <Private>false</Private>
+        <HintPath>$(MsBuildThisFileDirectory)..\..\..\Dependencies\MelonLoader\Managed\Il2CppSystem.Collections.Immutable.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <SpecificVersion>false</SpecificVersion>
+        <Private>false</Private>
+        <HintPath>$(MsBuildThisFileDirectory)..\..\..\Dependencies\MelonLoader\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      </Reference>
         <Reference Include="UIExpansionKit, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
              <SpecificVersion>false</SpecificVersion>
              <Private>false</Private>
