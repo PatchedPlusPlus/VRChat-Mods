@@ -8,10 +8,8 @@ namespace PortableMirror
     class UIX_QM
     {
 
-        public static IEnumerator CreateQuickMenuButton()
+        public static void CreateQuickMenuButton()
         {
-            while (QuickMenu.prop_QuickMenu_0 == null) yield return null;
-
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nPortable\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
@@ -408,6 +406,13 @@ namespace PortableMirror
                 QuickMenuOptions();
             });
 
+            mirrorMenu.AddToggleButton("Pickups snap to hand", (action) =>
+            {
+                MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions2();
+            }, () => MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+
             mirrorMenu.Show();
         }
     }
@@ -418,7 +423,7 @@ namespace UIExpansionKit.API
 {
     public struct LayoutDescriptionCustom
     {
-        public static LayoutDescription QuickMenu3Column = new LayoutDescription { NumColumns = 3, RowHeight = 475 / 10, NumRows = 10 }; //8 was 380
-        public static LayoutDescription QuickMenu3Column_Longer = new LayoutDescription { NumColumns = 3, RowHeight = 475 / 11, NumRows = 11 };
+        public static LayoutDescription QuickMenu3Column = new LayoutDescription { NumColumns = 3, RowHeight = 380 / 10, NumRows = 10 }; //8 was 380   //475 / 10, NumRows = 10
+        public static LayoutDescription QuickMenu3Column_Longer = new LayoutDescription { NumColumns = 3, RowHeight = 380 / 11, NumRows = 11 };  //475 / 11, NumRows = 11
     }
 }

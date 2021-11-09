@@ -7,7 +7,7 @@ The mirror can be configured:
   * Configurable mirror size and distance from you
   * Standard, 45 degree, ceiling, small and transparent mirrors
   * [UIX](https://github.com/knah/VRCMods/releases/latest/download/UIExpansionKit.dll) menu to control settings  
-  * [ActionMenuApi](https://github.com/gompocp/ActionMenuApi/releases/latest/download/ActionMenuApi.dll) to control the mirror from your Radial Menu (Optional)
+  * [ActionMenuApi](https://github.com/gompoc/VRChatMods/releases/latest/download/ActionMenuApi.dll) to control the mirror from your Radial Menu (**Optional, but highly recommened**)
   * Show/Hide spawned mirrors in Camera photos
   
 ### Screenshots
@@ -24,10 +24,17 @@ __Transparent and Cutout Mirror Examples__
 ![image](https://user-images.githubusercontent.com/81605232/115629313-bbed1300-a2c7-11eb-83f9-dc6888e94256.png)  
 __Action Menu__  
 ![image](https://user-images.githubusercontent.com/81605232/121983290-b3a8d580-cd56-11eb-8008-92b6abddc8ca.png)  
-You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenuApi/releases Put it in your mods folder for this feature to work.    
+You need the latest ActionMenuApi.dll from https://github.com/gompoc/VRChatMods Put it in your mods folder for this feature to work.    
 
 
 ### Changelog
+* v1.5.4
+	* Update for VRC1149
+	* Added option to put AMAPI menu in the 'Mods' folder on the Action Menu
+	* Resized UIX Menus to fit new constraints and added 'Pickups snap to hand' to page 2 of the Settings Menu.
+	* Properly cleans up mirrors bound to tracking space on changing worlds
+	* Minor Cleanup to UIX Mod Settings
+	
 * v1.5.1
 	* Added all possible mirror layers to the Full Mirror. Some maps put world stuff on the user layers, which previously weren't reflected. 
 * v1.5.0
@@ -83,4 +90,4 @@ You need the latest ActionMenuApi.dll from https://github.com/gompocp/ActionMenu
 
 ### License
 The majority of this code does not have a license specified and should be assumed to be All Rights Reserved. I have received permission from the original author of PortableMirror to modify their code and make releases based off of it.  
-The assetbundle mirrorprefab contains aacertainbluecat/VRCPlayersOnlyMirror which is licensed under the MIT License
+The assetbundle mirrorprefab contains acertainbluecat/VRCPlayersOnlyMirror which is licensed under the MIT License

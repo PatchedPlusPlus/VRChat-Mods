@@ -171,128 +171,128 @@ namespace PortableMirror
         public static void InitUi()
         {
             loadAssets();
-            ///Main menu, List all mirrors
-            ///Sub menu, Toggle,Opt,Pickup,Move+,Move-,Size+,Size-
 
-            VRCActionMenuPage.AddSubMenu(ActionMenuPage.Main, "<color=#ff00ff>Portable Mirror</color>", () =>
+            if (MelonPreferences.GetEntryValue<bool>("PortableMirror", "amapi_ModsFolder"))
+                AMUtils.AddToModsFolder("<color=#ff00ff>Portable Mirror</color>", () => AMsubMenu(), MirrorOpt);
+            else
+                VRCActionMenuPage.AddSubMenu(ActionMenuPage.Main, "<color=#ff00ff>Portable Mirror</color>", () => AMsubMenu(), MirrorOpt);
+        }
+
+        private static void AMsubMenu()
+        {
+            CustomSubMenu.AddSubMenu("Portable Mirror", () =>
             {
-
-                CustomSubMenu.AddSubMenu("Portable Mirror", () =>
+                CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorBase != null), (action) =>
-                    {
-                        if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
-                        AMUtils.RefreshActionMenu();
-                    }, MirrorBase);
-
-                    MirrorMenu("PortableMirror");
-
+                    if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
+                    AMUtils.RefreshActionMenu();
                 }, MirrorBase);
 
-                CustomSubMenu.AddSubMenu("45 Mirror", () =>
+                MirrorMenu("PortableMirror");
+
+            }, MirrorBase);
+
+            CustomSubMenu.AddSubMenu("45 Mirror", () =>
+            {
+                CustomSubMenu.AddToggle("Enable", (Main._mirror45 != null), (action) =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirror45 != null), (action) =>
-                    {
-                        if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
-                        AMUtils.RefreshActionMenu();
-                    }, Mirror45);
-
-                    MirrorMenu("PortableMirror45");
-
+                    if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
+                    AMUtils.RefreshActionMenu();
                 }, Mirror45);
 
-                CustomSubMenu.AddSubMenu("Ceiling Mirror", () =>
+                MirrorMenu("PortableMirror45");
+
+            }, Mirror45);
+
+            CustomSubMenu.AddSubMenu("Ceiling Mirror", () =>
+            {
+                CustomSubMenu.AddToggle("Enable", (Main._mirrorCeiling != null), (action) =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorCeiling != null), (action) =>
-                    {
-                        if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
-                        AMUtils.RefreshActionMenu();
-                    }, MirrorCeil);
-
-                    MirrorMenu("PortableMirrorCeiling");
-
+                    if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
+                    AMUtils.RefreshActionMenu();
                 }, MirrorCeil);
 
-                CustomSubMenu.AddSubMenu("Micro Mirror", () =>
+                MirrorMenu("PortableMirrorCeiling");
+
+            }, MirrorCeil);
+
+            CustomSubMenu.AddSubMenu("Micro Mirror", () =>
+            {
+                CustomSubMenu.AddToggle("Enable", (Main._mirrorMicro != null), (action) =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorMicro != null), (action) =>
-                    {
-                        if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
-                        AMUtils.RefreshActionMenu();
-                    }, MirrorMicro);
-
-                    MirrorMenu("PortableMirrorMicro");
-
+                    if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
+                    AMUtils.RefreshActionMenu();
                 }, MirrorMicro);
 
-                CustomSubMenu.AddSubMenu("Transparent Mirror", () =>
+                MirrorMenu("PortableMirrorMicro");
+
+            }, MirrorMicro);
+
+            CustomSubMenu.AddSubMenu("Transparent Mirror", () =>
+            {
+                CustomSubMenu.AddToggle("Enable", (Main._mirrorTrans != null), (action) =>
                 {
-                    CustomSubMenu.AddToggle("Enable", (Main._mirrorTrans != null), (action) =>
-                    {
-                        if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
-                        AMUtils.RefreshActionMenu();
-                    }, MirrorTrans);
-
-                    MirrorMenu("PortableMirrorTrans");
-
+                    if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
+                    AMUtils.RefreshActionMenu();
                 }, MirrorTrans);
 
+                MirrorMenu("PortableMirrorTrans");
+
+            }, MirrorTrans);
 
 
-                CustomSubMenu.AddSubMenu("Extras", () =>
+
+            CustomSubMenu.AddSubMenu("Extras", () =>
+            {
+                CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
                 {
-                    CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
-                    {
-                        MelonPreferences.SetEntryValue<float>("PortableMirror", "TransMirrorTrans", MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans") + .1f);
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, TransPlus);
-                    CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
-                    {
-                        MelonPreferences.SetEntryValue<float>("PortableMirror", "TransMirrorTrans", MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans") - .1f);
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, TransMinus);
-                    CustomSubMenu.AddToggle("Mirrors Show In Camera", MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, CameraMirror);
-                    CustomSubMenu.AddToggle("High Precision Adjust", Main._mirrorDistHighPrec, (action) =>
-                    {
-                        Main._mirrorDistHighPrec = !Main._mirrorDistHighPrec;
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, DistAdjIcon);
+                    MelonPreferences.SetEntryValue<float>("PortableMirror", "TransMirrorTrans", MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans") + .1f);
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, TransPlus);
+                CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
+                {
+                    MelonPreferences.SetEntryValue<float>("PortableMirror", "TransMirrorTrans", MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans") - .1f);
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, TransMinus);
+                CustomSubMenu.AddToggle("Mirrors Show In Camera", MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"), (action) =>
+                {
+                    MelonPreferences.SetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"));
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, CameraMirror);
+                CustomSubMenu.AddToggle("High Precision Adjust", Main._mirrorDistHighPrec, (action) =>
+                {
+                    Main._mirrorDistHighPrec = !Main._mirrorDistHighPrec;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, DistAdjIcon);
 
-                    CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                {
+                    MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") + .1f);
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, GrabDistPlus);
+                CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                {
+                    if (MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") > .1f)
                     {
-                        MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") + .1f);
+                        MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") - .1f);
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
-                    }, GrabDistPlus);
-                    CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
-                    {
-                        if (MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") > .1f)
-                        {
-                            MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") - .1f);
-                            Main main = new Main(); main.OnPreferencesSaved();
-                            AMUtils.RefreshActionMenu();
-                        }
-                    }, GrabDistMinus);
+                    }
+                }, GrabDistMinus);
 
-                    CustomSubMenu.AddToggle("Pickups snap to hand", MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"), (action) =>
-                    {
-                        MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
-                        Main main = new Main(); main.OnPreferencesSaved();
-                        AMUtils.RefreshActionMenu();
-                    }, SnapToHand);
+                CustomSubMenu.AddToggle("Pickups snap to hand", MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"), (action) =>
+                {
+                    MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, SnapToHand);
 
-                }, SettingsGear);
-
-
-            }, MirrorOpt);
+            }, SettingsGear);
         }
     }
 }
