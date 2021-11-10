@@ -12,7 +12,7 @@ using System.IO;
 
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.5.1", "M-oons, Nirvash, PatchedPlus+")] //Name changed to break auto update
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.5.4", "Nirvash, M-oons, PatchedPlus+")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
 
@@ -29,24 +29,34 @@ namespace PortableMirror
         {
             loadAssets();
 
+
             MelonPreferences.CreateCategory("PortableMirror", "PortableMirror");
             MelonPreferences.CreateEntry<float>("PortableMirror", "MirrorScaleX", 5f, "Mirror Scale X");
             MelonPreferences.CreateEntry<float>("PortableMirror", "MirrorScaleY", 3f, "Mirror Scale Y");
             MelonPreferences.CreateEntry<float>("PortableMirror", "MirrorDistance", 0f, "Mirror Distance");
+
             MelonPreferences.CreateEntry<string>("PortableMirror", "MirrorState", "MirrorFull", "Mirror Type");
             ExpansionKitApi.RegisterSettingAsStringEnum("PortableMirror", "MirrorState", new[] { ("MirrorFull", "Full"), ("MirrorOpt", "Optimized"), ("MirrorCutout", "Cutout"), ("MirrorTransparent", "Transparent"), ("MirrorCutoutSolo", "Cutout LocalOnly"), ("MirrorTransparentSolo", "Transparent LocalOnly") });
             MelonPreferences.CreateEntry<bool>("PortableMirror", "CanPickupMirror", false, "Can Pickup Mirror");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "enableBase", true, "Enable Portable Mirror Quick Menu Button");
+
             MelonPreferences.CreateEntry<bool>("PortableMirror", "PositionOnView", false, "Position mirror based on view angle");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "AnchorToTracking", false, "Mirror Follows You");
             MelonPreferences.CreateEntry<string>("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
+
             MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorKeybindEnabled", true, "Enabled Mirror Keybind");
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer1", false, "-Spacer | Does Nothing-");
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer2", false, "-Past this are global settings for all portable mirror types-");
+
             MelonPreferences.CreateEntry<bool>("PortableMirror", "QuickMenuOptions", true, "Enable Settings Quick Menu Button");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "OpenLastQMpage", false, "Quick Menu Settings remembers last page opened");
             MelonPreferences.CreateEntry<float>("PortableMirror", "TransMirrorTrans", .4f, "Transparent Mirror transparency - Higher is more transparent - Global for all mirrors");
+            
             MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorsShowInCamera", false, "Mirrors show in Cameras - Global for all mirrors");
             MelonPreferences.CreateEntry<float>("PortableMirror", "MirrorDistAdjAmmount", .05f, "High Precision Distance Adjustment - Global for all mirrors");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "ActionMenu", true, "Enable Controls on Action Menu (Requires Restart)");
+
+            MelonPreferences.CreateEntry<bool>("PortableMirror", "amapi_ModsFolder", false, "Place Action Menu in 'Mods' Sub Menu (Restert Required)"); 
             MelonPreferences.CreateEntry<float>("PortableMirror", "ColliderDepth", 0.01f, "Collider Depth - Global for all mirrors");
             MelonPreferences.CreateEntry<bool>("PortableMirror", "PickupToHand", true, "Pickups snap to hand - Global for all mirrors");
 
@@ -106,10 +116,7 @@ namespace PortableMirror
             MelonMod uiExpansionKit = MelonHandler.Mods.Find(m => m.Info.Name == "UI Expansion Kit");
             if (uiExpansionKit != null)
             {
-                uiExpansionKit.Info.SystemType.Assembly.GetTypes().First(t => t.FullName == "UIExpansionKit.API.ExpansionKitApi").GetMethod("RegisterWaitConditionBeforeDecorating", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static).Invoke(null, new object[]
-                {
-                    UIX_QM.CreateQuickMenuButton()
-                });
+                UIX_QM.CreateQuickMenuButton();
             }
 
             if (MelonHandler.Mods.Any(m => m.Info.Name == "ActionMenuApi") && MelonPreferences.GetEntryValue<bool>("PortableMirror", "ActionMenu"))
@@ -299,6 +306,28 @@ namespace PortableMirror
                 _mirrorTrans.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, _colliderDepth);
                 if (_anchorTrackingTrans) _mirrorTrans.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
 
+            }
+        }
+
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            switch (buildIndex)//Without switch this would run 3 times at world load
+            {
+                case 0: break;//App
+                case 1: break;//ui
+                case 2: break;//empty
+                default:
+                    if (_mirrorBase != null)
+                    { try { UnityEngine.Object.Destroy(_mirrorBase); } catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); } _mirrorBase = null; }
+                    if (_mirror45 != null)
+                    { try { UnityEngine.Object.Destroy(_mirror45); } catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); } _mirror45 = null; }
+                    if (_mirrorCeiling != null)
+                    { try { UnityEngine.Object.Destroy(_mirrorCeiling); } catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); } _mirrorCeiling = null; }
+                    if (_mirrorMicro != null)
+                    { try { UnityEngine.Object.Destroy(_mirrorMicro); } catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); } _mirrorMicro = null; }
+                    if (_mirrorTrans != null)
+                    { try { UnityEngine.Object.Destroy(_mirrorTrans); } catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); } _mirrorTrans = null; }
+                    break;
             }
         }
 
