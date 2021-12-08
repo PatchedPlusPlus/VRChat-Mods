@@ -41,6 +41,9 @@ You need the latest ActionMenuApi.dll from https://github.com/gompoc/VRChatMods 
 
 
 ### Changelog
+* v1.5.5
+	* Changed layer used for cutout/transparency
+		* Switched from reserved2 to 3, as VRC now uses 2 for the UI
 * v1.5.4
 	* Update for VRC1149
 	* Added option to put AMAPI menu in the 'Mods' folder on the Action Menu

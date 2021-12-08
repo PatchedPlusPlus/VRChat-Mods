@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionMenu.cs" />
-    <Compile Include="LoaderIntegrityCheck.cs" />
+    <None Include="LoaderIntegrityCheck.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="UIX_QM.cs" />
     <Compile Include="Utils.cs" />

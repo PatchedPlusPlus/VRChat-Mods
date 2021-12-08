@@ -12,7 +12,7 @@ using System.IO;
 
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.5.4", "Nirvash, M-oons, PatchedPlus+")] //Name changed to break auto update
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.5.5", "Nirvash, M-oons, PatchedPlus+")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
 
@@ -356,7 +356,7 @@ namespace PortableMirror
                     if (othermirror is null || (othermirror != _mirrorBase && othermirror != _mirror45 && othermirror != _mirrorCeiling && othermirror != _mirrorMicro && othermirror != _mirrorTrans))
                     {
                         //MelonLogger.Msg($"setting layers");
-                        vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved2; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved2
+                        vrcMirrorReflection.m_ReflectLayers = vrcMirrorReflection.m_ReflectLayers.value & ~reserved3; //Force all mirrors to not reflect "Mirror/TransparentBackground" - Set all mirrors to exclude reserved3                                                                                             
                     }
                 }
                 catch (System.Exception ex) { MelonLogger.Msg(ConsoleColor.DarkRed, ex.ToString()); }
@@ -603,6 +603,7 @@ namespace PortableMirror
         //UiMenuLayer = 1 << 12;
         //MirrorReflectionLayer = 1 << 18;
         public static int reserved2 = 1 << 19;
+        public static int reserved3 = 1 << 20;
         //int optMirrorMask = PlayerLayer | MirrorReflectionLayer;
         //int fullMirrorMask = -1 & ~UiLayer & ~UiMenuLayer & ~PlayerLocalLayer & ~reserved2;
 
