@@ -11,7 +11,6 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-
 [assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.6", "Nirvash, M-oons")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
@@ -38,6 +37,7 @@ namespace PortableMirror
         public static MelonPreferences_Entry<string> _base_MirrorKeybind;
 
         public static MelonPreferences_Entry<bool> MirrorKeybindEnabled;
+        public static MelonPreferences_Entry<bool> fixRenderOrder;
         public static MelonPreferences_Entry<bool> Spacer1;
         public static MelonPreferences_Entry<bool> Spacer2;
 
@@ -107,7 +107,8 @@ namespace PortableMirror
             _base_MirrorKeybind = MelonPreferences.CreateEntry<string>("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
 
             MirrorKeybindEnabled = MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorKeybindEnabled", true, "Enabled Mirror Keybind");
-            Spacer1 = MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer1", false, "-Spacer | Does Nothing-");
+            fixRenderOrder = MelonPreferences.CreateEntry<bool>("PortableMirror", "fixRenderOrder", true, "Change render order on mirrors to fix overrendering");
+            Spacer1 = MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer1", false, "-Spacer | Does Nothing-", "", true);
             Spacer2 = MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer2", false, "-Past this are global settings for all portable mirror types-");
 
             QuickMenuOptions = MelonPreferences.CreateEntry<bool>("PortableMirror", "QuickMenuOptions", true, "Enable Settings Quick Menu Button");
@@ -217,6 +218,7 @@ namespace PortableMirror
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirrorBase.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (Main._base_AnchorToTracking.Value) _mirrorBase.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(childMirror.gameObject));
             }
             _oldMirrorScaleYBase = Main._base_MirrorScaleY.Value;
             _oldMirrorDistance = Main._base_MirrorDistance.Value;
@@ -243,6 +245,7 @@ namespace PortableMirror
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirror45.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (Main._45_AnchorToTracking.Value) _mirror45.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(childMirror.gameObject));
             }
             _oldMirrorScaleY45 = Main._45_MirrorScaleY.Value;
             _oldMirrorDistance45 = Main._45_MirrorDistance.Value;
@@ -266,6 +269,7 @@ namespace PortableMirror
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirrorCeiling.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (Main._ceil_AnchorToTracking.Value)  _mirrorCeiling.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(childMirror.gameObject));
             }
             _oldMirrorDistanceCeiling = Main._ceil_MirrorDistance.Value;
 
@@ -288,6 +292,7 @@ namespace PortableMirror
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 if (Main._micro_AnchorToTracking.Value) _mirrorMicro.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(childMirror.gameObject));
             }
             _oldMirrorScaleYMicro = Main._micro_MirrorScaleY.Value;
 
@@ -311,7 +316,7 @@ namespace PortableMirror
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirrorTrans.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (Main._trans_AnchorToTracking.Value) _mirrorTrans.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(childMirror.gameObject));
             }
             _oldMirrorScaleYTrans = Main._trans_MirrorScaleY.Value;
             _oldMirrorDistanceTrans = Main._trans_MirrorDistance.Value;
@@ -409,8 +414,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._base_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-                foreach (var ren in mirror.GetComponentsInChildren<Renderer>(true))
-                    ren.material.renderQueue = 5000;
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(mirror));
 
                 _mirrorBase = mirror;
             }
@@ -449,8 +453,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._45_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-                foreach (var ren in mirror.GetComponentsInChildren<Renderer>(true))
-                    ren.material.renderQueue = 5000;
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(mirror));
 
                 _mirror45 = mirror;
             }
@@ -489,8 +492,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._ceil_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-                foreach (var ren in mirror.GetComponentsInChildren<Renderer>(true))
-                    ren.material.renderQueue = 5000;
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(mirror));
 
                 _mirrorCeiling = mirror;
             }
@@ -532,8 +534,7 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().orientation = Main.PickupToHand.Value ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
                 if (!Main._micro_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-                foreach (var ren in mirror.GetComponentsInChildren<Renderer>(true))
-                    ren.material.renderQueue = 5000;
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(mirror));
 
                 _mirrorMicro = mirror;
             }
@@ -577,14 +578,18 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._trans_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-                foreach (var ren in mirror.GetComponentsInChildren<Renderer>(true))
-                    ren.material.renderQueue = 5000;
+                if (fixRenderOrder.Value) MelonCoroutines.Start(SetOrder(mirror));
 
                 _mirrorTrans = mirror;
             }
         }
 
-        
+        public static IEnumerator SetOrder(GameObject obj)
+        {
+            yield return new WaitForSeconds(1f);
+            obj.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
+        }
+
         private void loadAssets()
         {//https://github.com/ddakebono/BTKSASelfPortrait/blob/master/BTKSASelfPortrait.cs
             using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PortableMirrorMod.mirrorprefab"))
