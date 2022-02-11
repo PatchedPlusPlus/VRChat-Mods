@@ -40,7 +40,7 @@ namespace PortableMirror
             }
             catch (BadImageFormatException ex)
             {
-                MelonLogger.Error(ex.ToString());
+                Main.Logger.Error(ex.ToString());
 
                 PrintWarningMessage();
 
@@ -73,15 +73,15 @@ namespace PortableMirror
 
         private static void PrintWarningMessage()
         {
-            MelonLogger.Error("===================================================================");
-            MelonLogger.Error("You're using MelonLoader with important security features missing.");
-            MelonLogger.Error("This exposes you to additional risks from certain malicious actors,");
-            MelonLogger.Error("including account theft, account bans, and other unwanted consequences");
-            MelonLogger.Error("If this is not what you want, download the official installer from");
-            MelonLogger.Error("https://github.com/LavaGang/MelonLoader/releases");
-            MelonLogger.Error("then close this console, and reinstall MelonLoader using it.");
-            MelonLogger.Error("If you want to accept those risks, press Enter to continue");
-            MelonLogger.Error("===================================================================");
+            Main.Logger.Error("===================================================================");
+            Main.Logger.Error("You're using MelonLoader with important security features missing.");
+            Main.Logger.Error("This exposes you to additional risks from certain malicious actors,");
+            Main.Logger.Error("including account theft, account bans, and other unwanted consequences");
+            Main.Logger.Error("If this is not what you want, download the official installer from");
+            Main.Logger.Error("https://github.com/LavaGang/MelonLoader/releases");
+            Main.Logger.Error("then close this console, and reinstall MelonLoader using it.");
+            Main.Logger.Error("If you want to accept those risks, press Enter to continue");
+            Main.Logger.Error("===================================================================");
         }
     }
 } 

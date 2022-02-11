@@ -13,7 +13,7 @@ namespace PortableMirror
 
         public static KeyCode GetMirrorKeybind()
         {
-            string modPrefKeybind = MelonPreferences.GetEntryValue<string>("PortableMirror", "MirrorKeybind").Trim();
+            string modPrefKeybind = Main._base_MirrorKeybind.Value.Trim();
             if (string.IsNullOrWhiteSpace(modPrefKeybind)) modPrefKeybind = "Alpha1";
             if (modPrefKeybind.Length == 1)
             {
