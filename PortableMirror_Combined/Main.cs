@@ -216,7 +216,6 @@ namespace PortableMirror
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirrorBase.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
-                _mirrorBase.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 if (Main._base_AnchorToTracking.Value) _mirrorBase.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
             }
             _oldMirrorScaleYBase = Main._base_MirrorScaleY.Value;
@@ -243,7 +242,6 @@ namespace PortableMirror
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirror45.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
-                _mirror45.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 if (Main._45_AnchorToTracking.Value) _mirror45.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
             }
             _oldMirrorScaleY45 = Main._45_MirrorScaleY.Value;
@@ -267,7 +265,6 @@ namespace PortableMirror
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirrorCeiling.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
-                _mirrorCeiling.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 if (Main._ceil_AnchorToTracking.Value)  _mirrorCeiling.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
             }
             _oldMirrorDistanceCeiling = Main._ceil_MirrorDistance.Value;
@@ -290,7 +287,6 @@ namespace PortableMirror
                 var childMirror = _mirrorMicro.transform.Find(Main._micro_MirrorState.Value);
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
-                _mirrorMicro.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 if (Main._micro_AnchorToTracking.Value) _mirrorMicro.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
             }
             _oldMirrorScaleYMicro = Main._micro_MirrorScaleY.Value;
@@ -314,7 +310,6 @@ namespace PortableMirror
                 childMirror.gameObject.active = true;
                 childMirror.gameObject.layer = Main.MirrorsShowInCamera.Value ? 4 : 10;
                 _mirrorTrans.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
-                _mirrorTrans.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 if (Main._trans_AnchorToTracking.Value) _mirrorTrans.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
 
             }
@@ -414,7 +409,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._base_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-
+                mirror.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 _mirrorBase = mirror;
             }
         }
@@ -452,7 +447,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._45_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-               
+                mirror.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 _mirror45 = mirror;
             }
         }
@@ -490,7 +485,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._ceil_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-
+                mirror.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 _mirrorCeiling = mirror;
             }
         }
@@ -531,7 +526,7 @@ namespace PortableMirror
                 mirror.GetOrAddComponent<VRC_Pickup>().orientation = Main.PickupToHand.Value ? VRC_Pickup.PickupOrientation.Any : VRC_Pickup.PickupOrientation.Grip;
                 if (!Main._micro_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-
+                mirror.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 _mirrorMicro = mirror;
             }
         }
@@ -574,7 +569,7 @@ namespace PortableMirror
                 mirror.GetComponent<BoxCollider>().size = new Vector3(1f, 1f, Main.ColliderDepth.Value);
                 if (!Main._trans_AnchorToTracking.Value) mirror.transform.SetParent(null);
                 else mirror.transform.SetParent(GameObject.Find("_Application/TrackingVolume/PlayerObjects").transform, true);
-
+                mirror.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
                 _mirrorTrans = mirror;
             }
         }
