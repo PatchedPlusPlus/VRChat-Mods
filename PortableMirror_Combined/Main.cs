@@ -107,9 +107,10 @@ namespace PortableMirror
             _base_MirrorKeybind = MelonPreferences.CreateEntry<string>("PortableMirror", "MirrorKeybind", "Alpha1", "Toggle Mirror Keybind");
 
             MirrorKeybindEnabled = MelonPreferences.CreateEntry<bool>("PortableMirror", "MirrorKeybindEnabled", true, "Enabled Mirror Keybind");
-            fixRenderOrder = MelonPreferences.CreateEntry<bool>("PortableMirror", "fixRenderOrder", true, "Change render order on mirrors to fix overrendering");
             Spacer1 = MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer1", false, "-Spacer | Does Nothing-", "", true);
             Spacer2 = MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer2", false, "-Past this are global settings for all portable mirror types-");
+            fixRenderOrder = MelonPreferences.CreateEntry<bool>("PortableMirror", "fixRenderOrder", true, "Change render order on mirrors to fix overrendering");
+
 
             QuickMenuOptions = MelonPreferences.CreateEntry<bool>("PortableMirror", "QuickMenuOptions", true, "Enable Settings Quick Menu Button");
             OpenLastQMpage = MelonPreferences.CreateEntry<bool>("PortableMirror", "OpenLastQMpage", false, "Quick Menu Settings remembers last page opened");
@@ -587,7 +588,7 @@ namespace PortableMirror
         public static IEnumerator SetOrder(GameObject obj)
         {
             yield return new WaitForSeconds(1f);
-            obj.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
+            if (!obj?.Equals(null) ?? false) obj.GetComponentInChildren<Renderer>().material.renderQueue = 5000;
         }
 
         private void loadAssets()
