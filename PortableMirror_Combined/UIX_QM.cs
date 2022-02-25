@@ -78,6 +78,8 @@ namespace PortableMirror
             mirrorMenu.AddToggleButton("Pickupable", (action) =>
             {
                 Main._base_CanPickupMirror.Value = !Main._base_CanPickupMirror.Value;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions();
             }, () => Main._base_CanPickupMirror.Value);
             mirrorMenu.AddLabel($"Distance: {Main._base_MirrorDistance.Value}");
             mirrorMenu.AddSimpleButton("+", () => {
@@ -105,6 +107,8 @@ namespace PortableMirror
                 mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
                     Main._45_CanPickupMirror.Value = !Main._45_CanPickupMirror.Value;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    mirrorMenu.Hide(); QuickMenuOptions();
                 }, () => Main._45_CanPickupMirror.Value);
                 mirrorMenu.AddLabel($"Distance: {Main._45_MirrorDistance.Value}");
                 mirrorMenu.AddSimpleButton("+", () => {
@@ -133,6 +137,8 @@ namespace PortableMirror
                 mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
                     Main._ceil_CanPickupMirror.Value = !Main._ceil_CanPickupMirror.Value;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    mirrorMenu.Hide(); QuickMenuOptions();
                 }, () => Main._ceil_CanPickupMirror.Value);
                 mirrorMenu.AddLabel($"Distance: {Main._ceil_MirrorDistance.Value}");
                 mirrorMenu.AddSimpleButton("+", () => {
@@ -161,6 +167,8 @@ namespace PortableMirror
                 mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
                     Main._micro_CanPickupMirror.Value = !Main._micro_CanPickupMirror.Value;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    mirrorMenu.Hide(); QuickMenuOptions();
                 }, () => Main._micro_CanPickupMirror.Value);
             }
             if (true)//(Main._trans_enableTrans.Value)
@@ -180,6 +188,8 @@ namespace PortableMirror
                 mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
                     Main._trans_CanPickupMirror.Value = !Main._trans_CanPickupMirror.Value;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    mirrorMenu.Hide(); QuickMenuOptions();
                 }, () => Main._trans_CanPickupMirror.Value);
                 //6
                 mirrorMenu.AddLabel($"Distance: {Main._trans_MirrorDistance.Value}");

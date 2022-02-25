@@ -11,7 +11,7 @@ using UnhollowerRuntimeLib;
 using System.IO;
 
 
-[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.6.1", "Nirvash, M-oons")] //Name changed to break auto update
+[assembly: MelonInfo(typeof(PortableMirror.Main), "PortableMirrorMod", "1.6.2", "Nirvash, M-oons")] //Name changed to break auto update
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonOptionalDependencies("ActionMenuApi")]
 
@@ -37,10 +37,10 @@ namespace PortableMirror
         public static MelonPreferences_Entry<string> _base_MirrorKeybind;
 
         public static MelonPreferences_Entry<bool> MirrorKeybindEnabled;
-        public static MelonPreferences_Entry<bool> fixRenderOrder;
-        public static MelonPreferences_Entry<bool> usePixelLights;
         public static MelonPreferences_Entry<bool> Spacer1;
         public static MelonPreferences_Entry<bool> Spacer2;
+        public static MelonPreferences_Entry<bool> fixRenderOrder;
+        public static MelonPreferences_Entry<bool> usePixelLights;
 
         public static MelonPreferences_Entry<bool> QuickMenuOptions;
         public static MelonPreferences_Entry<bool> OpenLastQMpage;
@@ -112,7 +112,6 @@ namespace PortableMirror
             Spacer2 = MelonPreferences.CreateEntry<bool>("PortableMirror", "Spacer2", false, "-Past this are global settings for all portable mirror types-");
             fixRenderOrder = MelonPreferences.CreateEntry<bool>("PortableMirror", "fixRenderOrder", true, "Change render order on mirrors to fix overrendering");
             usePixelLights = MelonPreferences.CreateEntry<bool>("PortableMirror", "usePixelLights", false, "Use PixelLights for mirrors");
-
 
             QuickMenuOptions = MelonPreferences.CreateEntry<bool>("PortableMirror", "QuickMenuOptions", true, "Enable Settings Quick Menu Button");
             OpenLastQMpage = MelonPreferences.CreateEntry<bool>("PortableMirror", "OpenLastQMpage", false, "Quick Menu Settings remembers last page opened");
@@ -387,23 +386,27 @@ namespace PortableMirror
             }
             else
             {
-                if (Main._base_MirrorState.Value == "MirrorCutout" || Main._base_MirrorState.Value == "MirrorTransparent" || Main._base_MirrorState.Value == "MirrorCutoutSolo" || Main._base_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
+                if (Main._base_MirrorState.Value == "MirrorCutout" || Main._base_MirrorState.Value == "MirrorTransparent" || Main._base_MirrorState.Value == "MirrorCutoutSolo" || Main._base_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();  
                 VRCPlayer player = Utils.GetVRCPlayer();
-                Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * Main._base_MirrorDistance.Value);
+                var cam = Camera.main.gameObject;
+                Vector3 pos = player.transform.position;
                 pos.y += .5f;
                 pos.y += (Main._base_MirrorScaleY.Value - 1)  / 2;
 
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
-                mirror.transform.position = pos;
-                mirror.transform.rotation = player.transform.rotation;
                 mirror.transform.localScale = new Vector3(Main._base_MirrorScaleX.Value, Main._base_MirrorScaleY.Value, 1f);
                 mirror.name = "PortableMirror";
 
                 if (Main._base_PositionOnView.Value)
                 {
-                    GameObject IKEffector = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector");
-                    mirror.transform.position = IKEffector.transform.position + IKEffector.transform.forward + (IKEffector.transform.forward * Main._base_MirrorDistance.Value);
-                    mirror.transform.rotation = IKEffector.transform.rotation;
+                    mirror.transform.position = cam.transform.position + cam.transform.forward + (cam.transform.forward * Main._base_MirrorDistance.Value);
+                    mirror.transform.rotation = cam.transform.rotation;
+                }
+                else
+                {
+                    mirror.transform.position = new Vector3(cam.transform.position.x, pos.y, cam.transform.position.z); //Set to player height instead of centered on camera
+                    mirror.transform.rotation = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, cam.transform.rotation.eulerAngles.z); //Make vertical
+                    mirror.transform.position = mirror.transform.position + mirror.transform.forward + (mirror.transform.forward * Main._base_MirrorDistance.Value); //Move on distance
                 }
 
                 var childMirror = mirror.transform.Find(Main._base_MirrorState.Value);
@@ -434,16 +437,19 @@ namespace PortableMirror
             {
                 if (Main._45_MirrorState.Value == "MirrorCutout" || Main._45_MirrorState.Value == "MirrorTransparent" || Main._45_MirrorState.Value == "MirrorCutoutSolo" || Main._45_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
-                Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * Main._45_MirrorDistance.Value);
+                var cam = Camera.main.gameObject;
+                Vector3 pos = player.transform.position;
                 pos.y += .5f;
                 pos.y += (Main._45_MirrorScaleY.Value - 1) / 2;
-                //pos.y += 2;
+
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
-                mirror.transform.position = pos;
-                mirror.transform.rotation = player.transform.rotation;
-                mirror.transform.rotation = mirror.transform.rotation * Quaternion.AngleAxis(45, Vector3.left);  // Sets the transform's current rotation to a new rotation that rotates 30 degrees around the y-axis(Vector3.up)
                 mirror.transform.localScale = new Vector3(Main._45_MirrorScaleX.Value, Main._45_MirrorScaleY.Value, 1f);
                 mirror.name = "PortableMirror45";
+
+                mirror.transform.position = new Vector3(cam.transform.position.x, pos.y, cam.transform.position.z); //Set to player height instead of centered on camera
+                mirror.transform.rotation = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, cam.transform.rotation.eulerAngles.z); //Make vertical
+                mirror.transform.position = mirror.transform.position + mirror.transform.forward + (mirror.transform.forward * Main._45_MirrorDistance.Value); //Move on distance
+                mirror.transform.rotation = mirror.transform.rotation * Quaternion.AngleAxis(45, Vector3.left);  // Sets the transform's current rotation to a new rotation that rotates 30 degrees around the y-axis(Vector3.up)
 
                 var childMirror = mirror.transform.Find(Main._45_MirrorState.Value);
                 childMirror.gameObject.active = true;
@@ -474,15 +480,17 @@ namespace PortableMirror
             {
                 if (Main._ceil_MirrorState.Value == "MirrorCutout" || Main._ceil_MirrorState.Value == "MirrorTransparent" || Main._ceil_MirrorState.Value == "MirrorCutoutSolo" || Main._ceil_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
+                var cam = Camera.main.gameObject;
+
                 Vector3 pos = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position + (player.transform.up); // Bases mirror position off of hip, to allow for play space moving 
                 //Logger.Msg($"x:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.x}, y:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.y}, z:{GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HipTarget").transform.position.z}");
                 pos.y += Main._ceil_MirrorDistance.Value;
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
                 mirror.transform.position = pos;
-                mirror.transform.rotation = player.transform.rotation;
-                mirror.transform.rotation = Quaternion.AngleAxis(90, Vector3.left);  // Sets the transform's current rotation to a new rotation that rotates 30 degrees around the y-axis(Vector3.up)
+                mirror.transform.rotation = Quaternion.Euler(-90f, cam.transform.rotation.eulerAngles.y, cam.transform.rotation.eulerAngles.z); 
+                //mirror.transform.rotation = Quaternion.AngleAxis(90, Vector3.left);  // Sets the transform's current rotation to a new rotation that rotates 90 degrees around the y-axis(Vector3.up)
                 mirror.transform.localScale = new Vector3(Main._ceil_MirrorScaleX.Value, Main._ceil_MirrorScaleZ.Value, 1f);
-                mirror.name = "PortableMirrorCeiling";
+                mirror.name = "PortableMirrorCeiling";            
 
                 var childMirror = mirror.transform.Find(Main._ceil_MirrorState.Value);
                 childMirror.gameObject.active = true;
@@ -512,19 +520,24 @@ namespace PortableMirror
             {
                 if (Main._micro_MirrorState.Value == "MirrorCutout" || Main._micro_MirrorState.Value == "MirrorTransparent" || Main._micro_MirrorState.Value == "MirrorCutoutSolo" || Main._micro_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
-                Vector3 pos = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector").transform.position + (player.transform.forward * Main._micro_MirrorScaleY.Value); // Gets position of Head and moves mirror forward by the Y scale.
+                var cam = Camera.main.gameObject;
+                Vector3 pos = cam.transform.position;
                 pos.y -= Main._micro_MirrorScaleY.Value / 4;///This will need turning
+
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
-                mirror.transform.position = pos;
-                mirror.transform.rotation = player.transform.rotation;
                 mirror.transform.localScale = new Vector3(Main._micro_MirrorScaleX.Value, Main._micro_MirrorScaleY.Value, 1f);
                 mirror.name = "PortableMirrorMicro";
 
                 if (Main._micro_PositionOnView.Value)
                 {
-                    GameObject IKEffector = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector");
-                    mirror.transform.position = IKEffector.transform.position + (IKEffector.transform.forward * Main._micro_MirrorScaleY.Value);
-                    mirror.transform.rotation = IKEffector.transform.rotation;
+                    mirror.transform.position = cam.transform.position + (cam.transform.forward * Main._micro_MirrorScaleY.Value);
+                    mirror.transform.rotation = cam.transform.rotation;
+                }
+                else
+                {
+                    mirror.transform.position = mirror.transform.position = new Vector3(cam.transform.position.x, pos.y, cam.transform.position.z); //Set to player height instead of centered on camera
+                    mirror.transform.rotation = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, cam.transform.rotation.eulerAngles.z); //Make vertical
+                    mirror.transform.position = mirror.transform.position + (mirror.transform.forward * Main._micro_MirrorScaleY.Value); //Move on distance
                 }
 
                 var childMirror = mirror.transform.Find(Main._micro_MirrorState.Value);
@@ -552,22 +565,27 @@ namespace PortableMirror
             }
             else
             {
-                if(Main._trans_MirrorState.Value == "MirrorCutout" || Main._trans_MirrorState.Value == "MirrorTransparent" || Main._trans_MirrorState.Value == "MirrorCutoutSolo" || Main._trans_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
+                if (Main._trans_MirrorState.Value == "MirrorCutout" || Main._trans_MirrorState.Value == "MirrorTransparent" || Main._trans_MirrorState.Value == "MirrorCutoutSolo" || Main._trans_MirrorState.Value == "MirrorTransparentSolo") SetAllMirrorsToIgnoreShader();
                 VRCPlayer player = Utils.GetVRCPlayer();
-                Vector3 pos = player.transform.position + player.transform.forward + (player.transform.forward * Main._trans_MirrorDistance.Value);
+                var cam = Camera.main.gameObject;
+                Vector3 pos = player.transform.position;
                 pos.y += .5f;
                 pos.y += (Main._trans_MirrorScaleY.Value - 1) / 2;
+
                 GameObject mirror = GameObject.Instantiate(mirrorPrefab);
-                mirror.transform.position = pos;
-                mirror.transform.rotation = player.transform.rotation;
                 mirror.transform.localScale = new Vector3(Main._trans_MirrorScaleX.Value, Main._trans_MirrorScaleY.Value, 1f);
                 mirror.name = "PortableMirrorTrans";
 
                 if (Main._trans_PositionOnView.Value)
                 {
-                    GameObject IKEffector = GameObject.Find(player.gameObject.name + "/AnimationController/HeadAndHandIK/HeadEffector");
-                    mirror.transform.position = IKEffector.transform.position + IKEffector.transform.forward + (IKEffector.transform.forward * Main._trans_MirrorDistance.Value);
-                    mirror.transform.rotation = IKEffector.transform.rotation;
+                    mirror.transform.position = cam.transform.position + cam.transform.forward + (cam.transform.forward * Main._trans_MirrorDistance.Value);
+                    mirror.transform.rotation = cam.transform.rotation;
+                }
+                else
+                {
+                    mirror.transform.position = new Vector3(cam.transform.position.x, pos.y, cam.transform.position.z); //Set to player height instead of centered on camera
+                    mirror.transform.rotation = Quaternion.Euler(0f, cam.transform.rotation.eulerAngles.y, cam.transform.rotation.eulerAngles.z); //Make vertical
+                    mirror.transform.position = mirror.transform.position + mirror.transform.forward + (mirror.transform.forward * Main._trans_MirrorDistance.Value); //Move on distance
                 }
 
                 var childMirror = mirror.transform.Find(Main._trans_MirrorState.Value);
