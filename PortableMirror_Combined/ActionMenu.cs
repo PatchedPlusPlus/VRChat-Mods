@@ -36,35 +36,35 @@ namespace PortableMirror
 
             if (assetBundleIcons != null)
             {
-                try { DistMinus = LoadTexture("icons8-distance-128-Distance-Minus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { DistPlus = LoadTexture("icons8-distance-128-Distance-Plus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { SizeMinus = LoadTexture("icons8-distance-128-Size-Minus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { SizePlus = LoadTexture("icons8-distance-128-Size-Plus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { Grab = LoadTexture("icons8-grab-100-edit.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorBase = LoadTexture("icons8-rectangular-mirror-128-BW-Edit.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { Mirror45 = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-45.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorCeil = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Ceiling.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorCut = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Cut.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorFull = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Full.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorMicro = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Micro.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorOpt = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Opt.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorTrans = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Trans.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorRuler = LoadTexture("icons8-ruler-128-edit.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorOptions = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Options.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { SettingsGear = LoadTexture("icons8-automation-100-edit.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { TransPlus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransPlus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { TransMinus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransMinus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { CameraMirror = LoadTexture("icons8-rectangular-mirror-128-BW-Camera.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { DistAdjIcon = LoadTexture("icons8-distance-128-Distance-Adj.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { GrabDistPlus = LoadTexture("icons8-grab-100-edit-Distance_Plus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { GrabDistMinus = LoadTexture("icons8-grab-100-edit-Distance_Minus.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorCutSolo = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-CutSolo.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { MirrorTransSolo = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransSolo.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { SnapToHand = LoadTexture("icons8-grab-100-edit-SnapToHand.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { PosfromView = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-PosfromView.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
-                try { FollowsYou = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-FollowsYou.png"); } catch { MelonLogger.Error("Failed to load image from asset bundle"); }
+                try { DistMinus = LoadTexture("icons8-distance-128-Distance-Minus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { DistPlus = LoadTexture("icons8-distance-128-Distance-Plus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { SizeMinus = LoadTexture("icons8-distance-128-Size-Minus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { SizePlus = LoadTexture("icons8-distance-128-Size-Plus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { Grab = LoadTexture("icons8-grab-100-edit.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorBase = LoadTexture("icons8-rectangular-mirror-128-BW-Edit.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { Mirror45 = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-45.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorCeil = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Ceiling.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorCut = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Cut.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorFull = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Full.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorMicro = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Micro.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorOpt = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Opt.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorTrans = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Trans.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorRuler = LoadTexture("icons8-ruler-128-edit.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorOptions = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-Options.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { SettingsGear = LoadTexture("icons8-automation-100-edit.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { TransPlus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransPlus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { TransMinus = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransMinus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { CameraMirror = LoadTexture("icons8-rectangular-mirror-128-BW-Camera.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { DistAdjIcon = LoadTexture("icons8-distance-128-Distance-Adj.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { GrabDistPlus = LoadTexture("icons8-grab-100-edit-Distance_Plus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { GrabDistMinus = LoadTexture("icons8-grab-100-edit-Distance_Minus.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorCutSolo = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-CutSolo.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { MirrorTransSolo = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-TransSolo.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { SnapToHand = LoadTexture("icons8-grab-100-edit-SnapToHand.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { PosfromView = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-PosfromView.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
+                try { FollowsYou = LoadTexture("icons8-rectangular-mirror-128-BW-Edit-FollowsYou.png"); } catch { Main.Logger.Error("Failed to load image from asset bundle"); }
             }
-            else MelonLogger.Error("Bundle was null");
+            else Main.Logger.Error("Bundle was null");
         }
 
         private static Texture2D LoadTexture(string Texture)
@@ -75,7 +75,8 @@ namespace PortableMirror
             return Texture2;
         }
 
-        private static void MirrorMenu(string MirrorType)
+        private static void MirrorMenu(string MirrorType, MelonPreferences_Entry<string> prefState, MelonPreferences_Entry<bool> prefPickup, MelonPreferences_Entry<float> prefDist,
+            MelonPreferences_Entry<float> prefX, MelonPreferences_Entry<float> prefY, MelonPreferences_Entry<bool> prefPos, MelonPreferences_Entry<bool> prefTracking)
         {
             string MirrorScaleType = "MirrorScale" + (MirrorType == "PortableMirrorCeiling" ? "Z" : "Y");
             float Scale = (MirrorType == "PortableMirrorMicro" ? .01f : .25f);
@@ -83,41 +84,41 @@ namespace PortableMirror
             CustomSubMenu.AddSubMenu("Mirror Type", () =>
             {
                 CustomSubMenu.AddButton("Full", () =>
-                {
-                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorFull");
+                { 
+                    prefState.Value = "MirrorFull";
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorFull);
                 CustomSubMenu.AddButton("Optimized", () =>
                 {
-                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorOpt");
+                    prefState.Value = "MirrorOpt";
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorOpt);
                 CustomSubMenu.AddButton("Cutout", () =>
                 {
-                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorCutout");
+                    prefState.Value = "MirrorCutout";
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorCut);
                 CustomSubMenu.AddButton("Transparent", () =>
                 {
-                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorTransparent");
+                    prefState.Value = "MirrorTransparent";
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorTrans);
                 CustomSubMenu.AddButton("Cutout Solo", () =>
                 {
-                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorCutoutSolo");
+                    prefState.Value = "MirrorCutoutSolo";
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorCutSolo);
                 CustomSubMenu.AddButton("Transparent Solo", () =>
                 {
-                    MelonPreferences.SetEntryValue<string>(MirrorType, "MirrorState", "MirrorTransparentSolo");
+                    prefState.Value = "MirrorTransparentSolo";
                     Main main = new Main(); main.OnPreferencesSaved();
                 }, MirrorTransSolo);
             }, MirrorOptions);
 
-
-            CustomSubMenu.AddToggle("Can Pickup", MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"), (action) =>
+            
+            CustomSubMenu.AddToggle("Can Pickup", prefPickup.Value, (action) =>
             {
-                MelonPreferences.SetEntryValue<bool>(MirrorType, "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>(MirrorType, "CanPickupMirror"));
+                prefPickup.Value = !prefPickup.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 AMUtils.RefreshActionMenu();
             }, Grab);
@@ -126,32 +127,32 @@ namespace PortableMirror
             {
                 if (MirrorType != "PortableMirrorMicro")
                 {
-                    CustomSubMenu.AddButton($"Distance +\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance").ToString("F2").TrimEnd('0')}", () =>
+                    CustomSubMenu.AddButton($"Distance +\n{prefDist.Value.ToString("F2").TrimEnd('0')}", () =>
                     {
-                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") + Main._mirrorDistAdj);
+                        prefDist.Value += Main._mirrorDistAdj;
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, DistPlus);
-                    CustomSubMenu.AddButton($"Distance -\n{MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance").ToString("F2").TrimEnd('0')}", () =>
+                    CustomSubMenu.AddButton($"Distance -\n{prefDist.Value.ToString("F2").TrimEnd('0')}", () =>
                     {
-                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorDistance", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorDistance") - Main._mirrorDistAdj);
+                        prefDist.Value -= Main._mirrorDistAdj;
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }, DistMinus);
                 }
                 CustomSubMenu.AddButton("Larger", () =>
                 {
-                    MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorScaleX", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") + Scale);
-                    MelonPreferences.SetEntryValue<float>(MirrorType, MirrorScaleType, MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) + Scale);
+                    prefX.Value += Scale;
+                    prefY.Value += Scale;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, SizePlus);
                 CustomSubMenu.AddButton("Smaller", () =>
                 {
-                    if ((MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f)) && MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f))
+                    if ((prefX.Value > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f)) && prefY.Value > Scale * (MirrorType == "PortableMirrorMicro" ? 2f : 1f))
                     {
-                        MelonPreferences.SetEntryValue<float>(MirrorType, "MirrorScaleX", MelonPreferences.GetEntryValue<float>(MirrorType, "MirrorScaleX") - Scale);
-                        MelonPreferences.SetEntryValue<float>(MirrorType, MirrorScaleType, MelonPreferences.GetEntryValue<float>(MirrorType, MirrorScaleType) - Scale);
+                        prefX.Value -= Scale;
+                        prefY.Value -= Scale;
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }
@@ -160,17 +161,17 @@ namespace PortableMirror
 
             if (MirrorType == "PortableMirror" || MirrorType == "PortableMirrorTrans" || MirrorType == "PortableMirrorMicro")
             {
-                CustomSubMenu.AddToggle("Pos&Rotation from View", MelonPreferences.GetEntryValue<bool>(MirrorType, "PositionOnView"), (action) =>
+                CustomSubMenu.AddToggle("Pos&Rotation from View", prefPos.Value, (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>(MirrorType, "PositionOnView", !MelonPreferences.GetEntryValue<bool>(MirrorType, "PositionOnView"));
+                    prefPos.Value = !prefPos.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, PosfromView);
             }
 
-            CustomSubMenu.AddToggle("Mirror follows you", MelonPreferences.GetEntryValue<bool>(MirrorType, "AnchorToTracking"), (action) =>
+            CustomSubMenu.AddToggle("Mirror follows you", prefTracking.Value, (action) =>
             {
-                MelonPreferences.SetEntryValue<bool>(MirrorType, "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>(MirrorType, "AnchorToTracking"));
+            prefTracking.Value = !prefTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 AMUtils.RefreshActionMenu();
             }, FollowsYou);
@@ -181,7 +182,7 @@ namespace PortableMirror
         {
             loadAssets();
 
-            if (MelonPreferences.GetEntryValue<bool>("PortableMirror", "amapi_ModsFolder"))
+            if (Main.amapi_ModsFolder.Value)
                 AMUtils.AddToModsFolder("<color=#ff00ff>Portable Mirror</color>", () => AMsubMenu(), MirrorOpt);
             else
                 VRCActionMenuPage.AddSubMenu(ActionMenuPage.Main, "<color=#ff00ff>Portable Mirror</color>", () => AMsubMenu(), MirrorOpt);
@@ -197,7 +198,8 @@ namespace PortableMirror
                     AMUtils.RefreshActionMenu();
                 }, MirrorBase);
 
-                MirrorMenu("PortableMirror");
+                MirrorMenu("PortableMirror", Main._base_MirrorState, Main._base_CanPickupMirror, Main._base_MirrorDistance, Main._base_MirrorScaleX, Main._base_MirrorScaleY,
+                    Main._base_PositionOnView, Main._base_AnchorToTracking);
 
             }, MirrorBase);
 
@@ -209,7 +211,8 @@ namespace PortableMirror
                     AMUtils.RefreshActionMenu();
                 }, Mirror45);
 
-                MirrorMenu("PortableMirror45");
+                MirrorMenu("PortableMirror45", Main._45_MirrorState, Main._45_CanPickupMirror, Main._45_MirrorDistance, Main._45_MirrorScaleX, Main._45_MirrorScaleY,
+                    Main.Spacer1, Main._45_AnchorToTracking);
 
             }, Mirror45);
 
@@ -221,7 +224,8 @@ namespace PortableMirror
                     AMUtils.RefreshActionMenu();
                 }, MirrorCeil);
 
-                MirrorMenu("PortableMirrorCeiling");
+                MirrorMenu("PortableMirrorCeiling", Main._ceil_MirrorState, Main._ceil_CanPickupMirror, Main._ceil_MirrorDistance, Main._ceil_MirrorScaleX, Main._ceil_MirrorScaleZ,
+                    Main.Spacer1, Main._ceil_AnchorToTracking);
 
             }, MirrorCeil);
 
@@ -233,7 +237,8 @@ namespace PortableMirror
                     AMUtils.RefreshActionMenu();
                 }, MirrorMicro);
 
-                MirrorMenu("PortableMirrorMicro");
+                MirrorMenu("PortableMirrorMicro", Main._micro_MirrorState, Main._micro_CanPickupMirror, Main._base_MirrorDistance, Main._micro_MirrorScaleX, Main._micro_MirrorScaleY,
+                    Main._micro_PositionOnView, Main._micro_AnchorToTracking);
 
             }, MirrorMicro);
 
@@ -245,7 +250,8 @@ namespace PortableMirror
                     AMUtils.RefreshActionMenu();
                 }, MirrorTrans);
 
-                MirrorMenu("PortableMirrorTrans");
+                MirrorMenu("PortableMirrorTrans", Main._trans_MirrorState, Main._trans_CanPickupMirror, Main._trans_MirrorDistance, Main._trans_MirrorScaleX, Main._trans_MirrorScaleY,
+                    Main._trans_PositionOnView, Main._trans_AnchorToTracking);
 
             }, MirrorTrans);
 
@@ -253,21 +259,21 @@ namespace PortableMirror
 
             CustomSubMenu.AddSubMenu("Extras", () =>
             {
-                CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
+                CustomSubMenu.AddButton($"Transparency:\n{Main.TransMirrorTrans.Value}", () =>
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror", "TransMirrorTrans", MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans") + .1f);
+                    Main.TransMirrorTrans.Value += .1f;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, TransPlus);
-                CustomSubMenu.AddButton($"Transparency:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans")}", () =>
+                CustomSubMenu.AddButton($"Transparency:\n{Main.TransMirrorTrans.Value}", () =>
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror", "TransMirrorTrans", MelonPreferences.GetEntryValue<float>("PortableMirror", "TransMirrorTrans") - .1f);
+                    Main.TransMirrorTrans.Value -= .1f;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, TransMinus);
-                CustomSubMenu.AddToggle("Mirrors Show In Camera", MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"), (action) =>
+                CustomSubMenu.AddToggle("Mirrors Show In Camera", Main.MirrorsShowInCamera.Value, (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "MirrorsShowInCamera"));
+                    Main.MirrorsShowInCamera.Value = !Main.MirrorsShowInCamera.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, CameraMirror);
@@ -278,28 +284,40 @@ namespace PortableMirror
                     AMUtils.RefreshActionMenu();
                 }, DistAdjIcon);
 
-                CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                CustomSubMenu.AddButton($"ColliderDepth:\n{Main.ColliderDepth.Value.ToString("F2").TrimEnd('0')}", () =>
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") + .1f);
+                    Main.ColliderDepth.Value += .1f;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, GrabDistPlus);
-                CustomSubMenu.AddButton($"ColliderDepth:\n{MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth").ToString("F2").TrimEnd('0')}", () =>
+                CustomSubMenu.AddButton($"ColliderDepth:\n{Main.ColliderDepth.Value.ToString("F2").TrimEnd('0')}", () =>
                 {
-                    if (MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") > .1f)
+                    if (Main.ColliderDepth.Value > .1f)
                     {
-                        MelonPreferences.SetEntryValue<float>("PortableMirror", "ColliderDepth", MelonPreferences.GetEntryValue<float>("PortableMirror", "ColliderDepth") - .1f);
+                        Main.ColliderDepth.Value -= .1f;
                         Main main = new Main(); main.OnPreferencesSaved();
                         AMUtils.RefreshActionMenu();
                     }
                 }, GrabDistMinus);
 
-                CustomSubMenu.AddToggle("Pickups snap to hand", MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"), (action) =>
+                CustomSubMenu.AddToggle("Pickups snap to hand", Main.PickupToHand.Value, (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+                    Main.PickupToHand.Value = !Main.PickupToHand.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     AMUtils.RefreshActionMenu();
                 }, SnapToHand);
+
+                CustomSubMenu.AddToggle("All Pickupable", Main._AllPickupable, (action) =>
+                {
+                    Main._AllPickupable = !Main._AllPickupable;
+                    Main._base_CanPickupMirror.Value = Main._AllPickupable;
+                    Main._45_CanPickupMirror.Value = Main._AllPickupable;
+                    Main._ceil_CanPickupMirror.Value = Main._AllPickupable;
+                    Main._micro_CanPickupMirror.Value = Main._AllPickupable;
+                    Main._trans_CanPickupMirror.Value = Main._AllPickupable;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    AMUtils.RefreshActionMenu();
+                }, Grab);
 
             }, SettingsGear);
         }

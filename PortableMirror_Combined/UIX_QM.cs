@@ -13,28 +13,28 @@ namespace PortableMirror
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nPortable\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
-            }, (button) => { Main.ButtonList["Base"] = button.transform; button.gameObject.SetActive(Main._enableBase); });
+            }, (button) => { Main.ButtonList["Base"] = button.transform; button.gameObject.SetActive(Main._base_enableBase.Value); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nPortable\nMirror 45", () =>
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
-            }, (button) => { Main.ButtonList["45"] = button.transform; button.gameObject.SetActive(Main._enable45); });
+            }, (button) => { Main.ButtonList["45"] = button.transform; button.gameObject.SetActive(Main._45_enable45.Value); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nCeiling\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling(); ;
-            }, (button) => { Main.ButtonList["Ceiling"] = button.transform; button.gameObject.SetActive(Main._enableCeiling); });
+            }, (button) => { Main.ButtonList["Ceiling"] = button.transform; button.gameObject.SetActive(Main._ceil_enableCeiling.Value); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nMicro\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
-            }, (button) => { Main.ButtonList["Micro"] = button.transform; button.gameObject.SetActive(Main._enableMicro); });
+            }, (button) => { Main.ButtonList["Micro"] = button.transform; button.gameObject.SetActive(Main._micro_enableMicro.Value); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Toggle\nTransparent\nMirror", () =>
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
-            }, (button) => { Main.ButtonList["Trans"] = button.transform; button.gameObject.SetActive(Main._enableTrans); });
+            }, (button) => { Main.ButtonList["Trans"] = button.transform; button.gameObject.SetActive(Main._trans_enableTrans.Value); });
             ExpansionKitApi.GetExpandedMenu(ExpandedMenu.QuickMenu).AddSimpleButton("Portable\nMirror\nSettings", () =>
             {
-                if (Main._openLastQMpage && Main._qmOptionsLastPage == 2) QuickMenuOptions2();
+                if (Main.OpenLastQMpage.Value && Main._qmOptionsLastPage == 2) QuickMenuOptions2();
                 else QuickMenuOptions();
-            }, (button) => { Main.ButtonList["Settings"] = button.transform; button.gameObject.SetActive(Main._quickMenuOptions); });
+            }, (button) => { Main.ButtonList["Settings"] = button.transform; button.gameObject.SetActive(Main.QuickMenuOptions.Value); });
         }
 
         public static string StateText(string stateRaw)
@@ -50,14 +50,14 @@ namespace PortableMirror
                 default: return "Something Broke";
             }
         }
-        public static void ToggleMirrorState(string MelonPrefCat, string mirrorState)
+        public static void ToggleMirrorState(ref MelonPreferences_Entry<string> pref)
         {
-            if (mirrorState == "MirrorFull") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorOpt");
-            else if (mirrorState == "MirrorOpt") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorCutout");
-            else if (mirrorState == "MirrorCutout") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorTransparent");
-            else if (mirrorState == "MirrorTransparent") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorCutoutSolo");
-            else if (mirrorState == "MirrorCutoutSolo") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorTransparentSolo");
-            else if (mirrorState == "MirrorTransparentSolo") MelonPreferences.SetEntryValue<string>(MelonPrefCat, "MirrorState", "MirrorFull");
+            if (pref.Value == "MirrorFull") pref.Value = "MirrorOpt";
+            else if (pref.Value == "MirrorOpt") pref.Value = "MirrorCutout";
+            else if (pref.Value == "MirrorCutout") pref.Value = "MirrorTransparent";
+            else if (pref.Value == "MirrorTransparent") pref.Value = "MirrorCutoutSolo";
+            else if (pref.Value == "MirrorCutoutSolo") pref.Value = "MirrorTransparentSolo";
+            else if (pref.Value == "MirrorTransparentSolo") pref.Value = "MirrorFull";
         }
 
         private static void QuickMenuOptions()
@@ -69,137 +69,138 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
             }, () => Main._mirrorBase != null);
-            mirrorMenu.AddSimpleButton(StateText(Main._mirrorStateBase), () =>
+            mirrorMenu.AddSimpleButton(StateText(Main._base_MirrorState.Value), () =>
             {
-                ToggleMirrorState("PortableMirror", Main._mirrorStateBase);
+                ToggleMirrorState(ref Main._base_MirrorState);
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
             });
-            mirrorMenu.AddSimpleButton(MelonPreferences.GetEntryValue<bool>("PortableMirror", "CanPickupMirror") ? "Pickupable" : "Not Pickupable", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirror", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "CanPickupMirror"));
+            mirrorMenu.AddToggleButton("Pickupable", (action) =>
+            {
+                Main._base_CanPickupMirror.Value = !Main._base_CanPickupMirror.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
-            });
-            mirrorMenu.AddLabel($"Distance: {MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance")}");
+            }, () => Main._base_CanPickupMirror.Value);
+            mirrorMenu.AddLabel($"Distance: {Main._base_MirrorDistance.Value}");
             mirrorMenu.AddSimpleButton("+", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance") + Main._mirrorDistAdj);
+                Main._base_MirrorDistance.Value = Main._base_MirrorDistance.Value + Main._mirrorDistAdj;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
             });
             mirrorMenu.AddSimpleButton("-", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorDistance") - Main._mirrorDistAdj);
+                Main._base_MirrorDistance.Value = Main._base_MirrorDistance.Value - Main._mirrorDistAdj;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
             });
-            if (true)//(_enable45)
+            if (true)//(Main._45_enable45.Value)
             {
                 mirrorMenu.AddToggleButton("45 Mirror", (action) =>
                 {
                     if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
                 }, () => Main._mirror45 != null);
-                mirrorMenu.AddSimpleButton(StateText(Main._mirrorState45), () =>
+                mirrorMenu.AddSimpleButton(StateText(Main._45_MirrorState.Value), () =>
                 {
-                    ToggleMirrorState("PortableMirror45", Main._mirrorState45);
+                    ToggleMirrorState(ref Main._45_MirrorState);
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
-                mirrorMenu.AddSimpleButton(MelonPreferences.GetEntryValue<bool>("PortableMirror45", "CanPickupMirror") ? "Pickupable" : "Not Pickupable", () =>
+                mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>("PortableMirror45", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirror45", "CanPickupMirror"));
+                    Main._45_CanPickupMirror.Value = !Main._45_CanPickupMirror.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
-                });
-                mirrorMenu.AddLabel($"Distance: {MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance")}");
+                }, () => Main._45_CanPickupMirror.Value);
+                mirrorMenu.AddLabel($"Distance: {Main._45_MirrorDistance.Value}");
                 mirrorMenu.AddSimpleButton("+", () => {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance") + Main._mirrorDistAdj);
+                    Main._45_MirrorDistance.Value = Main._45_MirrorDistance.Value + Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
                 mirrorMenu.AddSimpleButton("-", () => {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorDistance") - Main._mirrorDistAdj);
+                    Main._45_MirrorDistance.Value = Main._45_MirrorDistance.Value - Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
             }
-            if (true)//(_enableCeiling)
+            if (true)//(Main._ceil_enableCeiling.Value)
             {
                 mirrorMenu.AddToggleButton("Ceiling Mirror", (action) =>
                 {
                     if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
                 }, () => Main._mirrorCeiling != null);
-                mirrorMenu.AddSimpleButton(StateText(Main._mirrorStateCeiling), () =>
+                mirrorMenu.AddSimpleButton(StateText(Main._ceil_MirrorState.Value), () =>
                 {
-                    ToggleMirrorState("PortableMirrorCeiling", Main._mirrorStateCeiling);
+                    ToggleMirrorState(ref Main._ceil_MirrorState);
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
-                mirrorMenu.AddSimpleButton(MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "CanPickupMirror") ? "Pickupable" : "Not Pickupable", () =>
+                mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>("PortableMirrorCeiling", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "CanPickupMirror"));
+                    Main._ceil_CanPickupMirror.Value = !Main._ceil_CanPickupMirror.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
-                });
-                mirrorMenu.AddLabel($"Distance: {MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance")}");
+                }, () => Main._ceil_CanPickupMirror.Value);
+                mirrorMenu.AddLabel($"Distance: {Main._ceil_MirrorDistance.Value}");
                 mirrorMenu.AddSimpleButton("+", () => {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance") + Main._mirrorDistAdj);
+                    Main._ceil_MirrorDistance.Value = Main._ceil_MirrorDistance.Value + Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
                 mirrorMenu.AddSimpleButton("-", () => {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorDistance") - Main._mirrorDistAdj);
+                    Main._ceil_MirrorDistance.Value = Main._ceil_MirrorDistance.Value - Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
             }
-            if (true)//(_enableMicro)
+            if (true)//(Main._micro_enableMicro.Value)
             {
                 mirrorMenu.AddToggleButton("Micro Mirror", (action) =>
                 {
                     if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
                 }, () => Main._mirrorMicro != null);
-                mirrorMenu.AddSimpleButton(StateText(Main._mirrorStateMicro), () =>
+                mirrorMenu.AddSimpleButton(StateText(Main._micro_MirrorState.Value), () =>
                 {
-                    ToggleMirrorState("PortableMirrorMicro", Main._mirrorStateMicro);
+                    ToggleMirrorState(ref Main._micro_MirrorState);
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
-                mirrorMenu.AddSimpleButton(MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirror") ? "Pickupable" : "Not Pickupable", () =>
+                mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "CanPickupMirror"));
+                    Main._micro_CanPickupMirror.Value = !Main._micro_CanPickupMirror.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
-                });
+                }, () => Main._micro_CanPickupMirror.Value);
             }
-            if (true)//(_enableTrans)
+            if (true)//(Main._trans_enableTrans.Value)
             {
                 mirrorMenu.AddToggleButton("Transparent", (action) =>
                 {
                     if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
                 }, () => Main._mirrorTrans != null);
 
-                mirrorMenu.AddSimpleButton(StateText(Main._mirrorStateTrans), () =>
+                mirrorMenu.AddSimpleButton(StateText(Main._trans_MirrorState.Value), () =>
                 {
-                    ToggleMirrorState("PortableMirrorTrans", Main._mirrorStateTrans);
+                    ToggleMirrorState(ref Main._trans_MirrorState);
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
 
-                mirrorMenu.AddSimpleButton(MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror") ? "Pickupable" : "Not Pickupable", () =>
+                mirrorMenu.AddToggleButton("Pickupable", (action) =>
                 {
-                    MelonPreferences.SetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror", !MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "CanPickupMirror"));
+                    Main._trans_CanPickupMirror.Value = !Main._trans_CanPickupMirror.Value;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
-                });
+                }, () => Main._trans_CanPickupMirror.Value);
                 //6
-                mirrorMenu.AddLabel($"Distance: {MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance")}");
+                mirrorMenu.AddLabel($"Distance: {Main._trans_MirrorDistance.Value}");
                 mirrorMenu.AddSimpleButton("+", () => {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance") + Main._mirrorDistAdj);
+                    Main._trans_MirrorDistance.Value = Main._trans_MirrorDistance.Value + Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
 
                 mirrorMenu.AddSimpleButton("-", () => {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorDistance", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorDistance") - Main._mirrorDistAdj);
+                    Main._trans_MirrorDistance.Value = Main._trans_MirrorDistance.Value - Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
@@ -231,33 +232,33 @@ namespace PortableMirror
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
             }, () => Main._mirrorBase != null);
             mirrorMenu.AddSimpleButton("Larger", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleX") + .25f);
-                MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleY") + .25f);
+                Main._base_MirrorScaleX.Value += .25f;
+                Main._base_MirrorScaleY.Value += .25f;
                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
             mirrorMenu.AddSimpleButton("Smaller", () => {
-                if (MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleY") > .25)
+                if (Main._base_MirrorScaleX.Value > .25 && Main._base_MirrorScaleY.Value > .25)
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleX") - .25f);
-                    MelonPreferences.SetEntryValue<float>("PortableMirror", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror", "MirrorScaleY") - .25f);
-                   Main main = new Main(); main.OnPreferencesSaved();
+                    Main._base_MirrorScaleX.Value -= .25f;
+                    Main._base_MirrorScaleY.Value -= .25f;
+                    Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions2();
                 }
             });
 
             //2
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirror", "PositionOnView") ? "Angle from View":"Angle is 90*")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirror", "PositionOnView", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PositionOnView"));
+            mirrorMenu.AddToggleButton($"Angle from View", (action) => {
+                Main._base_PositionOnView.Value = !Main._base_PositionOnView.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirror", "AnchorToTracking") ? "Anchored to Tracking Space" : "Anchored to World Space")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirror", "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "AnchorToTracking"));
+            }, () => Main._base_PositionOnView.Value);
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+                Main._base_AnchorToTracking.Value = !Main._base_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
+            }, () => Main._base_AnchorToTracking.Value);
 
             //3
             mirrorMenu.AddToggleButton("45 Mirror", (action) =>
@@ -265,18 +266,17 @@ namespace PortableMirror
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
             }, () => Main._mirror45 != null);
             mirrorMenu.AddSimpleButton("Larger", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleX") + .25f);
-                MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleY") + .25f);
-               Main main = new Main(); main.OnPreferencesSaved();
+                Main._45_MirrorScaleX.Value += .25f;
+                Main._45_MirrorScaleY.Value += .25f;
+                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
             mirrorMenu.AddSimpleButton("Smaller", () => {
-                if (MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleY") > .25)
+                if (Main._45_MirrorScaleX.Value > .25 && Main._45_MirrorScaleY.Value > .25)
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleX") - .25f);
-                    MelonPreferences.SetEntryValue<float>("PortableMirror45", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirror45", "MirrorScaleY") - .25f);
-
-                   Main main = new Main(); main.OnPreferencesSaved();
+                    Main._45_MirrorScaleX.Value -= .25f;
+                    Main._45_MirrorScaleY.Value -= .25f;
+                    Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions2();
                 }
             });
@@ -284,11 +284,11 @@ namespace PortableMirror
             //4
             mirrorMenu.AddSpacer();
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirror45", "AnchorToTracking") ? "Anchored to Tracking Space" : "Anchored to World Space")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirror45", "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>("PortableMirror45", "AnchorToTracking"));
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+                Main._45_AnchorToTracking.Value = !Main._45_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
+            }, () => Main._45_AnchorToTracking.Value);
 
             //5
             mirrorMenu.AddToggleButton("Ceiling Mirror", (action) =>
@@ -296,19 +296,17 @@ namespace PortableMirror
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
             }, () => Main._mirrorCeiling != null);
             mirrorMenu.AddSimpleButton("Larger", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX") + .25f);
-                MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ") + .25f);
-
-               Main main = new Main(); main.OnPreferencesSaved();
+                Main._ceil_MirrorScaleX.Value += .25f;
+                Main._ceil_MirrorScaleZ.Value += .25f;
+                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
             mirrorMenu.AddSimpleButton("Smaller", () => {
-                if (MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ") > .25)
+                if (Main._ceil_MirrorScaleX.Value > .25 && Main._ceil_MirrorScaleZ.Value > .25)
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleX") - .25f);
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ", MelonPreferences.GetEntryValue<float>("PortableMirrorCeiling", "MirrorScaleZ") - .25f);
-
-                   Main main = new Main(); main.OnPreferencesSaved();
+                    Main._ceil_MirrorScaleX.Value -= .25f;
+                    Main._ceil_MirrorScaleZ.Value -= .25f;
+                    Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions2();
                 }
             });
@@ -316,11 +314,11 @@ namespace PortableMirror
             //6
             mirrorMenu.AddSpacer();
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "AnchorToTracking") ? "Anchored to Tracking Space" : "Anchored to World Space")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirrorCeiling", "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>("PortableMirrorCeiling", "AnchorToTracking"));
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+                Main._ceil_AnchorToTracking.Value = !Main._ceil_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
+            }, () => Main._ceil_AnchorToTracking.Value);
 
             //7
             mirrorMenu.AddToggleButton("Micro Mirror", (action) =>
@@ -329,35 +327,34 @@ namespace PortableMirror
             }, () => Main._mirrorMicro != null);
 
             mirrorMenu.AddSimpleButton("Larger", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX") + .01f);
-                MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY") + .01f);
-               Main main = new Main(); main.OnPreferencesSaved();
+                Main._micro_MirrorScaleX.Value += .01f;
+                Main._micro_MirrorScaleY.Value += .01f;
+                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
 
             mirrorMenu.AddSimpleButton("Smaller", () => {
-                if (MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX") > .02 && MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY") > .02)
+                if (Main._micro_MirrorScaleX.Value > .02 && Main._micro_MirrorScaleY.Value > .02)
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleX") - .01f);
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorMicro", "MirrorScaleY") - .01f);
-
-                   Main main = new Main(); main.OnPreferencesSaved();
+                    Main._micro_MirrorScaleX.Value -= .01f;
+                    Main._micro_MirrorScaleY.Value -= .01f;
+                    Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions2();
                 }
             });
 
             //8
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "PositionOnView") ? "Angle from View" : "Angle is 90*")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirrorMicro", "PositionOnView", !MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "PositionOnView"));
+            mirrorMenu.AddToggleButton($"Angle from View", (action) => {
+                Main._micro_PositionOnView.Value = !Main._micro_PositionOnView.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "AnchorToTracking") ? "Anchored to Tracking Space" : "Anchored to World Space")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirrorMicro", "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>("PortableMirrorMicro", "AnchorToTracking"));
+            }, () => Main._micro_PositionOnView.Value);
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+                Main._micro_AnchorToTracking.Value = !Main._micro_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
+            }, () => Main._micro_AnchorToTracking.Value);
 
             //9
             mirrorMenu.AddToggleButton("Transparent", (action) =>
@@ -366,35 +363,44 @@ namespace PortableMirror
             }, () => Main._mirrorTrans != null);
 
             mirrorMenu.AddSimpleButton("Larger", () => {
-                MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX") + .25f);
-                MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY") + .25f);
-               Main main = new Main(); main.OnPreferencesSaved();
+                Main._trans_MirrorScaleX.Value += .25f;
+                Main._trans_MirrorScaleY.Value += .25f;
+                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
 
             mirrorMenu.AddSimpleButton("Smaller", () => {
-                if (MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX") > .25 && MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY") > .25)
+                if (Main._trans_MirrorScaleX.Value > .25 && Main._trans_MirrorScaleY.Value > .25)
                 {
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleX") - .25f);
-                    MelonPreferences.SetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY", MelonPreferences.GetEntryValue<float>("PortableMirrorTrans", "MirrorScaleY") - .25f);
-                   Main main = new Main(); main.OnPreferencesSaved();
+                    Main._trans_MirrorScaleX.Value -= .25f;
+                    Main._trans_MirrorScaleY.Value -= .25f;
+                    Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions2();
                 }
             });
 
             //10
-            mirrorMenu.AddSpacer();
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "PositionOnView") ? "Angle from View" : "Angle is 90*")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirrorTrans", "PositionOnView", !MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "PositionOnView"));
+            //mirrorMenu.AddSpacer();
+            mirrorMenu.AddToggleButton($"-All Pickupable-", (action) => {
+                Main._AllPickupable = !Main._AllPickupable;
+                Main._base_CanPickupMirror.Value = Main._AllPickupable;
+                Main._45_CanPickupMirror.Value = Main._AllPickupable;
+                Main._ceil_CanPickupMirror.Value = Main._AllPickupable;
+                Main._micro_CanPickupMirror.Value = Main._AllPickupable;
+                Main._trans_CanPickupMirror.Value = Main._AllPickupable;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
-            mirrorMenu.AddSimpleButton($"{(MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "AnchorToTracking") ? "Anchored to Tracking Space" : "Anchored to World Space")}", () => {
-                MelonPreferences.SetEntryValue<bool>("PortableMirrorTrans", "AnchorToTracking", !MelonPreferences.GetEntryValue<bool>("PortableMirrorTrans", "AnchorToTracking"));
+            }, () => Main._AllPickupable);
+            mirrorMenu.AddToggleButton($"Angle from View", (action) => {
+                Main._trans_PositionOnView.Value = !Main._trans_PositionOnView.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            });
-
+            }, () => Main._trans_PositionOnView.Value);
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+                Main._trans_AnchorToTracking.Value = !Main._trans_AnchorToTracking.Value;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions2();
+            }, () => Main._trans_AnchorToTracking.Value);
 
 
             //11
@@ -408,10 +414,10 @@ namespace PortableMirror
 
             mirrorMenu.AddToggleButton("Pickups snap to hand", (action) =>
             {
-                MelonPreferences.SetEntryValue<bool>("PortableMirror", "PickupToHand", !MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+                Main.PickupToHand.Value = !Main.PickupToHand.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
-            }, () => MelonPreferences.GetEntryValue<bool>("PortableMirror", "PickupToHand"));
+            }, () => Main.PickupToHand.Value);
 
             mirrorMenu.Show();
         }
