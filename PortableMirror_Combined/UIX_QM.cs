@@ -62,7 +62,7 @@ namespace PortableMirror
 
         private static void QuickMenuOptions()
         {
-            var mirrorMenu = ExpansionKitApi.CreateCustomQuickMenuPage(LayoutDescriptionCustom.QuickMenu3Column);
+            var mirrorMenu = ExpansionKitApi.CreateCustomQuickMenuPage(LayoutDescriptionCustom.QuickMenu3Column_Longer);
             Main._qmOptionsLastPage = 1;
 
             mirrorMenu.AddToggleButton("Portable Mirror", (action) =>
@@ -82,12 +82,14 @@ namespace PortableMirror
                 mirrorMenu.Hide(); QuickMenuOptions();
             }, () => Main._base_CanPickupMirror.Value);
             mirrorMenu.AddLabel($"Distance: {Main._base_MirrorDistance.Value}");
-            mirrorMenu.AddSimpleButton("+", () => {
+            mirrorMenu.AddSimpleButton("+", () =>
+            {
                 Main._base_MirrorDistance.Value = Main._base_MirrorDistance.Value + Main._mirrorDistAdj;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
             });
-            mirrorMenu.AddSimpleButton("-", () => {
+            mirrorMenu.AddSimpleButton("-", () =>
+            {
                 Main._base_MirrorDistance.Value = Main._base_MirrorDistance.Value - Main._mirrorDistAdj;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
@@ -111,12 +113,14 @@ namespace PortableMirror
                     mirrorMenu.Hide(); QuickMenuOptions();
                 }, () => Main._45_CanPickupMirror.Value);
                 mirrorMenu.AddLabel($"Distance: {Main._45_MirrorDistance.Value}");
-                mirrorMenu.AddSimpleButton("+", () => {
+                mirrorMenu.AddSimpleButton("+", () =>
+                {
                     Main._45_MirrorDistance.Value = Main._45_MirrorDistance.Value + Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
-                mirrorMenu.AddSimpleButton("-", () => {
+                mirrorMenu.AddSimpleButton("-", () =>
+                {
                     Main._45_MirrorDistance.Value = Main._45_MirrorDistance.Value - Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
@@ -141,12 +145,14 @@ namespace PortableMirror
                     mirrorMenu.Hide(); QuickMenuOptions();
                 }, () => Main._ceil_CanPickupMirror.Value);
                 mirrorMenu.AddLabel($"Distance: {Main._ceil_MirrorDistance.Value}");
-                mirrorMenu.AddSimpleButton("+", () => {
+                mirrorMenu.AddSimpleButton("+", () =>
+                {
                     Main._ceil_MirrorDistance.Value = Main._ceil_MirrorDistance.Value + Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
-                mirrorMenu.AddSimpleButton("-", () => {
+                mirrorMenu.AddSimpleButton("-", () =>
+                {
                     Main._ceil_MirrorDistance.Value = Main._ceil_MirrorDistance.Value - Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
@@ -193,29 +199,57 @@ namespace PortableMirror
                 }, () => Main._trans_CanPickupMirror.Value);
                 //6
                 mirrorMenu.AddLabel($"Distance: {Main._trans_MirrorDistance.Value}");
-                mirrorMenu.AddSimpleButton("+", () => {
+                mirrorMenu.AddSimpleButton("+", () =>
+                {
                     Main._trans_MirrorDistance.Value = Main._trans_MirrorDistance.Value + Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
 
-                mirrorMenu.AddSimpleButton("-", () => {
+                mirrorMenu.AddSimpleButton("-", () =>
+                {
                     Main._trans_MirrorDistance.Value = Main._trans_MirrorDistance.Value - Main._mirrorDistAdj;
                     Main main = new Main(); main.OnPreferencesSaved();
                     mirrorMenu.Hide(); QuickMenuOptions();
                 });
             }
-            mirrorMenu.AddSimpleButton($"Close", () => {
+
+            mirrorMenu.AddSimpleButton("Cal Mirror Settings", () =>
+            {
+                QuickMenuOptions3();
                 mirrorMenu.Hide();
             });
-            mirrorMenu.AddSimpleButton($"Page 2", () => {
+            mirrorMenu.AddToggleButton($"-All Pickupable-", (action) =>
+            {
+                Main._AllPickupable = !Main._AllPickupable;
+                Main._base_CanPickupMirror.Value = Main._AllPickupable;
+                Main._45_CanPickupMirror.Value = Main._AllPickupable;
+                Main._ceil_CanPickupMirror.Value = Main._AllPickupable;
+                Main._micro_CanPickupMirror.Value = Main._AllPickupable;
+                Main._trans_CanPickupMirror.Value = Main._AllPickupable;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions2();
+            }, () => Main._AllPickupable);
+            mirrorMenu.AddToggleButton("Pickups snap to hand", (action) =>
+            {
+                Main.PickupToHand.Value = !Main.PickupToHand.Value;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions2();
+            }, () => Main.PickupToHand.Value);
+
+            mirrorMenu.AddSimpleButton($"Close", () =>
+            {
+                mirrorMenu.Hide();
+            });
+            mirrorMenu.AddSimpleButton($"Page 2", () =>
+            {
                 mirrorMenu.Hide();
                 QuickMenuOptions2();
             });
             mirrorMenu.AddToggleButton("High Precision Distance Adj", (action) =>
             {
                 Main._mirrorDistHighPrec = !Main._mirrorDistHighPrec;
-               Main main = new Main(); main.OnPreferencesSaved();
+                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions();
             }, () => Main._mirrorDistHighPrec);
 
@@ -231,13 +265,15 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror();
             }, () => Main._mirrorBase != null);
-            mirrorMenu.AddSimpleButton("Larger", () => {
+            mirrorMenu.AddSimpleButton("Larger", () =>
+            {
                 Main._base_MirrorScaleX.Value += .25f;
                 Main._base_MirrorScaleY.Value += .25f;
-               Main main = new Main(); main.OnPreferencesSaved();
+                Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
-            mirrorMenu.AddSimpleButton("Smaller", () => {
+            mirrorMenu.AddSimpleButton("Smaller", () =>
+            {
                 if (Main._base_MirrorScaleX.Value > .25 && Main._base_MirrorScaleY.Value > .25)
                 {
                     Main._base_MirrorScaleX.Value -= .25f;
@@ -249,12 +285,14 @@ namespace PortableMirror
 
             //2
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddToggleButton($"Angle from View", (action) => {
+            mirrorMenu.AddToggleButton($"Angle from View", (action) =>
+            {
                 Main._base_PositionOnView.Value = !Main._base_PositionOnView.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             }, () => Main._base_PositionOnView.Value);
-            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) =>
+            {
                 Main._base_AnchorToTracking.Value = !Main._base_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
@@ -265,13 +303,15 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirror45();
             }, () => Main._mirror45 != null);
-            mirrorMenu.AddSimpleButton("Larger", () => {
+            mirrorMenu.AddSimpleButton("Larger", () =>
+            {
                 Main._45_MirrorScaleX.Value += .25f;
                 Main._45_MirrorScaleY.Value += .25f;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
-            mirrorMenu.AddSimpleButton("Smaller", () => {
+            mirrorMenu.AddSimpleButton("Smaller", () =>
+            {
                 if (Main._45_MirrorScaleX.Value > .25 && Main._45_MirrorScaleY.Value > .25)
                 {
                     Main._45_MirrorScaleX.Value -= .25f;
@@ -284,7 +324,8 @@ namespace PortableMirror
             //4
             mirrorMenu.AddSpacer();
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) =>
+            {
                 Main._45_AnchorToTracking.Value = !Main._45_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
@@ -295,13 +336,15 @@ namespace PortableMirror
             {
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorCeiling();
             }, () => Main._mirrorCeiling != null);
-            mirrorMenu.AddSimpleButton("Larger", () => {
+            mirrorMenu.AddSimpleButton("Larger", () =>
+            {
                 Main._ceil_MirrorScaleX.Value += .25f;
                 Main._ceil_MirrorScaleZ.Value += .25f;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
-            mirrorMenu.AddSimpleButton("Smaller", () => {
+            mirrorMenu.AddSimpleButton("Smaller", () =>
+            {
                 if (Main._ceil_MirrorScaleX.Value > .25 && Main._ceil_MirrorScaleZ.Value > .25)
                 {
                     Main._ceil_MirrorScaleX.Value -= .25f;
@@ -314,7 +357,8 @@ namespace PortableMirror
             //6
             mirrorMenu.AddSpacer();
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) =>
+            {
                 Main._ceil_AnchorToTracking.Value = !Main._ceil_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
@@ -326,14 +370,16 @@ namespace PortableMirror
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorMicro();
             }, () => Main._mirrorMicro != null);
 
-            mirrorMenu.AddSimpleButton("Larger", () => {
+            mirrorMenu.AddSimpleButton("Larger", () =>
+            {
                 Main._micro_MirrorScaleX.Value += .01f;
                 Main._micro_MirrorScaleY.Value += .01f;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
 
-            mirrorMenu.AddSimpleButton("Smaller", () => {
+            mirrorMenu.AddSimpleButton("Smaller", () =>
+            {
                 if (Main._micro_MirrorScaleX.Value > .02 && Main._micro_MirrorScaleY.Value > .02)
                 {
                     Main._micro_MirrorScaleX.Value -= .01f;
@@ -345,12 +391,14 @@ namespace PortableMirror
 
             //8
             mirrorMenu.AddSpacer();
-            mirrorMenu.AddToggleButton($"Angle from View", (action) => {
+            mirrorMenu.AddToggleButton($"Angle from View", (action) =>
+            {
                 Main._micro_PositionOnView.Value = !Main._micro_PositionOnView.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             }, () => Main._micro_PositionOnView.Value);
-            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) =>
+            {
                 Main._micro_AnchorToTracking.Value = !Main._micro_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
@@ -362,14 +410,16 @@ namespace PortableMirror
                 if (Utils.GetVRCPlayer() != null) Main.ToggleMirrorTrans();
             }, () => Main._mirrorTrans != null);
 
-            mirrorMenu.AddSimpleButton("Larger", () => {
+            mirrorMenu.AddSimpleButton("Larger", () =>
+            {
                 Main._trans_MirrorScaleX.Value += .25f;
                 Main._trans_MirrorScaleY.Value += .25f;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             });
 
-            mirrorMenu.AddSimpleButton("Smaller", () => {
+            mirrorMenu.AddSimpleButton("Smaller", () =>
+            {
                 if (Main._trans_MirrorScaleX.Value > .25 && Main._trans_MirrorScaleY.Value > .25)
                 {
                     Main._trans_MirrorScaleX.Value -= .25f;
@@ -380,23 +430,16 @@ namespace PortableMirror
             });
 
             //10
-            //mirrorMenu.AddSpacer();
-            mirrorMenu.AddToggleButton($"-All Pickupable-", (action) => {
-                Main._AllPickupable = !Main._AllPickupable;
-                Main._base_CanPickupMirror.Value = Main._AllPickupable;
-                Main._45_CanPickupMirror.Value = Main._AllPickupable;
-                Main._ceil_CanPickupMirror.Value = Main._AllPickupable;
-                Main._micro_CanPickupMirror.Value = Main._AllPickupable;
-                Main._trans_CanPickupMirror.Value = Main._AllPickupable;
-                Main main = new Main(); main.OnPreferencesSaved();
-                mirrorMenu.Hide(); QuickMenuOptions2();
-            }, () => Main._AllPickupable);
-            mirrorMenu.AddToggleButton($"Angle from View", (action) => {
+            mirrorMenu.AddSpacer();
+
+            mirrorMenu.AddToggleButton($"Angle from View", (action) =>
+            {
                 Main._trans_PositionOnView.Value = !Main._trans_PositionOnView.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
             }, () => Main._trans_PositionOnView.Value);
-            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) => {
+            mirrorMenu.AddToggleButton($"Anchor to Tracking Space", (action) =>
+            {
                 Main._trans_AnchorToTracking.Value = !Main._trans_AnchorToTracking.Value;
                 Main main = new Main(); main.OnPreferencesSaved();
                 mirrorMenu.Hide(); QuickMenuOptions2();
@@ -404,22 +447,127 @@ namespace PortableMirror
 
 
             //11
-            mirrorMenu.AddSimpleButton($"Close", () => {
+            mirrorMenu.AddSimpleButton($"Close", () =>
+            {
                 mirrorMenu.Hide();
             });
-            mirrorMenu.AddSimpleButton($"Page 1", () => {
+            mirrorMenu.AddSimpleButton($"Page 1", () =>
+            {
                 mirrorMenu.Hide();
                 QuickMenuOptions();
             });
+            mirrorMenu.AddSpacer();
 
-            mirrorMenu.AddToggleButton("Pickups snap to hand", (action) =>
-            {
-                Main.PickupToHand.Value = !Main.PickupToHand.Value;
-                Main main = new Main(); main.OnPreferencesSaved();
-                mirrorMenu.Hide(); QuickMenuOptions2();
-            }, () => Main.PickupToHand.Value);
 
             mirrorMenu.Show();
+        }
+
+
+
+        private static void QuickMenuOptions3()
+        {
+            var mirrorMenu = ExpansionKitApi.CreateCustomQuickMenuPage(LayoutDescriptionCustom.QuickMenu3Column_Longer);
+
+            mirrorMenu.AddToggleButton("Cal Mirror", (action) =>
+            {
+                if (Utils.GetVRCPlayer() != null) 
+                    if(Main._mirrorCal != null) 
+                        Main.ToggleMirrorCal(false); 
+                    else
+                        Main.waitForMeasureRoutine = MelonCoroutines.Start(Main.WaitForMeasure());
+                //Main.ToggleMirrorCal(true);
+            }, () => Main._mirrorCal != null);
+            mirrorMenu.AddSimpleButton(StateText(Main._cal_MirrorState.Value), () =>
+            {
+                ToggleMirrorState(ref Main._cal_MirrorState);
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            });
+            mirrorMenu.AddLabel("Updates to mirror aren't live - Must toggle");
+            //
+            mirrorMenu.AddLabel($"Distance scale: {Main._cal_MirrorDistanceScale.Value}");
+            mirrorMenu.AddSimpleButton("+", () =>
+            {
+                Main._cal_MirrorDistanceScale.Value = Main._cal_MirrorDistanceScale.Value + Main._mirrorDistAdj;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            });
+            mirrorMenu.AddSimpleButton("-", () =>
+            {
+                Main._cal_MirrorDistanceScale.Value = Main._cal_MirrorDistanceScale.Value - Main._mirrorDistAdj;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            });
+            //
+            mirrorMenu.AddLabel($"Size scale: {Main._cal_MirrorScale.Value}");
+            mirrorMenu.AddSimpleButton("Larger", () =>
+            {
+                Main._cal_MirrorScale.Value += .25f;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            });
+            mirrorMenu.AddSimpleButton("Smaller", () =>
+            {
+                if (Main._cal_MirrorScale.Value > .25)
+                {
+                    Main._cal_MirrorScale.Value -= .25f;
+                    Main main = new Main(); main.OnPreferencesSaved();
+                    mirrorMenu.Hide(); QuickMenuOptions3();
+                }
+            });
+            //
+
+            mirrorMenu.AddToggleButton($"Enable Mirror when Calibrating", (action) =>
+            {
+                Main._cal_enable.Value = !Main._cal_enable.Value;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            }, () => Main._cal_enable.Value);
+            
+            mirrorMenu.AddToggleButton($"Always in front", (action) =>
+            {
+                Main._cal_AlwaysInFront.Value = !Main._cal_AlwaysInFront.Value;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            }, () => Main._cal_AlwaysInFront.Value);
+            mirrorMenu.AddSpacer();
+
+            mirrorMenu.AddToggleButton($"Delay mirror by {Main._cal_DelayMirrorTime.Value} seconds", (action) =>
+            {
+                Main._cal_DelayMirror.Value = !Main._cal_DelayMirror.Value;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            }, () => Main._cal_DelayMirror.Value);
+            mirrorMenu.AddSimpleButton("+", () =>
+            {
+                Main._cal_DelayMirrorTime.Value = Main._cal_DelayMirrorTime.Value + .2f;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            });
+            mirrorMenu.AddSimpleButton("-", () =>
+            {
+                Main._cal_DelayMirrorTime.Value = Main._cal_DelayMirrorTime.Value - .2f;
+                Main main = new Main(); main.OnPreferencesSaved();
+                mirrorMenu.Hide(); QuickMenuOptions3();
+            });
+
+            //mirrorMenu.AddSpacer();
+
+
+
+
+            mirrorMenu.AddSimpleButton($"Close", () =>
+            {
+                mirrorMenu.Hide();
+            });
+            mirrorMenu.AddSimpleButton($"Page 1", () =>
+            {
+                mirrorMenu.Hide();
+                QuickMenuOptions();
+            });
+            mirrorMenu.AddSpacer();
+            mirrorMenu.Show();
+
         }
     }
 }
