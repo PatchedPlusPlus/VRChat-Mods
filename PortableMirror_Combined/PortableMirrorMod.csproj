@@ -45,13 +45,12 @@
     <Compile Include="ActionMenu.cs" />
     <None Include="LoaderIntegrityCheck.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="MethodResolver.cs" />
     <Compile Include="UIX_QM.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="mirrorprefab" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="mirroricons" />
     <EmbeddedResource Include="mirrorprefabpickup" />
   </ItemGroup>
